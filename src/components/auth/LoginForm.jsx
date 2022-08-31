@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import MyTextInput from './MyTextInput';
-// import { Link as ReactRouterLink } from 'react-router-dom';
 import SignUp from './SignUp';
 import {
   Button,
@@ -18,10 +17,10 @@ import { useDispatch } from 'react-redux';
 import { closeModal } from '../../store/reducers/modalReducer';
 import { auth } from '../../apis/firestore/firebase-config';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { signInWithEmail } from '../../apis/firestore/firebaseService';
+import { signInUser } from '../../store/actions/authActions';
 
 export default function LoginForm() {
-  const [signUp, setSignUp] = useState(false);
+  const [ register, setRegister ] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -46,11 +45,11 @@ export default function LoginForm() {
   });
 
   const onClickLogin = () => {
-    setSignUp(false);
+    setRegister(false);
   };
 
   const onClickSignUp = () => {
-    setSignUp(true);
+    setRegister(true);
   };
 
   const handleRegister = values => {
@@ -66,14 +65,14 @@ export default function LoginForm() {
       });
   };
 
-  const handleSubmit = async (values, { setSubmitting }) => {
+  const handleSubmit = (values, { setSubmitting }) => {
     try {
       setSubmitting(false);
       dispatch(closeModal());
-      if (signUp === true) {
-        await handleRegister(values);
+      if (register === true) {
+        handleRegister(values);
       } else {
-        await signInWithEmail(values);
+        signInUser(values);
       }
     } catch (error) {
       setSubmitting(false);
@@ -125,7 +124,7 @@ export default function LoginForm() {
                   type="password"
                 />
                 <br />
-                {signUp ? (
+                {register ? (
                   <SignUp
                     isLoading={isSubmitting}
                     disable={!isValid || !dirty || isSubmitting}
@@ -145,7 +144,7 @@ export default function LoginForm() {
             )}
           </Formik>
           <Stack pt={6}>
-            {signUp ? (
+            {register ? (
               <Text align={'center'}>
                 Already a user?{' '}
                 <Link onClick={onClickLogin()} color={'blue.400'}>

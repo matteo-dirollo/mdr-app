@@ -14,6 +14,7 @@ import Home from './components/pages/Home';
 import Works from './components/pages/Works'
 import Contact from './components/pages/Contact';
 import UsersDashboard from './components/layout/readDb/UsersDashboard';
+import BackdropManager from './components/layout/modal/BackdropManager';
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
       >
 		    <p className="cookies-message">This website uses cookies to enhance the user experience.</p>
 		  </CookieConsent>
+      <BackdropManager />
       <Box fontSize="xl">
         <Grid p={3}>
           <ColorModeSwitcher justifySelf="flex-end" />

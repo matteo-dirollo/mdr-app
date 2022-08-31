@@ -4,7 +4,6 @@ import {
     Breadcrumb,
     BreadcrumbLink,
     BreadcrumbItem,
-    // Button
   } from '@chakra-ui/react';
 import Backdrop from '../modal/Backdrop';
 import { useSelector } from 'react-redux';
@@ -25,7 +24,9 @@ const Navbar = () => {
             </BreadcrumbItem>
             <BreadcrumbItem>
             { authenticated ? (<SignOut/>) : (<Backdrop name='Login' />)}
-                
+            </BreadcrumbItem>
+            <BreadcrumbItem>
+                <Backdrop name='test'/>
             </BreadcrumbItem>
         </Breadcrumb>
     );

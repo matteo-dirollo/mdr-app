@@ -10,9 +10,6 @@ import {
     StackDivider,
     Text,
     Flex
-    // ListIcon,
-    // OrderedList,
-    // UnorderedList,
   } from '@chakra-ui/react'
 import { useDispatch } from 'react-redux';
 
