@@ -7,8 +7,8 @@ import {
   } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 import SignOut from '../../auth/SignOut';
-import ModalComponent from '../modal/ModalComponent';
-import LoginForm from '../../auth/LoginForm';
+import SignIn from '../../auth/SignIn';
+
 
 const Navbar = () => {
     const { authenticated } = useSelector(state => state.auth)
@@ -24,10 +24,7 @@ const Navbar = () => {
                 <BreadcrumbLink as={ReactRouterLink} to="/contact">Contact</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbItem>
-            { authenticated ? (<SignOut />) : (<ModalComponent name='Login' />)}
-            </BreadcrumbItem>
-            <BreadcrumbItem>
-                <ModalComponent />
+            { authenticated ? (<SignOut />) : (<SignIn name='Login' />)}
             </BreadcrumbItem>
         </Breadcrumb>
     );

@@ -14,19 +14,20 @@ import Home from './components/pages/Home';
 import Works from './components/pages/Works'
 import Contact from './components/pages/Contact';
 import UsersDashboard from './components/layout/readDb/UsersDashboard';
-import ModalManager from './components/layout/modal/ModalManager';
+import Sandbox from './components/pages/Sandbox';
 
 
 function App() {
   return (
     <ChakraProvider theme={theme}>
+     
       <CookieConsent
 		    style={{ background: '#429EBD', color: '#ffffff !important' }}
 		    buttonStyle={{ color: '#4e503b', fontSize: '13px' }}
       >
 		    <p className="cookies-message">This website uses cookies to enhance the user experience.</p>
 		  </CookieConsent>
-      <ModalManager />
+     
       <Box fontSize="xl">
         <Grid p={3}>
           <ColorModeSwitcher justifySelf="flex-end" />
@@ -37,6 +38,7 @@ function App() {
 		  	    <Route path="/contact" exact element={<Contact />} />
 		  	    <Route path="*" element={<PageNotFound />} />
             <Route path="/doc" element={<UsersDashboard />}/>
+            <Route path="/sandbox" element={<Sandbox />}/>
 		      </Routes>
         </Grid>
       </Box>

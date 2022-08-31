@@ -3,7 +3,7 @@ import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import MyTextInput from './MyTextInput';
 import SignUp from './SignUp';
-import ModalWrapper from '../layout/modal/ModalWrapper';
+// import ModalWrapper from '../layout/modal/ModalWrapper';
 import {
   Button,
   Flex,
@@ -80,7 +80,7 @@ export default function LoginForm() {
   };
 
   return (
-    <ModalWrapper>
+    
       <Flex
         align={'center'}
         justify={'center'}
@@ -145,14 +145,14 @@ export default function LoginForm() {
               {register ? (
                 <Text align={'center'}>
                   Already a user?{' '}
-                  <Link onClick={onClickLogin()} color={'blue.400'}>
+                  <Link onClick={onClickLogin} color={'blue.400'}>
                     Login
                   </Link>
                 </Text>
               ) : (
                 <Text align={'center'}>
                   Not registered?{' '}
-                  <Link onClick={onClickSignUp()} color={'blue.400'}>
+                  <Link onClick={onClickSignUp} color={'blue.400'}>
                     Sign Up
                   </Link>
                 </Text>
@@ -161,6 +161,5 @@ export default function LoginForm() {
           </Box>
         </Stack>
       </Flex>
-    </ModalWrapper>
   );
 }
