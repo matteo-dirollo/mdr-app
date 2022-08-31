@@ -9,11 +9,8 @@ const Sandbox = () => {
         <Text textAlign='center'>
             Sandbox
         </Text>
-
         <Center>
-           
                 <SignIn />
-           
         </Center>
     
         </Box>

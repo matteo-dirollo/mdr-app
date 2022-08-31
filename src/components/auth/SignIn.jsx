@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Form, Formik } from 'formik';
-import ModalButton from '../layout/modal/ModalButton';
 import * as Yup from 'yup';
 import MyTextInput from './MyTextInput';
 import SignUp from './SignUp';
@@ -22,8 +21,8 @@ import ModalWindow from '../layout/modal/ModalWindow';
 
 export default function LoginForm() {
   const [ register, setRegister ] = useState(false);
-  const { onOpen } = useDisclosure();
   const dispatch = useDispatch();
+  const { onClose } = useDisclosure();
 
   const initialValues = {
     email: '',
@@ -56,6 +55,7 @@ export default function LoginForm() {
   const handleSubmit = async (values, { setSubmitting }) => {    
     try {
       setSubmitting(false);
+      onClose();
       dispatch(closeModal());
       signInUser(values);
     } catch (error) {
@@ -69,7 +69,7 @@ export default function LoginForm() {
   return (
     <React.Fragment>
       
-      <ModalWindow name='Login' modalButton={<ModalButton name='Open Modal' openModal={onOpen}/>}>
+      <ModalWindow name='Login'>
         <Flex
           align={'center'}
           justify={'center'}
