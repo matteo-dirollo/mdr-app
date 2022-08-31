@@ -68,7 +68,6 @@ export default function LoginForm() {
 
   return (
     <React.Fragment>
-      
       <ModalWindow name='Login'>
         <Flex
           align={'center'}
