@@ -3,6 +3,7 @@ import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import MyTextInput from './MyTextInput';
 import SignUp from './SignUp';
+import ModalWrapper from '../layout/modal/ModalWrapper';
 import {
   Button,
   Flex,
@@ -15,8 +16,8 @@ import {
 } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
 import { closeModal } from '../../store/reducers/modalReducer';
-import { auth } from '../../apis/firestore/firebase-config';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+// import { auth } from '../../apis/firestore/firebase-config';
+// import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { signInUser } from '../../store/actions/authActions';
 
 export default function LoginForm() {
@@ -52,28 +53,24 @@ export default function LoginForm() {
     setRegister(true);
   };
 
-  const handleRegister = values => {
-    createUserWithEmailAndPassword(auth, values.email, values.password)
-      .then(userCredential => {
-        const user = userCredential.user;
-        console.log('Registered user: ', user);
-      })
-      .catch(error => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log('Error ocured: ', errorCode, errorMessage);
-      });
-  };
+  // const handleRegister = values => {
+  //   createUserWithEmailAndPassword(auth, values.email, values.password)
+  //     .then(userCredential => {
+  //       const user = userCredential.user;
+  //       console.log('Registered user: ', user);
+  //     })
+  //     .catch(error => {
+  //       const errorCode = error.code;
+  //       const errorMessage = error.message;
+  //       console.log('Error ocured: ', errorCode, errorMessage);
+  //     });
+  // };
 
-  const handleSubmit = (values, { setSubmitting }) => {
+  const handleSubmit = async (values, { setSubmitting }) => {    
     try {
       setSubmitting(false);
       dispatch(closeModal());
-      if (register === true) {
-        handleRegister(values);
-      } else {
-        signInUser(values);
-      }
+      signInUser(values);
     } catch (error) {
       setSubmitting(false);
       const errorCode = error.code;
@@ -83,85 +80,87 @@ export default function LoginForm() {
   };
 
   return (
-    <Flex
-      align={'center'}
-      justify={'center'}
-      bg={useColorModeValue('gray.50', 'gray.800')}
-    >
-      <Stack spacing={6} mx={'auto'} maxW={'lg'} py={6} px={6}>
-        <Stack align={'center'}>
-          <Heading fontSize={'4xl'} textAlign={'center'}>
-            Hi there !
-          </Heading>
-          <Text fontSize={'sm'} color={'gray.600'} textAlign="center">
-            Login to get full access or register <br /> if you haven't done it
-            yet ✌️
-          </Text>
-        </Stack>
-        <Box
-          rounded={'lg'}
-          bg={useColorModeValue('white', 'gray.700')}
-          boxShadow={'lg'}
-          p={10}
-        >
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={handleSubmit}
-          >
-            {({ isSubmitting, isValid, dirty }) => (
-              <Form>
-                <MyTextInput
-                  label="Email"
-                  name="email"
-                  placeholder="example@xzy.com"
-                />
-
-                <MyTextInput
-                  label="Password"
-                  name="password"
-                  placeholder="Password"
-                  type="password"
-                />
-                <br />
-                {register ? (
-                  <SignUp
-                    isLoading={isSubmitting}
-                    disable={!isValid || !dirty || isSubmitting}
-                    type="submit"
-                  />
-                ) : (
-                  <Button
-                    isLoading={isSubmitting}
-                    disable={!isValid || !dirty || isSubmitting}
-                    type="submit"
-                    colorScheme="teal"
-                  >
-                    Login
-                  </Button>
-                )}
-              </Form>
-            )}
-          </Formik>
-          <Stack pt={6}>
-            {register ? (
-              <Text align={'center'}>
-                Already a user?{' '}
-                <Link onClick={onClickLogin()} color={'blue.400'}>
-                  Login
-                </Link>
-              </Text>
-            ) : (
-              <Text align={'center'}>
-                Not registered?{' '}
-                <Link onClick={onClickSignUp()} color={'blue.400'}>
-                  Sign Up
-                </Link>
-              </Text>
-            )}
+    <ModalWrapper>
+      <Flex
+        align={'center'}
+        justify={'center'}
+        bg={useColorModeValue('gray.50', 'gray.800')}
+      >
+        <Stack spacing={6} mx={'auto'} maxW={'lg'} py={6} px={6}>
+          <Stack align={'center'}>
+            <Heading fontSize={'4xl'} textAlign={'center'}>
+              Hi there !
+            </Heading>
+            <Text fontSize={'sm'} color={'gray.600'} textAlign="center">
+              Login to get full access or register <br /> if you haven't done it
+              yet ✌️
+            </Text>
           </Stack>
-        </Box>
-      </Stack>
-    </Flex>
+          <Box
+            rounded={'lg'}
+            bg={useColorModeValue('white', 'gray.700')}
+            boxShadow={'lg'}
+            p={10}
+          >
+            <Formik
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              onSubmit={handleSubmit}
+            >
+              {({ isSubmitting, isValid, dirty }) => (
+                <Form>
+                  <MyTextInput
+                    label="Email"
+                    name="email"
+                    placeholder="example@xzy.com"
+                  />
+  
+                  <MyTextInput
+                    label="Password"
+                    name="password"
+                    placeholder="Password"
+                    type="password"
+                  />
+                  <br />
+                  {register ? (
+                    <SignUp
+                      isLoading={isSubmitting}
+                      disable={!isValid || !dirty || isSubmitting}
+                      type="submit"
+                    />
+                  ) : (
+                    <Button
+                      isLoading={isSubmitting}
+                      disable={!isValid || !dirty || isSubmitting}
+                      type="submit"
+                      colorScheme="teal"
+                    >
+                      Login
+                    </Button>
+                  )}
+                </Form>
+              )}
+            </Formik>
+            <Stack pt={6}>
+              {register ? (
+                <Text align={'center'}>
+                  Already a user?{' '}
+                  <Link onClick={onClickLogin()} color={'blue.400'}>
+                    Login
+                  </Link>
+                </Text>
+              ) : (
+                <Text align={'center'}>
+                  Not registered?{' '}
+                  <Link onClick={onClickSignUp()} color={'blue.400'}>
+                    Sign Up
+                  </Link>
+                </Text>
+              )}
+            </Stack>
+          </Box>
+        </Stack>
+      </Flex>
+    </ModalWrapper>
   );
 }

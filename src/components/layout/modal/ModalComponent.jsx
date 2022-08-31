@@ -14,7 +14,7 @@ import LoginForm from '../../auth/LoginForm';
 import { useDispatch } from 'react-redux';
 import { closeModal, openModal } from '../../../store/reducers/modalReducer';
 
-const Backdrop = ( props ) => {
+const ModalComponent = ( props ) => {
     
     const OverlayOne = () => (
           <ModalOverlay
@@ -33,16 +33,12 @@ const Backdrop = ( props ) => {
               onClick={() => {
                 setOverlay(<OverlayOne />)
                 dispatch(openModal({ modalType: 'LoginForm' }))
-                onOpen()
               }}
             >
               {props.name}
             </Button>
             
-            <Modal isCentered isOpen={isOpen} onClose={() => {
-              dispatch(closeModal())
-              onClose();
-            }}>
+            <Modal isCentered isOpen={isOpen} onClose={onClose}>
             {overlay}
             <ModalContent>
                 
@@ -59,4 +55,4 @@ const Backdrop = ( props ) => {
       );
   }
   
-  export default Backdrop;
+  export default ModalComponent;

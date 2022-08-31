@@ -5,9 +5,10 @@ import {
     BreadcrumbLink,
     BreadcrumbItem,
   } from '@chakra-ui/react';
-import Backdrop from '../modal/Backdrop';
 import { useSelector } from 'react-redux';
 import SignOut from '../../auth/SignOut';
+import ModalComponent from '../modal/ModalComponent';
+import LoginForm from '../../auth/LoginForm';
 
 const Navbar = () => {
     const { authenticated } = useSelector(state => state.auth)
@@ -23,10 +24,10 @@ const Navbar = () => {
                 <BreadcrumbLink as={ReactRouterLink} to="/contact">Contact</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbItem>
-            { authenticated ? (<SignOut/>) : (<Backdrop name='Login' />)}
+            { authenticated ? (<SignOut />) : (<ModalComponent name='Login' />)}
             </BreadcrumbItem>
             <BreadcrumbItem>
-                <Backdrop name='test'/>
+                <ModalComponent />
             </BreadcrumbItem>
         </Breadcrumb>
     );

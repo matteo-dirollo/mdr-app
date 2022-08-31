@@ -4,7 +4,7 @@ import LoginForm from '../../auth/LoginForm';
 
 
 
-export default function BackdropManager() {
+export default function ModalManager() {
   const modalLookup = {
       LoginForm
   };
