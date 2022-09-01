@@ -12,17 +12,18 @@ import {
   Box,
   Link,
   useColorModeValue,
-  useDisclosure
+  useDisclosure,
 } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
-import { closeModal } from '../../store/reducers/modalReducer';
-import { signInUser } from '../../store/actions/authActions';
+import { closeModal, openModal } from '../../store/reducers/modalReducer';
 import ModalWindow from '../layout/modal/ModalWindow';
+import { signInWithEmail } from '../../apis/firestore/firebaseService';
 
 export default function LoginForm() {
-  const [ register, setRegister ] = useState(false);
+  const [register, setRegister] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  // const { loading } = useSelector(state => state.async);
   const dispatch = useDispatch();
-  const { onClose } = useDisclosure();
 
   const initialValues = {
     email: '',
@@ -52,12 +53,12 @@ export default function LoginForm() {
     setRegister(true);
   };
 
-  const handleSubmit = async (values, { setSubmitting }) => {    
+  const handleSubmit = async (values, { setSubmitting }) => {
     try {
+      await signInWithEmail(values)
       setSubmitting(false);
       onClose();
       dispatch(closeModal());
-      signInUser(values);
     } catch (error) {
       setSubmitting(false);
       const errorCode = error.code;
@@ -68,7 +69,22 @@ export default function LoginForm() {
 
   return (
     <React.Fragment>
-      <ModalWindow name='Login'>
+      <Button
+        colorScheme="teal"
+        onClick={() => {
+          onOpen();
+          dispatch(openModal({ modalType: 'Login', modalProps: {} }));
+        }}
+      >
+        Login
+      </Button>
+      <ModalWindow
+        name="Login"
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onClose={onClose}
+        setRegister={onClickLogin}
+      >
         <Flex
           align={'center'}
           justify={'center'}
@@ -80,8 +96,8 @@ export default function LoginForm() {
                 Hi there !
               </Heading>
               <Text fontSize={'sm'} color={'gray.600'} textAlign="center">
-                Login to get full access or register <br /> if you haven't done it
-                yet ✌️
+                Login to get full access or register <br /> if you haven't done
+                it yet ✌️
               </Text>
             </Stack>
             <Box
@@ -102,7 +118,7 @@ export default function LoginForm() {
                       name="email"
                       placeholder="example@xzy.com"
                     />
-  
+
                     <MyTextInput
                       label="Password"
                       name="password"
@@ -149,7 +165,7 @@ export default function LoginForm() {
             </Box>
           </Stack>
         </Flex>
-        </ModalWindow>
-      </React.Fragment>
+      </ModalWindow>
+    </React.Fragment>
   );
 }

@@ -6,34 +6,24 @@ import {
   ModalHeader,
   ModalFooter,
   ModalBody,
-  ModalCloseButton,
-  Button,
-  useDisclosure,
+  ModalCloseButton
 } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
-import { closeModal, openModal } from '../../../store/reducers/modalReducer';
+import { closeModal } from '../../../store/reducers/modalReducer';
 
-const ModalWindow = ({ children, header, modalFooter, name }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+const ModalWindow = ({ children, header, modalFooter, isOpen, onClose, setRegister }) => {
+  
   const dispatch = useDispatch();
+  // const {isOpen} = useDisclosure();
 
   return (
-    <React.Fragment>
-      <Button 
-        colorScheme="teal" 
-        onClick={()=>{
-            onOpen();
-            dispatch(openModal({ modalType: {name}, modalProps: {} }))
-        }}
-        >
-        {name}
-      </Button>
       <Modal 
         isCentered 
-        isOpen={isOpen} 
+        isOpen={isOpen}
         onClose={()=>{
-            onClose();
-            dispatch(closeModal());
+          onClose();
+          setRegister();
+          dispatch(closeModal());
         }}
         >
         <ModalOverlay
@@ -47,7 +37,6 @@ const ModalWindow = ({ children, header, modalFooter, name }) => {
           <ModalFooter>{modalFooter}</ModalFooter>
         </ModalContent>
       </Modal>
-    </React.Fragment>
   );
 };
 

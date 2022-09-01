@@ -3,5 +3,6 @@ import { auth } from "./firebase-config";
 
 export function signInWithEmail(creds) {
     return (
-      signInWithEmailAndPassword(auth, creds.email, creds.password));
+      signInWithEmailAndPassword(auth, creds.email, creds.password))
+     
 }
