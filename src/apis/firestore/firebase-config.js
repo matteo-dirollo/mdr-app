@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "@firebase/firestore";
-import { getAuth, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { APP_ID, AUTH_DOMAIN, FIREBASE_API_KEY, MESSAGING_SENDER_ID, PROJECT_ID, STORAGE_BUCKET } from "../constantsApiKeys";
 
 
@@ -21,11 +21,11 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
-const googleAuthProvider = new GoogleAuthProvider(app);
-const facebookAuthProvider = new FacebookAuthProvider(app);
+// const googleAuthProvider = new GoogleAuthProvider(app);
+// const facebookAuthProvider = new FacebookAuthProvider(app);
 
 
-export { db, auth, googleAuthProvider, facebookAuthProvider };
+export { db, auth  };
 
 // DATA FROM SNAPSHOT
 

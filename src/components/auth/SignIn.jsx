@@ -22,7 +22,6 @@ import { signInWithEmail } from '../../apis/firestore/firebaseService';
 export default function LoginForm() {
   const [register, setRegister] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  // const { loading } = useSelector(state => state.async);
   const dispatch = useDispatch();
 
   const initialValues = {
@@ -55,7 +54,7 @@ export default function LoginForm() {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      await signInWithEmail(values)
+      await signInWithEmail(values);
       setSubmitting(false);
       onClose();
       dispatch(closeModal());
