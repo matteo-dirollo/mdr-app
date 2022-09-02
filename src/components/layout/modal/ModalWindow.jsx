@@ -6,23 +6,22 @@ import {
   ModalHeader,
   ModalFooter,
   ModalBody,
-  ModalCloseButton
+  ModalCloseButton,
+  useColorModeValue
 } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
 import { closeModal } from '../../../store/reducers/modalReducer';
 
-const ModalWindow = ({ children, header, modalFooter, isOpen, onClose, setRegister }) => {
+const ModalWindow = ({ children, header, modalFooter, isOpen, onClose }) => {
   
   const dispatch = useDispatch();
-  // const {isOpen} = useDisclosure();
 
   return (
       <Modal 
-        isCentered 
+        isCentered
         isOpen={isOpen}
         onClose={()=>{
           onClose();
-          setRegister();
           dispatch(closeModal());
         }}
         >
@@ -33,8 +32,8 @@ const ModalWindow = ({ children, header, modalFooter, isOpen, onClose, setRegist
         <ModalContent>
           {header && <ModalHeader>{header}</ModalHeader>}
           <ModalCloseButton />
-          <ModalBody>{children}</ModalBody>
-          <ModalFooter>{modalFooter}</ModalFooter>
+          <ModalBody borderTopRadius='md' bg={useColorModeValue('gray.50', 'gray.800')}>{children}</ModalBody>
+          <ModalFooter borderBottomRadius='md' bg={useColorModeValue('gray.50', 'gray.800')}>{modalFooter}</ModalFooter>
         </ModalContent>
       </Modal>
   );
