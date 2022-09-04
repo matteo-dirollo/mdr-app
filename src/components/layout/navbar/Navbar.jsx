@@ -45,6 +45,13 @@ const Navbar = () => {
           Contact
         </BreadcrumbLink>
       </BreadcrumbItem>
+
+      <BreadcrumbItem>
+        <BreadcrumbLink as={ReactRouterLink} to="/account">
+          Account
+        </BreadcrumbLink>
+      </BreadcrumbItem>
+      
       {authenticated ? (
         <BreadcrumbItem>
           <SignOut />

@@ -5,7 +5,7 @@ import { FormControl,
          Input, 
          FormErrorMessage  } from '@chakra-ui/react';
 
-export default function MyTextInput({label, ...props}) {
+export default function MyTextInput({errors, label, ...props}) {
     const [field, meta] = useField(props);
     return (
             
@@ -14,8 +14,8 @@ export default function MyTextInput({label, ...props}) {
                 <Input {...field} {...props} />
                 {meta.touched && meta.error ? (
                     <FormErrorMessage>{meta.error}</FormErrorMessage>
-                    
                 ) : null}
+                
             </FormControl>
             
        

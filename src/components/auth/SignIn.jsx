@@ -11,10 +11,12 @@ import {
   Box,
   Link,
   useColorModeValue,
+  Divider
 } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
 import { closeModal } from '../../store/reducers/modalReducer';
 import { signInWithEmail } from '../../apis/firestore/firebaseService';
+import SocialLogin from './SocialLogin';
 
 export default function SignIn({ onClose, onOpen }) {
   const dispatch = useDispatch();
@@ -33,13 +35,14 @@ export default function SignIn({ onClose, onOpen }) {
       .min(8, 'passwords must be at least 8 characters long')
       .max(30, 'Too long!')
       .required('Required')
+      //  '^(?=.*\\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$',
       .matches(
-        '^(?=.*\\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$',
-        'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character'
+        '^(?=.*[a-z]).{8,}$',
+        'Must contain 8 characters and at least one number'
       ),
   });
 
-  const handleSubmit = async (values, { setSubmitting }) => {
+  const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
       await signInWithEmail(values);
       setSubmitting(false);
@@ -47,9 +50,7 @@ export default function SignIn({ onClose, onOpen }) {
       dispatch(closeModal());
     } catch (error) {
       setSubmitting(false);
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log('An error occured: ', errorCode, errorMessage);
+      setErrors({ auth: error });
     }
   };
 
@@ -60,7 +61,7 @@ export default function SignIn({ onClose, onOpen }) {
         justify={'center'}
         bg={useColorModeValue('gray.50', 'gray.800')}
       >
-        <Stack spacing={6} mx={'auto'} maxW={'lg'} py={6} px={6}>
+        <Stack spacing={6} mx={'auto'} maxW={'lg'} py={3} px={6}>
           <Stack align={'center'}>
             <Heading fontSize={'4xl'} textAlign={'center'}>
               Hi there !
@@ -81,7 +82,7 @@ export default function SignIn({ onClose, onOpen }) {
               validationSchema={validationSchema}
               onSubmit={handleSubmit}
             >
-              {({ isSubmitting, isValid, dirty }) => (
+              {({ isSubmitting, isValid, dirty, errors }) => (
                 <Form>
                   <MyTextInput
                     label="Email"
@@ -95,15 +96,31 @@ export default function SignIn({ onClose, onOpen }) {
                     placeholder="Password"
                     type="password"
                   />
+                  {errors.auth && (
+                    <label>
+                      <Text color="red.300" fontSize="sm">
+                        {errors.auth}
+                      </Text>
+                    </label>
+                  )}
                   <br />
-                  <Button
-                    isLoading={isSubmitting}
-                    disable={!isValid || !dirty || isSubmitting}
-                    type="submit"
-                    colorScheme="teal"
-                  >
-                    Sign In
-                  </Button>
+                  
+                  <Stack>
+                    <Button
+                      isLoading={isSubmitting}
+                      disable={!isValid || !dirty || isSubmitting}
+                      type="submit"
+                      colorScheme="teal"
+                      width='100%'
+                    >
+                      Sign In
+                    </Button>
+                    <Divider my="1em" orientation="horizontal" />
+                    <SocialLogin />
+                    </Stack>
+                   
+                
+                 
                 </Form>
               )}
             </Formik>
@@ -111,9 +128,10 @@ export default function SignIn({ onClose, onOpen }) {
               <Text align={'center'}>
                 Not registered?{' '}
                 <Link
-                onClick={()=>{
-                  onOpen(); 
-                  onClose()}}
+                  onClick={() => {
+                    onOpen();
+                    onClose();
+                  }}
                   color={'blue.400'}
                 >
                   Sign Up

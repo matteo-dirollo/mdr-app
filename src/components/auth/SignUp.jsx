@@ -11,11 +11,15 @@ import {
   Box,
   Link,
   useColorModeValue,
+  Divider
 } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
 import { closeModal } from '../../store/reducers/modalReducer';
+import { auth } from '../../apis/firestore/firebase-config';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import SocialLogin from './SocialLogin';
 
-import { registerFirebase } from '../../apis/firestore/firebaseService';
+// import { registerFirebase } from '../../apis/firestore/firebaseService';
 
 export default function SignUp({ onClose, onOpen }) {
   const dispatch = useDispatch();
@@ -40,17 +44,24 @@ export default function SignUp({ onClose, onOpen }) {
       ),
   });
 
-  const handleRegister = (values, { setSubmitting }) => {
+  const handleRegister = async (values, { setSubmitting, setErrors }) => {
     try {
-      registerFirebase(values);
+      await createUserWithEmailAndPassword(auth, values.email, values.password);
       setSubmitting(false);
       onClose();
       dispatch(closeModal());
     } catch (error) {
+      // if (error.code === "auth/") {
+      //   setErrors(error.code, "You already have an account with these credentials");
+      // }
+      // else {
+      //   setErrors(error.message);
+      // }
       setSubmitting(false);
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log('Error ocured: ', errorCode, errorMessage);
+      // const errorCode = error.code;
+      // const errorMessage = error.message;
+      setErrors({ auth: 'You already have an account with these credentials' });
+      //Firebase: Error (auth/email-already-in-use).
     }
   };
 
@@ -67,8 +78,9 @@ export default function SignUp({ onClose, onOpen }) {
               Hi there !
             </Heading>
             <Text fontSize={'sm'} color={'gray.600'} textAlign="center">
-                Register to get full access or login <br /> if you already have an account ✌️
-              </Text>
+              Register to get full access or login <br /> if you already have an
+              account ✌️
+            </Text>
           </Stack>
           <Box
             rounded={'lg'}
@@ -81,12 +93,13 @@ export default function SignUp({ onClose, onOpen }) {
               validationSchema={validationSchema}
               onSubmit={handleRegister}
             >
-              {({ isSubmitting, isValid, dirty }) => (
+              {({ isSubmitting, isValid, dirty, errors }) => (
                 <Form>
                   <MyTextInput
                     label="Email"
                     name="email"
                     placeholder="example@xzy.com"
+                    errors={errors}
                   />
 
                   <MyTextInput
@@ -94,16 +107,29 @@ export default function SignUp({ onClose, onOpen }) {
                     name="password"
                     placeholder="Password"
                     type="password"
+                    errors={errors}
                   />
+                  {errors.auth && (
+                    <label>
+                      <Text color="red.300" fontSize="sm">
+                        {errors.auth}
+                      </Text>
+                    </label>
+                  )}
                   <br />
-                  <Button
-                    isLoading={isSubmitting}
-                    disable={!isValid || !dirty || isSubmitting}
-                    type="submit"
-                    colorScheme="teal"
-                  >
-                    Sign Up
-                  </Button>
+                  <Stack>
+                    <Button
+                      isLoading={isSubmitting}
+                      disable={!isValid || !dirty || isSubmitting}
+                      type="submit"
+                      colorScheme="teal"
+                      width='100%'
+                    >
+                      Sign Up
+                    </Button>
+                    <Divider my="1em" orientation="horizontal" />
+                    <SocialLogin />
+                    </Stack>
                 </Form>
               )}
             </Formik>

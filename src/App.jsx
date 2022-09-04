@@ -15,6 +15,7 @@ import Works from './components/pages/Works'
 import Contact from './components/pages/Contact';
 import UsersDashboard from './components/layout/readDb/UsersDashboard';
 import Sandbox from './components/pages/Sandbox';
+import AccountProfile from './components/pages/AccountProfile';
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
 		  	    <Route path="/" exact element={<Home />} />
 		  	    <Route path="/work" exact element={<Works />} />
 		  	    <Route path="/contact" exact element={<Contact />} />
+            <Route path="/account" exact element={<AccountProfile />} />
 		  	    <Route path="*" element={<PageNotFound />} />
             <Route path="/doc" element={<UsersDashboard />}/>
             <Route path="/sandbox" element={<Sandbox />}/>
