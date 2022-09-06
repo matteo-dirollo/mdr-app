@@ -11,12 +11,13 @@ import {
   Box,
   Link,
   useColorModeValue,
-  Divider
+  Divider,
 } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
 import { closeModal } from '../../store/reducers/modalReducer';
-import { signInWithEmail } from '../../apis/firestore/firebaseService';
 import SocialLogin from './SocialLogin';
+import { auth } from '../../apis/firestore/firebase-config';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 export default function SignIn({ onClose, onOpen }) {
   const dispatch = useDispatch();
@@ -37,20 +38,20 @@ export default function SignIn({ onClose, onOpen }) {
       .required('Required')
       //  '^(?=.*\\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$',
       .matches(
-        '^(?=.*[a-z]).{8,}$',
-        'Must contain 8 characters and at least one number'
+        '^(?=.*\\d)(?=.*[a-z]).{8,}$',
+        'Must contain at least 8 characters and one number'
       ),
   });
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
-      await signInWithEmail(values);
+      await signInWithEmailAndPassword(auth, values.email, values.password);
       setSubmitting(false);
       onClose();
       dispatch(closeModal());
     } catch (error) {
       setSubmitting(false);
-      setErrors({ auth: error });
+      setErrors({ auth: 'Wrong email or password' });
     }
   };
 
@@ -97,30 +98,25 @@ export default function SignIn({ onClose, onOpen }) {
                     type="password"
                   />
                   {errors.auth && (
-                    <label>
-                      <Text color="red.300" fontSize="sm">
-                        {errors.auth}
-                      </Text>
-                    </label>
+                    <Text color="red.300" fontSize="sm">
+                      {errors.auth}
+                    </Text>
                   )}
                   <br />
-                  
+
                   <Stack>
                     <Button
                       isLoading={isSubmitting}
                       disable={!isValid || !dirty || isSubmitting}
                       type="submit"
                       colorScheme="teal"
-                      width='100%'
+                      width="100%"
                     >
                       Sign In
                     </Button>
                     <Divider my="1em" orientation="horizontal" />
                     <SocialLogin />
-                    </Stack>
-                   
-                
-                 
+                  </Stack>
                 </Form>
               )}
             </Formik>

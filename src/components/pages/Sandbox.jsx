@@ -1,22 +1,19 @@
 import React from 'react';
-import { Box, Text, Center } from '@chakra-ui/react';
-import SignIn from '../auth/SignIn';
-// import ModalButton from '../layout/modal/ModalButton';
-
+import { Box, Text } from '@chakra-ui/react';
+import UsersDashboard from '../layout/dashboard/UsersDashboard';
+import UserProfile from '../layout/profile/UserProfile';
 const Sandbox = () => {
-    return (
-        <Box>
-        <Text textAlign='center'>
-            Sandbox
-        </Text>
-        <Center>
-                <SignIn />
-        </Center>
-    
-        </Box>
-
-
-    );
-}
+  return (
+    <Box pt="3em">
+      <Text textAlign="center">Sandbox</Text>
+      <Box w='100%'>
+        <UserProfile/>
+      </Box>
+      <Box>
+        <UsersDashboard />
+      </Box>
+    </Box>
+  );
+};
 
 export default Sandbox;

@@ -11,25 +11,34 @@ import {
   Box,
   Link,
   useColorModeValue,
-  Divider
+  Divider,
 } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
 import { closeModal } from '../../store/reducers/modalReducer';
 import { auth } from '../../apis/firestore/firebase-config';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import SocialLogin from './SocialLogin';
-
-// import { registerFirebase } from '../../apis/firestore/firebaseService';
+// import { firebaseUsersCollection } from '../../apis/firestore/firestoreService';
 
 export default function SignUp({ onClose, onOpen }) {
   const dispatch = useDispatch();
 
   const initialValues = {
+    // name:'',
+    // last:'',
     email: '',
     password: '',
   };
 
   const validationSchema = Yup.object({
+    // first: Yup.string()
+    // .min(3, 'Too short')
+    // .required('Required')
+    // .matches('^([A-Z\\u00C0-\\u00D6\\u00D8-\\u00DE])([a-z\\u00DF-\\u00F6\\u00F8-\\u00FF \'&-]+)$', 'Start with a capital letter and numbers are not allawed'),
+    // last: Yup.string()
+    // .min(3, 'Too short')
+    // .required('Required')
+    // .matches('^([A-Za-z\\u00C0-\\u00D6\\u00D8-\\u00DE\\u00DF-\\u00F6\\u00F8-\\u00FF \'&-]+)$', ' Start with a capital letter and numbers are not allawed'),
     email: Yup.string()
       .min(3, 'Too short!')
       .required('Required')
@@ -39,8 +48,9 @@ export default function SignUp({ onClose, onOpen }) {
       .max(30, 'Too long!')
       .required('Required')
       .matches(
-        '^(?=.*\\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$',
-        'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character'
+        // '^(?=.*\\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$',
+        '^(?=.*\\d)(?=.*[a-z]).{8,}$',
+        'Must contain at least 8 characters and one number'
       ),
   });
 
@@ -50,6 +60,7 @@ export default function SignUp({ onClose, onOpen }) {
       setSubmitting(false);
       onClose();
       dispatch(closeModal());
+      // console.log(values);
     } catch (error) {
       // if (error.code === "auth/") {
       //   setErrors(error.code, "You already have an account with these credentials");
@@ -95,6 +106,7 @@ export default function SignUp({ onClose, onOpen }) {
             >
               {({ isSubmitting, isValid, dirty, errors }) => (
                 <Form>
+
                   <MyTextInput
                     label="Email"
                     name="email"
@@ -110,11 +122,9 @@ export default function SignUp({ onClose, onOpen }) {
                     errors={errors}
                   />
                   {errors.auth && (
-                    <label>
-                      <Text color="red.300" fontSize="sm">
-                        {errors.auth}
-                      </Text>
-                    </label>
+                    <Text color="red.300" fontSize="sm">
+                      {errors.auth}
+                    </Text>
                   )}
                   <br />
                   <Stack>
@@ -123,13 +133,13 @@ export default function SignUp({ onClose, onOpen }) {
                       disable={!isValid || !dirty || isSubmitting}
                       type="submit"
                       colorScheme="teal"
-                      width='100%'
+                      width="100%"
                     >
                       Sign Up
                     </Button>
                     <Divider my="1em" orientation="horizontal" />
                     <SocialLogin />
-                    </Stack>
+                  </Stack>
                 </Form>
               )}
             </Formik>

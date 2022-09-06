@@ -4,9 +4,21 @@ import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
-  signOut
+  signOut,
+  updateProfile,
 } from 'firebase/auth';
+import { signInUser } from '../../store/actions/authActions';
 import { auth } from './firebase-config';
+// import { firebaseUsersDoc } from './firestoreService';
+// import { setUserProfileData } from './firestoreService';
+
+export function firebaseObjectToArray(snapshot) {
+  if (snapshot) {
+    return Object.entries(snapshot).map(e =>
+      Object.assign({}, e[1], { id: e[0] })
+    );
+  }
+}
 
 export function signInWithEmail(creds) {
   try {
@@ -20,9 +32,17 @@ export function signOutFirebase() {
   return signOut(auth);
 }
 
-export function registerFirebase(creds) {
+export async function registerFirebase(creds) {
   try {
-    createUserWithEmailAndPassword(auth, creds.email, creds.password);
+    const result = await createUserWithEmailAndPassword(
+      auth,
+      creds.email,
+      creds.password
+    );
+    await updateProfile(result.user, {
+      displayName: creds.displayName,
+    });
+    // return await setUserProfileData(result.user);
   } catch (error) {
     throw error;
   }
@@ -33,22 +53,24 @@ export async function socialLogin(selectedProvider) {
   if (selectedProvider === 'facebook') {
     provider = new FacebookAuthProvider();
   }
-  if (selectedProvider === 'google'){
+  if (selectedProvider === 'google') {
     provider = new GoogleAuthProvider();
   }
   try {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
+    signInUser(user);
+    // if (user.additionalUserInfo.isNewUser) {
+    // const gCredential = GoogleAuthProvider.credentialFromResult(result);
+    // await setUserProfileData(result.user);
+    //   const token = credential.accessToken;
+    // // The signed-in user info.
+    //   const user = result.user;
 
-    console.log(user);
-    if (user.additionalUserInfo.isNewUser) {
-      // const credential = FacebookAuthProvider.credentialFromResult(result);
-      // const accessToken = credential.accessToken;
-
-      // await setProfileData(result.user)
-    }
+    // await setProfileData(result.user)
+    // }
   } catch (error) {
-    console.log(error)
+    throw error;
   }
 }
 

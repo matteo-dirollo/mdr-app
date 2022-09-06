@@ -51,6 +51,12 @@ const Navbar = () => {
           Account
         </BreadcrumbLink>
       </BreadcrumbItem>
+
+      <BreadcrumbItem>
+        <BreadcrumbLink as={ReactRouterLink} to="/sandbox">
+          Sandobox
+        </BreadcrumbLink>
+      </BreadcrumbItem>
       
       {authenticated ? (
         <BreadcrumbItem>

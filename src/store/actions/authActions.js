@@ -12,11 +12,10 @@ export function signInUser(user) {
 
 export function verifyAuth() {
   return function (dispatch) {
-    return onAuthStateChanged(auth, (user) => {
+    return onAuthStateChanged(auth, user => {
       if (user) {
         dispatch(signInUser(user));
         dispatch({ type: APP_LOADED });
-        //   const uid = user.uid;
       } else {
         dispatch(signOutUser());
         dispatch({ type: APP_LOADED });
