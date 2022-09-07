@@ -18,27 +18,30 @@ import { closeModal } from '../../store/reducers/modalReducer';
 import { auth } from '../../apis/firestore/firebase-config';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import SocialLogin from './SocialLogin';
-// import { firebaseUsersCollection } from '../../apis/firestore/firestoreService';
+import { firebaseUsersCollection } from '../../apis/firestore/firestoreService';
 
 export default function SignUp({ onClose, onOpen }) {
   const dispatch = useDispatch();
 
   const initialValues = {
-    // name:'',
-    // last:'',
+    name: '',
+    last:'',
     email: '',
     password: '',
   };
 
   const validationSchema = Yup.object({
-    // first: Yup.string()
-    // .min(3, 'Too short')
-    // .required('Required')
-    // .matches('^([A-Z\\u00C0-\\u00D6\\u00D8-\\u00DE])([a-z\\u00DF-\\u00F6\\u00F8-\\u00FF \'&-]+)$', 'Start with a capital letter and numbers are not allawed'),
-    // last: Yup.string()
-    // .min(3, 'Too short')
-    // .required('Required')
-    // .matches('^([A-Za-z\\u00C0-\\u00D6\\u00D8-\\u00DE\\u00DF-\\u00F6\\u00F8-\\u00FF \'&-]+)$', ' Start with a capital letter and numbers are not allawed'),
+    name: Yup.string()
+      .min(3, 'Too short')
+      .required('Required')
+      .matches(
+        "^([A-Z\\u00C0-\\u00D6\\u00D8-\\u00DE])([a-z\\u00DF-\\u00F6\\u00F8-\\u00FF '&-]+)$",
+        'Start with a capital letter and numbers are not allawed'
+      ),
+    last: Yup.string()
+    .min(3, 'Too short')
+    .required('Required')
+    .matches('^([A-Za-z\\u00C0-\\u00D6\\u00D8-\\u00DE\\u00DF-\\u00F6\\u00F8-\\u00FF \'&-]+)$', ' Start with a capital letter and numbers are not allawed'),
     email: Yup.string()
       .min(3, 'Too short!')
       .required('Required')
@@ -56,11 +59,12 @@ export default function SignUp({ onClose, onOpen }) {
 
   const handleRegister = async (values, { setSubmitting, setErrors }) => {
     try {
-      await createUserWithEmailAndPassword(auth, values.email, values.password);
+      const result = await createUserWithEmailAndPassword(auth, values.email, values.password);
+      const user = result.user; 
       setSubmitting(false);
       onClose();
       dispatch(closeModal());
-      // console.log(values);
+      firebaseUsersCollection(values, user);
     } catch (error) {
       // if (error.code === "auth/") {
       //   setErrors(error.code, "You already have an account with these credentials");
@@ -106,6 +110,11 @@ export default function SignUp({ onClose, onOpen }) {
             >
               {({ isSubmitting, isValid, dirty, errors }) => (
                 <Form>
+                  <Flex gap={3}>
+                    {' '}
+                    <MyTextInput label="Name" name="name" errors={errors} />
+                    <MyTextInput label="Last Name" name="last" errors={errors} />
+                  </Flex>
 
                   <MyTextInput
                     label="Email"

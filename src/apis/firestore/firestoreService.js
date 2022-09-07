@@ -3,16 +3,28 @@ import { collection, addDoc, getDocs } from 'firebase/firestore';
 
 import { Timestamp } from 'firebase/firestore';
 
-export async function firebaseUsersCollection(user) {
+export async function firebaseUsersCollection(values, user) {
   try {
-    const usersDoc = await addDoc(collection(db, 'users'), {
-      name: 'Name',
-      last: 'surname',
-      email: 'email',
-      userId: 'userId',
-      createdOn: 'createdOn'
+    await addDoc(collection(db, 'users'), {
+      displayName: values.name + " " + values.last,
+      email: user.email,
+      userId: user.uid,
+      createdOn: user.metadata.creationTime
     });
-    console.log("Document written with ID: ", usersDoc.id);
+
+  } catch (error) {
+    console.log('Error adding document: ', error);
+  }
+}
+
+export async function firebaseProviderUsersCollection(user) {
+  try {
+    await addDoc(collection(db, 'users'), {
+      displayName: user.displayName,
+      email: user.email,
+      userId: user.uid,
+      createdOn: user.metadata.creationTime
+    });
 
   } catch (error) {
     console.log('Error adding document: ', error);

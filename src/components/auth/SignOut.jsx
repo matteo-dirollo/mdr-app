@@ -7,8 +7,8 @@ const SignOut = ({ setAuthenticated }) => {
   const navigate = useNavigate();
   async function handleSignOut() {
     try {
-      navigate('/');
       await signOutFirebase();
+      navigate('/');
     } catch (error) {
       throw error;
     }

@@ -6,9 +6,11 @@ import {
   signInWithPopup,
   signOut,
   updateProfile,
+  getAdditionalUserInfo,
 } from 'firebase/auth';
 import { signInUser } from '../../store/actions/authActions';
 import { auth } from './firebase-config';
+import { firebaseProviderUsersCollection } from './firestoreService';
 // import { firebaseUsersDoc } from './firestoreService';
 // import { setUserProfileData } from './firestoreService';
 
@@ -59,14 +61,16 @@ export async function socialLogin(selectedProvider) {
   try {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
+    const { isNewUser } = getAdditionalUserInfo(result);
     signInUser(user);
-    // if (user.additionalUserInfo.isNewUser) {
+    if (isNewUser === true) {
+      firebaseProviderUsersCollection(user)
+    }
+    // if (isNewUser === true) {
     // const gCredential = GoogleAuthProvider.credentialFromResult(result);
     // await setUserProfileData(result.user);
     //   const token = credential.accessToken;
     // // The signed-in user info.
-    //   const user = result.user;
-
     // await setProfileData(result.user)
     // }
   } catch (error) {
