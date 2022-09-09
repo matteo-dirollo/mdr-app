@@ -7,35 +7,43 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-  useColorModeValue
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
 import { closeModal } from '../../../store/reducers/modalReducer';
 
-const ModalWindow = ({ children, header, modalFooter, isOpen, onClose }) => {
-  
+const ModalWindow = ({ children, header, modalFooter }) => {
   const dispatch = useDispatch();
 
   return (
-      <Modal 
-        isCentered
-        isOpen={isOpen}
-        onClose={()=>{
-          onClose();
-          dispatch(closeModal());
-        }}
+    <Modal
+      isCentered
+      isOpen={true}
+      onClose={() => {
+        dispatch(closeModal());
+      }}
+    >
+      <ModalOverlay
+        bg="blackAlpha.300"
+        backdropFilter="blur(10px) hue-rotate(90deg)"
+      />
+      <ModalContent>
+        {header && <ModalHeader>{header}</ModalHeader>}
+        <ModalCloseButton />
+        <ModalBody
+          borderTopRadius="md"
+          bg={useColorModeValue('gray.50', 'gray.800')}
         >
-        <ModalOverlay
-          bg="blackAlpha.300"
-          backdropFilter="blur(10px) hue-rotate(90deg)"
-        />
-        <ModalContent>
-          {header && <ModalHeader>{header}</ModalHeader>}
-          <ModalCloseButton />
-          <ModalBody borderTopRadius='md' bg={useColorModeValue('gray.50', 'gray.800')}>{children}</ModalBody>
-          <ModalFooter borderBottomRadius='md' bg={useColorModeValue('gray.50', 'gray.800')}>{modalFooter}</ModalFooter>
-        </ModalContent>
-      </Modal>
+          {children}
+        </ModalBody>
+        <ModalFooter
+          borderBottomRadius="md"
+          bg={useColorModeValue('gray.50', 'gray.800')}
+        >
+          {modalFooter}
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
   );
 };
 

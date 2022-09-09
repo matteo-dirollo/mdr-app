@@ -9,6 +9,7 @@ const SignOut = ({ setAuthenticated }) => {
     try {
       await signOutFirebase();
       navigate('/');
+      window.location.reload();
     } catch (error) {
       throw error;
     }

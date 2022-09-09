@@ -11,6 +11,8 @@ import Contact from './components/pages/Contact';
 import UsersDashboard from './components/layout/dashboard/UsersDashboard';
 import Sandbox from './components/pages/Sandbox';
 import AccountProfile from './components/pages/AccountProfile';
+import ModalManager from './components/layout/modal/ModalManager';
+import PrivateRoutes from './components/layout/PrivateRoutes';
 // import { useSelector } from 'react-redux';
 // import { auth } from './apis/firestore/firebase-config';
 
@@ -19,6 +21,7 @@ function App() {
 
   return (
     <ChakraProvider theme={theme}>
+      <ModalManager />
       <CookieConsent
         style={{ background: '#429EBD', color: '#ffffff !important' }}
         buttonStyle={{ color: '#4e503b', fontSize: '13px' }}
@@ -35,10 +38,13 @@ function App() {
             <Route path="/" exact element={<Home />} />
             <Route path="/work" exact element={<Works />} />
             <Route path="/contact" exact element={<Contact />} />
-            <Route path="/account" exact element={<AccountProfile />} />
             <Route path="*" element={<PageNotFound />} />
             <Route path="/doc" element={<UsersDashboard />} />
             <Route path="/sandbox" element={<Sandbox />} />
+            {/* PRIVATE ROUTES */}
+            <Route element={<PrivateRoutes />}>
+              <Route path="/account" element={<AccountProfile />} />
+            </Route>
           </Routes>
         </Grid>
       </Box>

@@ -6,7 +6,6 @@ import {
   Button,
   Flex,
   Stack,
-  Heading,
   Text,
   Box,
   Link,
@@ -14,11 +13,12 @@ import {
   Divider,
 } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
-import { closeModal } from '../../store/reducers/modalReducer';
+import { closeModal, openModal } from '../../store/reducers/modalReducer';
 import { auth } from '../../apis/firestore/firebase-config';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import SocialLogin from './SocialLogin';
 import { firebaseUsersCollection } from '../../apis/firestore/firestoreService';
+import ModalWindow from '../layout/modal/ModalWindow';
 
 export default function SignUp({ onClose, onOpen }) {
   const dispatch = useDispatch();
@@ -81,14 +81,14 @@ export default function SignUp({ onClose, onOpen }) {
   };
 
   return (
-    <React.Fragment>
+    <ModalWindow>
       <Flex
         align={'center'}
         justify={'center'}
         bg={useColorModeValue('gray.50', 'gray.800')}
       >
         <Stack spacing={6} mx={'auto'} maxW={'lg'} py={6} px={6}>
-          <Stack align={'center'}>
+          {/* <Stack align={'center'}>
             <Heading fontSize={'4xl'} textAlign={'center'}>
               Hi there !
             </Heading>
@@ -96,7 +96,7 @@ export default function SignUp({ onClose, onOpen }) {
               Register to get full access or login <br /> if you already have an
               account ✌️
             </Text>
-          </Stack>
+          </Stack> */}
           <Box
             rounded={'lg'}
             bg={useColorModeValue('white', 'gray.700')}
@@ -157,8 +157,8 @@ export default function SignUp({ onClose, onOpen }) {
                 Already a user?{' '}
                 <Link
                   onClick={() => {
-                    onOpen();
-                    onClose();
+                    dispatch(closeModal())
+                    dispatch(openModal({modalType: 'SignIn'}))
                   }}
                   color={'blue.400'}
                 >
@@ -169,6 +169,6 @@ export default function SignUp({ onClose, onOpen }) {
           </Box>
         </Stack>
       </Flex>
-    </React.Fragment>
+    </ModalWindow>
   );
 }

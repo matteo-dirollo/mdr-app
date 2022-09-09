@@ -6,7 +6,6 @@ import {
   Button,
   Flex,
   Stack,
-  Heading,
   Text,
   Box,
   Link,
@@ -14,10 +13,11 @@ import {
   Divider,
 } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
-import { closeModal } from '../../store/reducers/modalReducer';
+import { closeModal, openModal } from '../../store/reducers/modalReducer';
 import SocialLogin from './SocialLogin';
 import { auth } from '../../apis/firestore/firebase-config';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import ModalWindow from '../layout/modal/ModalWindow';
 
 export default function SignIn({ onClose, onOpen }) {
   const dispatch = useDispatch();
@@ -56,14 +56,14 @@ export default function SignIn({ onClose, onOpen }) {
   };
 
   return (
-    <React.Fragment>
+    <ModalWindow>
       <Flex
         align={'center'}
         justify={'center'}
         bg={useColorModeValue('gray.50', 'gray.800')}
       >
         <Stack spacing={6} mx={'auto'} maxW={'lg'} py={3} px={6}>
-          <Stack align={'center'}>
+          {/* <Stack align={'center'}>
             <Heading fontSize={'4xl'} textAlign={'center'}>
               Hi there !
             </Heading>
@@ -71,7 +71,7 @@ export default function SignIn({ onClose, onOpen }) {
               Login to get full access or register <br /> if you haven't done it
               yet ✌️
             </Text>
-          </Stack>
+          </Stack> */}
           <Box
             rounded={'lg'}
             bg={useColorModeValue('white', 'gray.700')}
@@ -125,8 +125,8 @@ export default function SignIn({ onClose, onOpen }) {
                 Not registered?{' '}
                 <Link
                   onClick={() => {
-                    onOpen();
-                    onClose();
+                    dispatch(closeModal())
+                    dispatch(openModal({modalType: 'SignUp'}))
                   }}
                   color={'blue.400'}
                 >
@@ -137,6 +137,6 @@ export default function SignIn({ onClose, onOpen }) {
           </Box>
         </Stack>
       </Flex>
-    </React.Fragment>
+    </ModalWindow>
   );
 }
