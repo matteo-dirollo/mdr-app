@@ -13,6 +13,7 @@ import Sandbox from './components/pages/Sandbox';
 import AccountProfile from './components/pages/AccountProfile';
 import ModalManager from './components/layout/modal/ModalManager';
 import PrivateRoutes from './components/layout/PrivateRoutes';
+import {history} from './store/store'
 // import { useSelector } from 'react-redux';
 // import { auth } from './apis/firestore/firebase-config';
 
@@ -34,7 +35,7 @@ function App() {
         <Grid p={3}>
           <ColorModeSwitcher justifySelf="flex-end" />
           <Navbar />
-          <Routes>
+          <Routes history={history}>
             <Route path="/" exact element={<Home />} />
             <Route path="/work" exact element={<Works />} />
             <Route path="/contact" exact element={<Contact />} />

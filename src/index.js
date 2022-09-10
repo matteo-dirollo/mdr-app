@@ -7,10 +7,10 @@ import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 
 import { Provider } from 'react-redux';
-import { storeRoot } from './store/storeRoot';
+import { store } from './store/store';
 
 
-const store = storeRoot();
+
 const container = document.getElementById('root');
 const root = ReactDOM.createRoot(container);
 
