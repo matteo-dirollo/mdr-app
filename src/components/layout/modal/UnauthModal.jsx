@@ -9,16 +9,24 @@ import {
   ModalHeader,
   ModalOverlay
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { openModal } from '../../../store/reducers/modalReducer';
 
-export default function UnauthModal(onOpen, onClose, isOpen) {
+export default function UnauthModal() {
+  const [open, setOpen] = useState(true);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  // const {prevLocation } = useSelector((state)=> state.auth)
   
+  const handleClose = () => {
+    setOpen(false);
+    navigate(-1);
+  }
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={open} onClose={handleClose}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
@@ -31,7 +39,6 @@ export default function UnauthModal(onOpen, onClose, isOpen) {
               mx={3}
               colorScheme="teal"
               onClick={() => {
-                
                 dispatch(openModal({ modalType: 'SignIn' }));
               }}
             >
