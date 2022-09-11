@@ -57,7 +57,6 @@ const UsersDashboard = () => {
       <React.Fragment key={index}>
         <ListItem>
           <Flex
-            minWidth="max-content"
             alignItems="start"
             flexWrap="wrap"
             flexDirection="horizontal"

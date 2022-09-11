@@ -87,7 +87,7 @@ export default function SignUp({ onClose, onOpen }) {
         justify={'center'}
         bg={useColorModeValue('gray.50', 'gray.800')}
       >
-        <Stack spacing={6} mx={'auto'} maxW={'lg'} py={6} px={6}>
+        <Stack spacing={6} mx={'auto'} maxW={'lg'} px={6}>
           {/* <Stack align={'center'}>
             <Heading fontSize={'4xl'} textAlign={'center'}>
               Hi there !
@@ -99,9 +99,8 @@ export default function SignUp({ onClose, onOpen }) {
           </Stack> */}
           <Box
             rounded={'lg'}
-            bg={useColorModeValue('white', 'gray.700')}
-            boxShadow={'lg'}
             p={10}
+            pb={5}
           >
             <Formik
               initialValues={initialValues}
