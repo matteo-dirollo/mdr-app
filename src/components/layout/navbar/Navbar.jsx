@@ -11,15 +11,14 @@ import {
   useBreakpointValue,
   useDisclosure,
 } from '@chakra-ui/react';
-import {
-  HamburgerIcon,
-  CloseIcon,
-} from '@chakra-ui/icons';
+import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import DesktopNav from './DesktopNav';
 import MobileNav from './MobileNav';
 import { useDispatch, useSelector } from 'react-redux';
 import { openModal } from '../../../store/reducers/modalReducer';
 import SignOut from '../../auth/SignOut';
+import { ColorModeSwitcher } from '../../../ColorModeSwitcher';
+import Logo from '../logo/Logo';
 
 const Navbar = () => {
   const { authenticated } = useSelector(state => state.auth);
@@ -58,7 +57,9 @@ const Navbar = () => {
             fontFamily={'heading'}
             color={useColorModeValue('gray.800', 'white')}
           >
-            Logo
+            <Box>
+              <Logo />
+            </Box>
           </Text>
 
           <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
@@ -71,6 +72,7 @@ const Navbar = () => {
           direction={'row'}
           spacing={6}
         >
+          <ColorModeSwitcher justifySelf="flex-end" />
           {authenticated ? (
             <SignOut />
           ) : (

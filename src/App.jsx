@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { ChakraProvider, Box, Grid, theme } from '@chakra-ui/react';
-import { ColorModeSwitcher } from './ColorModeSwitcher';
+// import { ColorModeSwitcher } from './ColorModeSwitcher';
 import PageNotFound from './components/pages/PageNotFound';
 import CookieConsent from 'react-cookie-consent';
 import Navbar from './components/layout/navbar/Navbar';
@@ -40,7 +40,6 @@ function App() {
       </CookieConsent>
       <Box fontSize="xl">
         <Grid p={3}>
-          <ColorModeSwitcher justifySelf="flex-end" />
           <Navbar />
           <Routes>
             <Route path="/" exact element={<Home />} />
