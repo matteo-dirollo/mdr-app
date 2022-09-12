@@ -41,7 +41,6 @@ const UsersDashboard = () => {
           console.log('Error getting documents: ', error);
         });
       setDocs(data);
-      //   dispatch(asyncActionFinish());
     }
     fetchUserMsg();
     const timeInterval = setTimeout(() => {
@@ -71,25 +70,25 @@ const UsersDashboard = () => {
               <Text color="gray.400" fontSize="xs">
                 Name
               </Text>
-              <Text>{userMessage.name}</Text>
+              <Text fontSize="md">{userMessage.name}</Text>
             </Box>
             <Box p="5px" minW="120px">
               <Text color="gray.400" fontSize="xs">
                 Last Name
               </Text>
-              <Text>{userMessage.surname}</Text>
+              <Text fontSize="md">{userMessage.surname}</Text>
             </Box>
             <Box p="5px" minW="300px">
               <Text color="gray.400" fontSize="xs">
                 Email
               </Text>
-              <Text>{userMessage.email}</Text>
+              <Text fontSize="md">{userMessage.email}</Text>
             </Box>
             <Box p="5px" minW="180px">
               <Text color="gray.400" fontSize="xs">
                 Message
               </Text>
-              <Text>{userMessage.message}</Text>
+              <Text fontSize="md">{userMessage.message}</Text>
             </Box>
           </Flex>
         </ListItem>

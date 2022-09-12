@@ -66,13 +66,6 @@ export async function socialLogin(selectedProvider) {
     if (isNewUser === true) {
       firebaseProviderUsersCollection(user)
     }
-    // if (isNewUser === true) {
-    // const gCredential = GoogleAuthProvider.credentialFromResult(result);
-    // await setUserProfileData(result.user);
-    //   const token = credential.accessToken;
-    // // The signed-in user info.
-    // await setProfileData(result.user)
-    // }
   } catch (error) {
     throw error;
   }

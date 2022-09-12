@@ -13,11 +13,19 @@ import Sandbox from './components/pages/Sandbox';
 import AccountProfile from './components/pages/AccountProfile';
 import ModalManager from './components/layout/modal/ModalManager';
 import PrivateRoutes from './components/layout/PrivateRoutes';
-// import { useSelector } from 'react-redux';
-// import { auth } from './apis/firestore/firebase-config';
+import { useSelector } from 'react-redux';
+import { auth } from './apis/firestore/firebase-config';
+import LoadingSpinner from './components/layout/loader/LoadingSpinner';
 
 function App() {
-  // const initialized = useSelector((state)=> auth.currentUser);
+  const initialized = useSelector(state => auth.currentUser);
+
+  if (initialized === false)
+    return (
+      <ChakraProvider theme={theme}>
+        <LoadingSpinner />
+      </ChakraProvider>
+    );
 
   return (
     <ChakraProvider theme={theme}>

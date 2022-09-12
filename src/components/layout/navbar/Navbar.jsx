@@ -7,11 +7,6 @@ import {
   Button,
   Stack,
   Collapse,
-//   Icon,
-//   Link,
-//   Popover,
-//   PopoverTrigger,
-//   PopoverContent,
   useColorModeValue,
   useBreakpointValue,
   useDisclosure,
@@ -19,15 +14,15 @@ import {
 import {
   HamburgerIcon,
   CloseIcon,
-//   ChevronDownIcon,
-//   ChevronRightIcon,
 } from '@chakra-ui/icons';
 import DesktopNav from './DesktopNav';
 import MobileNav from './MobileNav';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { openModal } from '../../../store/reducers/modalReducer';
+import SignOut from '../../auth/SignOut';
 
 const Navbar = () => {
+  const { authenticated } = useSelector(state => state.auth);
   const { isOpen, onToggle } = useDisclosure();
   const dispatch = useDispatch();
   return (
@@ -76,32 +71,38 @@ const Navbar = () => {
           direction={'row'}
           spacing={6}
         >
-          <Button
-            as={'a'}
-            fontSize={'sm'}
-            fontWeight={400}
-            variant={'link'}
-            onClick={()=>{
+          {authenticated ? (
+            <SignOut />
+          ) : (
+            <Button
+              as={'a'}
+              fontSize={'sm'}
+              fontWeight={400}
+              variant={'link'}
+              onClick={() => {
                 dispatch(openModal({ modalType: 'SignIn' }));
-            }}
-          >
-            Sign In
-          </Button>
-          <Button
-            display={{ base: 'none', md: 'inline-flex' }}
-            fontSize={'sm'}
-            fontWeight={600}
-            color={'white'}
-            bg={'pink.400'}
-            onClick={()=>{
+              }}
+            >
+              Sign In
+            </Button>
+          )}
+          {authenticated ? null : (
+            <Button
+              display={{ base: 'none', md: 'inline-flex' }}
+              fontSize={'sm'}
+              fontWeight={600}
+              color={'white'}
+              bg={'pink.400'}
+              onClick={() => {
                 dispatch(openModal({ modalType: 'SignUp' }));
-            }}
-            _hover={{
-              bg: 'pink.300',
-            }}
-          >
-            Sign Up
-          </Button>
+              }}
+              _hover={{
+                bg: 'pink.300',
+              }}
+            >
+              Sign Up
+            </Button>
+          )}
         </Stack>
       </Flex>
       <Collapse in={isOpen} animateOpacity>
@@ -112,7 +113,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-
-
-
