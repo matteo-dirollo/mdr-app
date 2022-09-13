@@ -46,7 +46,7 @@ const Videos = () => {
         <Box my={2} display='flex'>
           <Link as="a" onClick={onVideoClick}>
             <Box mr='3' w='150px'>
-              <Image src={videoItem.thumbnails.standard.url} alt="" />
+              <Image objectFit='contain' src={videoItem.thumbnails.standard.url} alt="" />
             </Box>
           </Link>
           <Link my='auto' maxW='200px' h='30px' src={videoItem.thumbnails.standard.url} onClick={onVideoClick} fontSize='sm'>{videoItem.title}</Link>

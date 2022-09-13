@@ -19,7 +19,7 @@ import { auth } from '../../apis/firestore/firebase-config';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import ModalWindow from '../layout/modal/ModalWindow';
 
-export default function SignIn({ onClose, onOpen }) {
+export default function SignIn({ onClose }) {
   const dispatch = useDispatch();
 
   const initialValues = {

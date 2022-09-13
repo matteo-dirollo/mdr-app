@@ -57,9 +57,9 @@ const Navbar = () => {
             fontFamily={'heading'}
             color={useColorModeValue('gray.800', 'white')}
           >
-            <Box>
-              <Logo />
-            </Box>
+           
+              <Logo width={30} height={30} />
+            
           </Text>
 
           <Flex display={{ base: 'none', md: 'flex' }} ml={10}>

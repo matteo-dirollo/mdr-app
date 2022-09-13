@@ -18,6 +18,8 @@ import { auth } from './apis/firestore/firebase-config';
 import LoadingSpinner from './components/layout/loader/LoadingSpinner';
 
 function App() {
+
+  
   const initialized = useSelector(state => auth.currentUser);
 
   if (initialized === false)
