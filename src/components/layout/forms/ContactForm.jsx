@@ -20,6 +20,10 @@ import MyTextInput from '../../auth/MyTextInput';
 import TextareaInput from './TextareaInput';
 import { MdEmail, MdFacebook } from 'react-icons/md';
 import { BsGithub, BsDiscord } from 'react-icons/bs';
+import { db } from '../../../apis/firestore/firebase-config';
+import { addDoc,
+    collection
+    } from 'firebase/firestore';
 
 const ContactForm = () => {
   const initialValues = {
@@ -27,6 +31,15 @@ const ContactForm = () => {
     email: '',
     message: '',
   };
+
+  const contactsPageCollectionRef = collection(db, 'Contact Form');
+
+  const collectData = async (values) => {
+      await addDoc(contactsPageCollectionRef, { name: values.name,
+                                                email: values.email,
+                                                message: values.message                      
+      })
+  }
   const validationSchema = Yup.object({
     name: Yup.string().min(3, 'Too short!').required('Required'),
     email: Yup.string()
@@ -38,12 +51,13 @@ const ContactForm = () => {
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
-      console.log(values);
+      await collectData(values);
       resetForm();
     } catch (error) {
       throw error;
     } finally {
       setSubmitting(false);
+      
     }
   };
   return (

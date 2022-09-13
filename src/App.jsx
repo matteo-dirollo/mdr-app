@@ -16,6 +16,7 @@ import PrivateRoutes from './components/layout/PrivateRoutes';
 import { useSelector } from 'react-redux';
 import { auth } from './apis/firestore/firebase-config';
 import LoadingSpinner from './components/layout/loader/LoadingSpinner';
+import FooterNewsletter from './components/layout/footer/FooterNewsletter';
 
 function App() {
 
@@ -55,6 +56,7 @@ function App() {
               <Route path="/account" element={<AccountProfile />} />
             </Route>
           </Routes>
+          <FooterNewsletter/>
         </Grid>
       </Box>
     </ChakraProvider>

@@ -7,8 +7,8 @@ const Sandbox = () => {
   return (
     <Box pt="3em">
       <Text textAlign="center">Sandbox</Text>
-      <Box w='100%'>
-        <UserProfile/>
+      <Box w="100%">
+        <UserProfile />
       </Box>
       <Box>
         <UsersDashboard />
