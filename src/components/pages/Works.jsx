@@ -2,17 +2,21 @@ import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 import Blog from '../layout/Articles/Blog';
 import Videos from '../layout/videos/Videos';
+import { TabTitle } from '../layout/routing/TabTitle';
 
 const Works = () => {
   return (
-    <Flex flexDirection={{ base: 'column', xl: 'row', sm: 'column' }}>
-      <Box marginX='auto' marginTop="10px">
-        <Blog />
-      </Box>
-      <Box marginX='auto' minW="18em">
-        <Videos />
-      </Box>
-    </Flex>
+    <>
+    <TabTitle title='Work'/>
+      <Flex flexDirection={{ base: 'column', xl: 'row', sm: 'column' }}>
+        <Box marginX="auto" marginTop="10px">
+          <Blog />
+        </Box>
+        <Box marginX="auto" minW="18em" my="0.8em">
+          <Videos />
+        </Box>
+      </Flex>
+    </>
   );
 };
 

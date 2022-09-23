@@ -6,7 +6,7 @@ const Blog = () => {
   const renderArticles = articles.map((item, index) => {
     return (
       <Box margin="auto" key={index}>
-        <Box>
+        <Box my='0.6em'>
           <Box
             boxSize={{
               base: '8em',

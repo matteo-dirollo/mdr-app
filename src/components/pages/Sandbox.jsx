@@ -1,19 +1,19 @@
 import React from 'react';
 import { Box, Text } from '@chakra-ui/react';
-import UsersDashboard from '../layout/dashboard/UsersDashboard';
 import UserProfile from '../layout/profile/UserProfile';
+import { TabTitle } from '../layout/routing/TabTitle';
 
 const Sandbox = () => {
   return (
-    <Box pt="3em">
-      <Text textAlign="center">Sandbox</Text>
-      <Box w="100%">
-        <UserProfile />
+    <>
+      <TabTitle title='Sandbox' />
+      <Box pt="3em">
+        <Text textAlign="center">Sandbox</Text>
+        <Box w="100%">
+          <UserProfile />
+        </Box>
       </Box>
-      <Box>
-        <UsersDashboard />
-      </Box>
-    </Box>
+    </>
   );
 };
 

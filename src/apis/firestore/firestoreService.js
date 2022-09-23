@@ -1,11 +1,14 @@
 import { db } from './firebase-config';
-import { collection, addDoc, getDocs } from 'firebase/firestore';
+import { collection, getDocs, doc, setDoc } from 'firebase/firestore';
 
 import { Timestamp } from 'firebase/firestore';
 
 export async function firebaseUsersCollection(values, user) {
+  
   try {
-    await addDoc(collection(db, 'users'), {
+    const docId = user.uid;
+    const usersDoc = doc(db, 'users', docId );
+    await setDoc( usersDoc, {
       displayName: values.name + " " + values.last,
       email: user.email,
       userId: user.uid,
@@ -18,8 +21,11 @@ export async function firebaseUsersCollection(values, user) {
 }
 
 export async function firebaseProviderUsersCollection(user) {
+  // const docId = user.id;
   try {
-    await addDoc(collection(db, 'users'), {
+    const docId = user.uid;
+    const usersDoc = doc(db, 'users', docId );
+    await setDoc( usersDoc, {
       displayName: user.displayName,
       email: user.email,
       userId: user.uid,

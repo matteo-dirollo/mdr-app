@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
-import UnauthModal from './modal/UnauthModal';
+import UnauthModal from '../modal/UnauthModal';
 
 export default function PrivateRoutes() {
   const { authenticated } = useSelector(state => state.auth);

@@ -10,7 +10,9 @@ import {
   useColorModeValue,
   useBreakpointValue,
   useDisclosure,
+  Link,
 } from '@chakra-ui/react';
+import { Link as ReactRouterLink } from 'react-router-dom';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import DesktopNav from './DesktopNav';
 import MobileNav from './MobileNav';
@@ -25,7 +27,7 @@ const Navbar = () => {
   const { isOpen, onToggle } = useDisclosure();
   const dispatch = useDispatch();
   return (
-    <Box>
+    <Box p={3}>
       <Flex
         bg={useColorModeValue('white', 'gray.800')}
         color={useColorModeValue('gray.600', 'white')}
@@ -57,8 +59,8 @@ const Navbar = () => {
             fontFamily={'heading'}
             color={useColorModeValue('gray.800', 'white')}
           >
-           
-              <Logo width={30} height={30} />
+           <Link as={ReactRouterLink} to='/'><Logo width={30} height={30} /></Link>
+              
             
           </Text>
 

@@ -13,6 +13,7 @@ import {
   WrapItem,
   useColorModeValue,
   Stack,
+  useToast,
 } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
@@ -21,27 +22,39 @@ import TextareaInput from './TextareaInput';
 import { MdEmail, MdFacebook } from 'react-icons/md';
 import { BsGithub, BsDiscord } from 'react-icons/bs';
 import { db } from '../../../apis/firestore/firebase-config';
-import { addDoc,
-    collection
-    } from 'firebase/firestore';
+import { addDoc, collection, Timestamp } from 'firebase/firestore';
 
 const ContactForm = () => {
+  const toast = useToast();
+  const tastSuccess = () => {
+    toast({
+      title: 'Messsage sent.',
+      description: "Your message has been succesfully registered",
+      status: 'success',
+      duration: 3000,
+      isClosable: true,
+    })
+  }
   const initialValues = {
     name: '',
+    surname: '',
     email: '',
     message: '',
   };
 
-  const contactsPageCollectionRef = collection(db, 'Contact Form');
-
-  const collectData = async (values) => {
-      await addDoc(contactsPageCollectionRef, { name: values.name,
-                                                email: values.email,
-                                                message: values.message                      
-      })
-  }
+  const collectData = async values => {
+    const contactsPageCollectionRef = collection(db, 'Contact_Form');
+    await addDoc(contactsPageCollectionRef, {
+      name: values.name,
+      surname: values.surname,
+      email: values.email,
+      message: values.message,
+      time: Timestamp.now(),
+    });
+  };
   const validationSchema = Yup.object({
     name: Yup.string().min(3, 'Too short!').required('Required'),
+    surname: Yup.string().min(3, 'Too short!').required('Required'),
     email: Yup.string()
       .min(3, 'Too short!')
       .required('Required')
@@ -53,11 +66,18 @@ const ContactForm = () => {
     try {
       await collectData(values);
       resetForm();
+      tastSuccess();
     } catch (error) {
+      toast({
+        title: 'An Error occurred.',
+        description: "Something went wrong, try later.",
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      })
       throw error;
     } finally {
       setSubmitting(false);
-      
     }
   };
   return (
@@ -138,6 +158,7 @@ const ContactForm = () => {
                         {({ isSubmitting, isValid, dirty, errors }) => (
                           <Form>
                             <MyTextInput label="Name" name="name" />
+                            <MyTextInput label="Last Name" name="surname" />
                             <MyTextInput
                               label="Email"
                               name="email"

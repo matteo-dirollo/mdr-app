@@ -1,11 +1,13 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
-import CallToActionWithVideo from '../layout/hero/CallToActionWithVideo';
+import HeroSection from '../layout/hero/HeroSection';
+import {TabTitle} from '../layout/routing/TabTitle'
 
 const Home = () => {
     return (
         <Box>
-            <CallToActionWithVideo/>
+            <TabTitle title='Home' />
+            <HeroSection/>
         </Box>
     );
 }

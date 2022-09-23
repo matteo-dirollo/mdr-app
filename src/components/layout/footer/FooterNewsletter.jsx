@@ -8,16 +8,21 @@ import {
   Text,
   IconButton,
   useColorModeValue,
+  useToast,
 } from '@chakra-ui/react';
 import * as Yup from 'yup';
 import { db } from '../../../apis/firestore/firebase-config';
-import { addDoc, collection } from '@firebase/firestore';
+import { setDoc, doc, Timestamp } from '@firebase/firestore';
 import Logo from '../logo/Logo';
 import { BiMailSend } from 'react-icons/bi';
 import MyTextInput from '../../auth/MyTextInput';
 import { Form, Formik } from 'formik';
+import BuyMeCoffee from '../buttons/BuyMeCoffee';
+import Expire from '../animations/Expire';
 
 const FooterNewsletter = () => {
+  const toast = useToast();
+
   const initialValues = {
     email: '',
   };
@@ -27,17 +32,41 @@ const FooterNewsletter = () => {
       .required('Required')
       .email('Invalid email'),
   });
-  const newsletter = collection(db, 'Newsletter');
-  const collectData = async () => {
-    await addDoc(newsletter, { email: values.email });
+
+  const collectData = async values => {
+    const docId = values.email;
+    const newsletter = doc(db, 'Newsletter', docId);
+    await setDoc(newsletter, {
+      email: values.email,
+      time: Timestamp.now(),
+    });
+    // console.log('Document written with ID: ', docRef.id);
   };
 
-  const handleSubmit = async (values, { isSubmitting }) => {
+  const handleSubmit = async (
+    values,
+    { setSubmitting, resetForm, setErrors }
+  ) => {
     try {
+      await collectData(values);
+      resetForm();
+      toast({
+        title: 'Thank you for registering ! ',
+        description: 'You will receive an email soon.',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
     } catch (error) {
+      setErrors({ db: 'Already registered' });
     } finally {
+      setSubmitting(false);
     }
   };
+
+  const inputBg = useColorModeValue('blackAlpha.100', 'whiteAlpha.100');
+  const iconButtonbg = useColorModeValue('teal.600', 'teal.800');
+  const iconButtonColor = useColorModeValue('white', 'gray.800');
 
   return (
     <Box
@@ -59,28 +88,28 @@ const FooterNewsletter = () => {
             </Stack>
           </Stack>
           <Stack align={'flex-start'}>
-            <Text>Company</Text>
-            <Link fontSize={'0.8em'} href={'#'}>
-              About us
-            </Link>
+            {/* <Text>Company</Text> */}
+            {/* <Link fontSize={'0.8em'} href={'#'}>
+              About
+            </Link> */}
             <Link fontSize={'0.8em'} href={'#'}>
               Blog
             </Link>
             <Link fontSize={'0.8em'} href={'#'}>
-              Contact us
+              Contact
             </Link>
-            <Link fontSize={'0.8em'} href={'#'}>
+            {/* <Link fontSize={'0.8em'} href={'#'}>
               Pricing
-            </Link>
-            <Link fontSize={'0.8em'} href={'#'}>
+            </Link> */}
+            {/* <Link fontSize={'0.8em'} href={'#'}>
               Testimonials
-            </Link>
+            </Link> */}
           </Stack>
           <Stack align={'flex-start'}>
-            <Text>Support</Text>
-            <Link fontSize={'0.8em'} href={'#'}>
+            {/* <Text>Support</Text> */}
+            {/* <Link fontSize={'0.8em'} href={'#'}>
               Help Center
-            </Link>
+            </Link> */}
             <Link fontSize={'0.8em'} href={'#'}>
               Terms of Service
             </Link>
@@ -96,37 +125,50 @@ const FooterNewsletter = () => {
           </Stack>
           <Stack align={'flex-start'}>
             <Text>Stay up to date</Text>
-            <Formik>
+            <Formik
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              onSubmit={handleSubmit}
+            >
+              {({ isSubmitting, isValid, dirty, errors }) => (
                 <Form>
-                <Stack direction={'row'}>
-              <MyTextInput
-                name="email"
-                bg={useColorModeValue('blackAlpha.100', 'whiteAlpha.100')}
-                border={0}
-                _focus={{
-                  bg: 'whiteAlpha.300',
-                }}
-              />
-              {/* <Input
-                  placeholder={'Your email address'}
-                  bg={useColorModeValue('blackAlpha.100', 'whiteAlpha.100')}
-                  border={0}
-                  _focus={{
-                    bg: 'whiteAlpha.300',
-                  }}
-                /> */}
-              <IconButton
-                bg={useColorModeValue('teal.400', 'teal.800')}
-                color={useColorModeValue('white', 'gray.800')}
-                _hover={{
-                  bg: 'teal.600',
-                }}
-                aria-label="Subscribe"
-                icon={<BiMailSend />}
-              />
-            </Stack>
+                  <Stack
+                    flexDirection={'row'}
+                    gap={3}
+                    display={'flex'}
+                    align={'center'}
+                  >
+                    <MyTextInput
+                      name="email"
+                      bg={inputBg}
+                      border={0}
+                      _focus={{
+                        bg: 'whiteAlpha.300',
+                      }}
+                    />
+
+                    <IconButton
+                      bg={'teal.400'}
+                      color={iconButtonColor}
+                      isLoading={isSubmitting}
+                      disable={!isValid || !dirty || isSubmitting}
+                      type="submit"
+                      _hover={{ bg: iconButtonbg }}
+                      aria-label="Subscribe"
+                      icon={<BiMailSend />}
+                    />
+                  </Stack>
+                  {errors.db && (
+                    <Expire delay="3000">
+                      <Text color={'red.300'} fontSize={'sm'}>
+                        {errors.db}
+                      </Text>
+                    </Expire>
+                  )}
                 </Form>
+              )}
             </Formik>
+            <BuyMeCoffee />
           </Stack>
         </SimpleGrid>
       </Container>

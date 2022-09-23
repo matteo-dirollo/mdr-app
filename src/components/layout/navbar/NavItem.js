@@ -1,9 +1,5 @@
 export const navItems = [
   {
-    label: 'Home',
-    href: '/',
-  },
-  {
     label: 'Work',
     href: '/work',
   },
@@ -12,7 +8,11 @@ export const navItems = [
     href: '/contact',
   },
   {
-    label: 'Sandobox',
+    label: 'Admin',
+    href: '/admin',
+  },
+  {
+    label: 'Sandbox',
     href: '/sandbox',
   },
 ];
