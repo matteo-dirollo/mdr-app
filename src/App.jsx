@@ -19,6 +19,8 @@ import Admin from './components/pages/Admin';
 import Messages from './components/layout/admin/Messages';
 import UsersInfo from './components/layout/admin/UsersInfo';
 import Analytics from './components/layout/admin/Analytics';
+import PrivacyPolicy from './components/pages/footer/PrivacyPolicy';
+import Terms from './components/pages/footer/Terms';
 
 function App() {
   const initialized = useSelector(state => state.async);
@@ -49,9 +51,12 @@ function App() {
           {isAdminPath ? null : <Navbar />}
           <Box minH="100vh">
             <Routes>
+              {/* PUBLIC ROUTES */}
               <Route path="/" exact element={<Home />} />
               <Route path="/work" exact element={<Works />} />
               <Route path="/contact" exact element={<Contact />} />
+              <Route path="/privacy-policy" exact element={<PrivacyPolicy />} />
+              <Route path="/terms-and-conditions" exact element={<Terms />} />
               <Route path="*" element={<PageNotFound />} />
               {/* PRIVATE ROUTES */}
               <Route element={<PrivateRoutes />}>

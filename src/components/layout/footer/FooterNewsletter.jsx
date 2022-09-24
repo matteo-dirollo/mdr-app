@@ -19,6 +19,7 @@ import MyTextInput from '../../auth/MyTextInput';
 import { Form, Formik } from 'formik';
 import BuyMeCoffee from '../buttons/BuyMeCoffee';
 import Expire from '../animations/Expire';
+import { Link as ReactRouterLink } from 'react-router-dom';
 
 const FooterNewsletter = () => {
   const toast = useToast();
@@ -110,13 +111,13 @@ const FooterNewsletter = () => {
             {/* <Link fontSize={'0.8em'} href={'#'}>
               Help Center
             </Link> */}
-            <Link fontSize={'0.8em'} href={'#'}>
+            <Link as={ReactRouterLink} fontSize={'0.8em'} to='/terms-and-conditions'>
               Terms of Service
             </Link>
             <Link fontSize={'0.8em'} href={'#'}>
               Legal
             </Link>
-            <Link fontSize={'0.8em'} href={'#'}>
+            <Link as={ReactRouterLink} fontSize={'0.8em'} to='/privacy-policy'>
               Privacy Policy
             </Link>
             <Link fontSize={'0.8em'} href={'#'}>
