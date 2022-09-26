@@ -1,9 +1,8 @@
 export default function Particle(p5, scl, cols) {
- 
   this.pos = p5.createVector(p5.random(p5.width), p5.random(p5.height));
   this.vel = p5.createVector(0, 0);
   this.acc = p5.createVector(0, 0);
-  // this.maxspeed = 5;
+  this.maxspeed = 5;
   this.h = 0;
 
   this.prevPos = this.pos.copy();
@@ -20,7 +19,7 @@ export default function Particle(p5, scl, cols) {
     var y = p5.floor(this.pos.y / scl);
     var index = x + y * cols;
     var force = vectors[index];
-    this.applyForce(force);
+    this.applyForce(p5, force);
   };
 
   this.applyForce = function (p5, force) {
@@ -28,8 +27,8 @@ export default function Particle(p5, scl, cols) {
   };
 
   this.show = function (p5) {
-    p5.stroke(255, 5);
-    p5.strokeWeight(4);
+    p5.stroke(255, 6);
+    p5.strokeWeight(0.6);
     p5.line(this.pos.x, this.pos.y, this.prevPos.x, this.prevPos.y);
     this.updatePrev();
   };
@@ -56,5 +55,4 @@ export default function Particle(p5, scl, cols) {
       this.updatePrev();
     }
   };
-  
 }
