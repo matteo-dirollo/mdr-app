@@ -15,4 +15,8 @@ export const navItems = [
     label: 'Sandbox',
     href: '/sandbox',
   },
+  {
+    label: 'NFTs',
+    href: '/nft',
+  },
 ];

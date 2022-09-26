@@ -3,15 +3,6 @@ import {getAnalytics} from 'firebase/analytics'
 import { getFirestore } from '@firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { getStorage } from 'firebase/storage';
-// import {
-//   APP_ID,
-//   AUTH_DOMAIN,
-//   // FIREBASE_API_KEY,
-//   MEASUREMENT_ID,
-//   MESSAGING_SENDER_ID,
-//   PROJECT_ID,
-//   STORAGE_BUCKET,
-// } from '../constantsApiKeys';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -20,7 +11,7 @@ const firebaseConfig = {
   storageBucket: "matteo-dirollo-com.appspot.com",
   messagingSenderId: "346763449114",
   appId: "1:346763449114:web:6ff5eaeb797b4365ec12a3",
-  measurementId: "G-RSMNY1GXGR"
+  measurementId: process.env.REACT_APP_GA_ID
 };
 
 // Initialize Firebase

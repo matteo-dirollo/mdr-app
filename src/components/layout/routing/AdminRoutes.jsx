@@ -6,7 +6,7 @@ import AdminSidebar from '../sidebar/AdminSidebar';
 
 export default function AdminRoutes() {
   const currentUser = useSelector(
-    state => state.auth.currentUser.uid === 'JKwMcmujW4bsiRmd92vKEC2svzO2'
+    state => state.auth.currentUser.uid === '340y9BTKIAf4Wr2SxWPMCQo6fQR2'
   );
 
   useEffect(() => {
