@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import ReactGA from 'react-ga4'
 import { matchPath, Route, Routes, useLocation } from 'react-router-dom';
 import { ChakraProvider, Box, Grid, theme } from '@chakra-ui/react';
 import PageNotFound from './components/pages/PageNotFound';
@@ -21,11 +22,16 @@ import UsersInfo from './components/layout/admin/UsersInfo';
 import Analytics from './components/layout/admin/Analytics';
 import PrivacyPolicy from './components/pages/footer/PrivacyPolicy';
 import Terms from './components/pages/footer/Terms';
-import DigitalSketches from './components/pages/DigitalSketches'
+import DigitalSketches from './components/pages/DigitalSketches';
 
 function App() {
   const initialized = useSelector(state => state.async);
   const { pathname } = useLocation();
+
+  useEffect(() => {
+    ReactGA.initialize('G-F9FEQ8J6ZV');
+    ReactGA.send('pageview');
+  }, []);
 
   const isAdminPath = matchPath('/admin/*', pathname);
 
