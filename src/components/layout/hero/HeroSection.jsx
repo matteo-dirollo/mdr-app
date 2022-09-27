@@ -66,7 +66,7 @@ export default function HeroSection() {
               bg={'red.400'}
               _hover={{ bg: 'red.500' }}
             >
-              See my collection
+              See more
             </Button>
             {/* <Button
               rounded={'full'}
