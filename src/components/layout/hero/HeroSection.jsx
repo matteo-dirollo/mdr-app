@@ -10,6 +10,7 @@ import {
   // createIcon,
   useColorModeValue,
 } from '@chakra-ui/react';
+import { Link as RouterLink } from 'react-router-dom';
 
 export default function HeroSection() {
   return (
@@ -48,15 +49,15 @@ export default function HeroSection() {
             </Text>
           </Heading>
           <Text color={'gray.500'}>
-            Snippy is a rich coding snippets app that lets you create your own
-            code snippets, categorize them, and even sync them in the cloud so
-            you can use them anywhere. All that is free!
+            Enthusiastic creative with a passion for Generative Art. Check out my collection of NFTs and maybe buy one to make it your own 💫
           </Text>
           <Stack
             spacing={{ base: 4, sm: 6 }}
             direction={{ base: 'column', sm: 'row' }}
           >
             <Button
+              as={RouterLink}
+              to="/nft"
               rounded={'full'}
               size={'lg'}
               fontWeight={'normal'}
@@ -65,7 +66,7 @@ export default function HeroSection() {
               bg={'red.400'}
               _hover={{ bg: 'red.500' }}
             >
-              Send a message
+              See my collection
             </Button>
             {/* <Button
               rounded={'full'}
