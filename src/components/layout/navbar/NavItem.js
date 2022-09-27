@@ -4,19 +4,12 @@ export const navItems = [
     href: '/work',
   },
   {
-    label: 'Contact',
-    href: '/contact',
-  },
-  {
-    label: 'Admin',
-    href: '/admin',
-  },
-  {
-    label: 'Sandbox',
-    href: '/sandbox',
-  },
-  {
     label: 'NFTs',
     href: '/nft',
   },
+  {
+    label: 'Contact',
+    href: '/contact',
+  },
+
 ];

@@ -27,7 +27,7 @@ export default function Particle(p5, scl, cols) {
   };
 
   this.show = function (p5) {
-    p5.stroke(255, 6);
+    p5.stroke(255, 4);
     p5.strokeWeight(0.6);
     p5.line(this.pos.x, this.pos.y, this.prevPos.x, this.prevPos.y);
     this.updatePrev();

@@ -4,7 +4,7 @@ import Particle from './particle';
 
 const FlowField = props => {
   var inc = 0.1;
-  var scl = 20;
+  var scl = 10;
   var cols, rows;
 
   var zoff = 0;
@@ -24,7 +24,7 @@ const FlowField = props => {
     rows = p5.floor(p5.height / scl);
 
     flowfield = new Array(cols * rows);
-    for (var i = 0; i < 400; i++) {
+    for (var i = 0; i < 1600; i++) {
       particles[i] = new Particle(p5, cols, rows);
     }
   };
@@ -45,7 +45,7 @@ const FlowField = props => {
         p5.stroke(255, 50);
       }
       yoff += inc;
-      zoff += 0.001;
+      zoff += 0.0001;
     }
     for (var i = 0; i < particles.length; i++) {
       particles[i].follow(p5, flowfield);
