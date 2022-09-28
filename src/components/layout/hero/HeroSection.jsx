@@ -49,7 +49,7 @@ export default function HeroSection() {
             </Text>
           </Heading>
           <Text color={'gray.500'}>
-            Enthusiastic creative with a passion for Generative Art. Check out my collection of NFTs and maybe buy one to make it your own 💫
+            Passionate about design, genrative art and new media theories. Currently exploring the NFT world
           </Text>
           <Stack
             spacing={{ base: 4, sm: 6 }}
@@ -57,7 +57,7 @@ export default function HeroSection() {
           >
             <Button
               as={RouterLink}
-              to="/nft"
+              to="/contact"
               rounded={'full'}
               size={'lg'}
               fontWeight={'normal'}
@@ -66,7 +66,7 @@ export default function HeroSection() {
               bg={'red.400'}
               _hover={{ bg: 'red.500' }}
             >
-              See more
+              Send a message
             </Button>
             {/* <Button
               rounded={'full'}
