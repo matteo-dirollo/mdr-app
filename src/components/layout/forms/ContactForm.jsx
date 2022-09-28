@@ -180,7 +180,7 @@ const ContactForm = () => {
                                 type="submit"
                                 colorScheme="teal"
                               >
-                                Sign In
+                                Send
                               </Button>
                             </Stack>
                           </Form>
