@@ -53,6 +53,7 @@ const FlowField = props => {
       particles[i].edges(p5);
       particles[i].show(p5);
     }
+    p5.redraw();
   };
 
   return <Sketch setup={setup} draw={draw} />;

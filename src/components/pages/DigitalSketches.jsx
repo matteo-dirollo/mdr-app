@@ -1,12 +1,14 @@
-import { Box, Flex, Heading } from '@chakra-ui/react';
+import { Box, Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 import FlowField from '../layout/p5js/flowfield/FlowField';
 
 const DigitalSketches = () => {
   return (
-    <>
-      <Heading>NFT</Heading>
-      <Flex flexDirection={{ base: 'column', xl: 'row', sm: 'column' }}>
+    <Box  w='90%' margin="auto">
+      {/* <Heading>NFT</Heading> */}
+      <Text m="auto" mt="5em">I only have one component for the moment 😅</Text>
+      <Text m="auto" mb="2em">You will see more content soon !</Text>
+      <Flex  flexDirection={{ base: 'column', xl: 'row', sm: 'column' }}>
         <Box margin="auto">
           <Flex
             flexGrow="1"
@@ -19,10 +21,16 @@ const DigitalSketches = () => {
             <Box m={3}>
               <FlowField />
             </Box>
+            <Box m={3}>
+              <FlowField />
+            </Box>
+            <Box m={3}>
+              <FlowField />
+            </Box>
           </Flex>
         </Box>
       </Flex>
-    </>
+    </Box>
   );
 };
 
