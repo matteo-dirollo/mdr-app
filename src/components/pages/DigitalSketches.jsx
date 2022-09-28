@@ -1,13 +1,13 @@
-import { Box, Flex, Text } from '@chakra-ui/react';
+import { Box, Flex, Heading, Text } from '@chakra-ui/react';
 import React from 'react';
 import FlowField from '../layout/p5js/flowfield/FlowField';
 
 const DigitalSketches = () => {
   return (
     <Box  w='90%' margin="auto">
-      {/* <Heading>NFT</Heading> */}
-      <Text m="auto" mt="5em">I only have one component for the moment 😅</Text>
-      <Text m="auto" mb="2em">You will see more content soon !</Text>
+      <Heading mt="1em">Under construction ⚠️</Heading>
+      <Text m="auto" mt="2em">This page will be available soon</Text>
+      <Text m="auto" mb="2em"></Text>
       <Flex  flexDirection={{ base: 'column', xl: 'row', sm: 'column' }}>
         <Box margin="auto">
           <Flex
