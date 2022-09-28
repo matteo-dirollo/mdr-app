@@ -35,8 +35,6 @@ function App() {
 
   const isAdminPath = matchPath('/admin/*', pathname);
 
-  console.log(process.env.REACT_APP_YOUTUBE_API_KEY)
-
   if (!initialized)
     return (
       <ChakraProvider theme={theme}>
