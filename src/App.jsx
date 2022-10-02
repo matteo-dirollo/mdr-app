@@ -29,7 +29,7 @@ function App() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    ReactGA.initialize('G-F9FEQ8J6ZV');
+    ReactGA.initialize(process.env.REACT_APP_GA_ID);
     ReactGA.send('pageview');
   }, []);
 
