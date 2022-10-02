@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import ReactGA from 'react-ga4'
+import ReactGA from 'react-ga4';
 import { matchPath, Route, Routes, useLocation } from 'react-router-dom';
 import { ChakraProvider, Box, Grid, theme } from '@chakra-ui/react';
 import PageNotFound from './components/pages/PageNotFound';
@@ -29,7 +29,14 @@ function App() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    ReactGA.initialize(process.env.REACT_APP_GA_ID);
+    ReactGA.initialize([
+      {
+        trackingId: process.env.REACT_APP_GA_ID,
+      },
+      {
+        trackingId: process.env.REACT_APP_GA_TEST_ID,
+      },
+    ]);
     ReactGA.send('pageview');
   }, []);
 
