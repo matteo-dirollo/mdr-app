@@ -1,5 +1,6 @@
 import { FiLayout, FiMail, FiUsers } from 'react-icons/fi';
 import { IoIosAnalytics } from 'react-icons/io';
+import { MdPostAdd } from 'react-icons/md';
 export const AdminItems = [
   {
     label: 'Dashboard',
@@ -15,6 +16,11 @@ export const AdminItems = [
     label: 'Users',
     to: '/admin/users',
     icon: FiUsers,
+  },
+  {
+    label: 'Posts',
+    to: '/admin/posts',
+    icon: MdPostAdd,
   },
   {
     label: 'Analytics',

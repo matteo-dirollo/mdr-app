@@ -26,15 +26,16 @@ import { addDoc, collection, Timestamp } from 'firebase/firestore';
 
 const ContactForm = () => {
   const toast = useToast();
+  const textColor = useColorModeValue('gray.700', 'gray.100');
   const tastSuccess = () => {
     toast({
       title: 'Messsage sent.',
-      description: "Your message has been succesfully registered",
+      description: 'Your message has been sent',
       status: 'success',
       duration: 3000,
       isClosable: true,
-    })
-  }
+    });
+  };
   const initialValues = {
     name: '',
     surname: '',
@@ -70,11 +71,11 @@ const ContactForm = () => {
     } catch (error) {
       toast({
         title: 'An Error occurred.',
-        description: "Something went wrong, try later.",
+        description: 'Something went wrong, try later.',
         status: 'error',
         duration: 3000,
         isClosable: true,
-      })
+      });
       throw error;
     } finally {
       setSubmitting(false);
@@ -84,7 +85,7 @@ const ContactForm = () => {
     <Container maxW="full" mt={0} centerContent overflow="hidden">
       <Flex>
         <Box
-          bg={useColorModeValue('gray.100', 'white')}
+          bg={useColorModeValue('gray.100', 'gray.700')}
           color="white"
           borderRadius="lg"
           m={{ sm: 4, md: 16, lg: 10 }}
@@ -94,9 +95,11 @@ const ContactForm = () => {
             <Wrap spacing={{ base: 20, sm: 3, md: 5, lg: 20 }}>
               <WrapItem>
                 <Box>
-                  <Heading color="gray.700">Contact</Heading>
-                  <Text mt={{ sm: 3, md: 3, lg: 5 }} color="gray.500">
-                    Fill up the form below to contact
+                  <Heading color={textColor}>Contact</Heading>
+                  <Text mt={{ sm: 3, md: 3, lg: 5 }} color={textColor}>
+                    Send a message here or email me
+                    <br />
+                    if you have a request for a new project.
                   </Text>
                   <Box py={{ base: 5, sm: 5, md: 8, lg: 10 }}>
                     <VStack pl={0} spacing={3} alignItems="flex-start">
@@ -105,7 +108,7 @@ const ContactForm = () => {
                         height="48px"
                         width="full"
                         variant="ghost"
-                        color="gray.700"
+                        color={textColor}
                         _hover={{ border: '2px solid teal' }}
                         leftIcon={<MdEmail color="teal" size="20px" />}
                       >
@@ -147,7 +150,7 @@ const ContactForm = () => {
                 </Box>
               </WrapItem>
               <WrapItem>
-                <Box bg="white" borderRadius="lg">
+                <Box bg={useColorModeValue('gray.100', 'gray.700')} borderRadius="lg">
                   <Box m={8} color="#0B0E3F">
                     <VStack spacing={5}>
                       <Formik

@@ -1,6 +1,6 @@
 import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
-import Blog from '../layout/Articles/Blog';
+import Blog from '../layout/articles/Projects';
 import Videos from '../layout/videos/Videos';
 import { TabTitle } from '../layout/routing/TabTitle';
 

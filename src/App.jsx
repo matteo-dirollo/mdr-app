@@ -8,6 +8,7 @@ import Navbar from './components/layout/navbar/Navbar';
 import Home from './components/pages/Home';
 import Works from './components/pages/Works';
 import Contact from './components/pages/Contact';
+import Blog from './components/layout/articles/Blog';
 import Sandbox from './components/pages/Sandbox';
 import AccountProfile from './components/pages/AccountProfile';
 import ModalManager from './components/layout/modal/ModalManager';
@@ -23,6 +24,8 @@ import Analytics from './components/layout/admin/Analytics';
 import PrivacyPolicy from './components/pages/footer/PrivacyPolicy';
 import Terms from './components/pages/footer/Terms';
 import DigitalSketches from './components/pages/DigitalSketches';
+import Post from './components/layout/articles/Post';
+import Posts from './components/layout/admin/Posts';
 
 function App() {
   const initialized = useSelector(state => state.async);
@@ -68,14 +71,16 @@ function App() {
               {/* PUBLIC ROUTES */}
               <Route path="/" exact element={<Home />} />
               <Route path="/work" exact element={<Works />} />
-              <Route path="/nft" exact element={<DigitalSketches />} />
               <Route path="/contact" exact element={<Contact />} />
               <Route path="/privacy-policy" exact element={<PrivacyPolicy />} />
               <Route path="/terms-and-conditions" exact element={<Terms />} />
+              <Route path="/blog" exact element={<Blog />} />
+              <Route path="/blog/post" exact element={<Post />} />
               <Route path="*" element={<PageNotFound />} />
               {/* PRIVATE ROUTES */}
               <Route element={<PrivateRoutes />}>
                 <Route path="/account" element={<AccountProfile />} />
+                <Route path="/nft" exact element={<DigitalSketches />} />
               </Route>
               {/* ADMIN ROUTES */}
               <Route element={<AdminRoutes />}>
@@ -83,6 +88,7 @@ function App() {
                 <Route path="/admin/messages" element={<Messages />} />
                 <Route path="/admin/users" element={<UsersInfo />} />
                 <Route path="/admin/analytics" element={<Analytics />} />
+                <Route path="/admin/posts" element={<Posts />} />
                 <Route path="/sandbox" element={<Sandbox />} />
               </Route>
             </Routes>

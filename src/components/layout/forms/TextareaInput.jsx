@@ -5,13 +5,14 @@ import {
   FormLabel,
   FormErrorMessage,
   Textarea,
+  useColorModeValue
 } from '@chakra-ui/react';
 
 export default function TextareaInput({ errors, label, ...props }) {
   const [field, meta] = useField(props);
   return (
     <FormControl isInvalid={meta.touched && !!meta.error}>
-      <FormLabel marginTop="12px">{label}</FormLabel>
+      <FormLabel color={useColorModeValue('gray.700', 'gray.100')} marginTop="12px">{label}</FormLabel>
       <Textarea
         borderColor="gray.300"
         _hover={{

@@ -1,49 +1,28 @@
-import { Box, Image, Text, Badge, Flex } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import React from 'react';
-import { articles } from './articles';
+import { useSelector } from 'react-redux';
+import { selectAllPosts } from './postsSlice';
 
 const Blog = () => {
-  const renderArticles = articles.map((item, index) => {
-    return (
-      <Box margin="auto" key={index}>
-        <Box my='0.6em'>
-          <Box
-            boxSize={{
-              base: '8em',
-              lg: 'xs',
-              xl: 'xs',
-              md: '10em',
-              sm: '8em',
-            }}
-          >
-            <Image borderRadius="4px" src={item.src} />
-          </Box>
-          <Badge
-            fontSize={{ base: '8px', xl: '12px', md: '8px', sm: '8px' }}
-            variant="outline"
-            colorScheme="teal"
-          >
-            {item.label}
-          </Badge>
-          <Text
-            maxWidth={{ base: '180px', xl: '350', md: '300px', sm: '180px' }}
-            fontSize={{ base: '14px', xl: '18px', md: '18px', sm: '14px' }}
-          >{`${item.title}, ${item.year}`}</Text>
-        </Box>
-      </Box>
-    );
-  });
+  const posts = useSelector(selectAllPosts);
+
+  const renderedPosts = posts.map(post => (
+    <Box as="article" key={post.id}>
+      <Text as="h3" fontSize="md">
+        {post.title}
+      </Text>
+      <Text as="p">{post.content.substring(0, 100)}</Text>
+    </Box>
+  ));
   return (
-    <Flex
-      flexGrow="1"
-      flexWrap="wrap"
-      marginX="auto"
-      spacing={{ base: '25px', '2xl': '25px', xl: '3', md: '3', sm: '3' }}
-      justifySelf="stretch"
-      justify='space-evenly'
-    >
-      {renderArticles}
-    </Flex>
+    <Box>
+        <Box as='section'>
+            <Text as='b' fontSize='2xl'>Posts</Text>
+            {renderedPosts}
+        </Box>
+      <Text as='h3' fontSize='xl'>Featured Posts</Text>
+      <Text as='h3' fontSize='xl'>Category</Text>
+    </Box>
   );
 };
 
