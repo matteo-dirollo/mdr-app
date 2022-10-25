@@ -1,22 +1,24 @@
 import {
   Box,
   Button,
-  Checkbox,
   Flex,
   Input,
   Stack,
   Text,
   useToast,
 } from '@chakra-ui/react';
+import { CheckboxContainer, CheckboxControl } from 'formik-chakra-ui';
 import { Form, Formik } from 'formik';
 import React from 'react';
 import * as Yup from 'yup';
 import MyTextInput from '../../auth/MyTextInput';
-import TextareaInput from './../forms/TextareaInput';
+import RichTextEditor from '../forms/RichTextEditor';
 import { useDispatch } from 'react-redux';
+import { EditorState } from 'draft-js';
 import { nanoid } from '@reduxjs/toolkit';
 
 import { postAdded } from './postsSlice';
+import FileUploadInput from '../forms/FileUploadInput';
 
 const AddPostForm = () => {
   const toast = useToast();
@@ -34,24 +36,22 @@ const AddPostForm = () => {
 
   const initialValues = {
     title: '',
-    img: null,
-    content: '',
-    categories: [],
+    img: [],
+    editorState: EditorState.createEmpty(),
+    tags: [],
   };
 
   const validationSchema = Yup.object({
     title: Yup.string().required('Required'),
-    img: Yup.mixed().required('Required'),
-    email: Yup.string()
-      .min(3, 'Too short!')
-      .required('Required')
-      .email('Invalid email'),
-    message: Yup.string().min(10, 'Too short!').required('Required'),
+    // img: Yup.mixed().required('Required'),
+    tags: Yup.array().min(1),
   });
 
-  const handleSubmit = () => {
-        dispatch(postAdded());
-   
+  const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+    // dispatch(postAdded());
+    console.log(values);
+    resetForm();
+    setSubmitting(false);
   };
 
   return (
@@ -61,27 +61,44 @@ const AddPostForm = () => {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ isSubmitting, isValid, dirty, errors }) => (
+        {({
+          values,
+          isSubmitting,
+          isValid,
+          dirty,
+          setFieldValue,
+          handleBlur,
+          handleReset,
+          errors,
+        }) => (
           <Form>
             <MyTextInput label="Title" name="title" />
-            <TextareaInput label="Content" name="content" />
-            <Box>
-              <Text>Image</Text>
-              <Input type="file" />
-            </Box>
-            <Checkbox>Design</Checkbox>
-            <Checkbox>Art</Checkbox>
-            <Checkbox>Video</Checkbox>
-            <Checkbox>Web</Checkbox>
-            <Checkbox>Digital Art</Checkbox>
-            <Checkbox>NFT</Checkbox>
-            <Checkbox>Architecture</Checkbox>
-            {errors.auth && (
-              <Text color="red.300" fontSize="sm">
-                {errors.auth}
-              </Text>
-            )}
+
+            <Text fontSize="md">Text</Text>
+
+            <RichTextEditor
+              editorState={values.editorState}
+              onChange={setFieldValue}
+              onBlur={handleBlur}
+            />
+
+            <FileUploadInput setFieldValue={setFieldValue} name="img" label="Image" />
+
+            <CheckboxContainer name="tags" label="Tags">
+              <CheckboxControl name="tags" value="Design">Design</CheckboxControl>
+              <CheckboxControl name="tags" value="Art">Art</CheckboxControl>
+              <CheckboxControl name="tags" value="Video">Video</CheckboxControl>
+              <CheckboxControl name="tags" value="Web">Web</CheckboxControl>
+              <CheckboxControl name="tags" value="Digital Art">Digital Art</CheckboxControl>
+              <CheckboxControl name="tags" value="3D">3D</CheckboxControl>
+              <CheckboxControl name="tags" value="Architecture">Architecture</CheckboxControl>
+              <CheckboxControl name="tags" value="Product Design">Product Design</CheckboxControl>
+            </CheckboxContainer>
+
             <Stack>
+              <Button onClick={handleReset} colorScheme="gray">
+                Reset
+              </Button>
               <Button
                 isLoading={isSubmitting}
                 disable={!isValid || !dirty || isSubmitting}
