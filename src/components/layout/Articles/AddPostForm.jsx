@@ -1,33 +1,21 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Input,
-  Stack,
-  Text,
-  useToast,
-} from '@chakra-ui/react';
+import React from 'react';
+import { Box, Button, Flex, Stack, useToast } from '@chakra-ui/react';
 import { CheckboxContainer, CheckboxControl } from 'formik-chakra-ui';
 import { Form, Formik } from 'formik';
-import React from 'react';
+
 import * as Yup from 'yup';
 import MyTextInput from '../../auth/MyTextInput';
-import RichTextEditor from '../forms/RichTextEditor';
-import { useDispatch } from 'react-redux';
-import { EditorState } from 'draft-js';
-import { nanoid } from '@reduxjs/toolkit';
-
-import { postAdded } from './postsSlice';
 import FileUploadInput from '../forms/FileUploadInput';
+// import Editor from '../forms/richText/Editor';
+import SimpleEditor from '../forms/richText/SimpleEditor';
 
 const AddPostForm = () => {
   const toast = useToast();
-  const dispatch = useDispatch();
 
-  const tastSuccess = () => {
+  const toastSuccess = () => {
     toast({
       title: 'Post added.',
-      description: 'Your message has been sent',
+      description: 'You can see it in the blog',
       status: 'success',
       duration: 3000,
       isClosable: true,
@@ -37,7 +25,7 @@ const AddPostForm = () => {
   const initialValues = {
     title: '',
     img: [],
-    editorState: EditorState.createEmpty(),
+    editor: '',
     tags: [],
   };
 
@@ -50,6 +38,7 @@ const AddPostForm = () => {
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     // dispatch(postAdded());
     console.log(values);
+    toastSuccess();
     resetForm();
     setSubmitting(false);
   };
@@ -72,27 +61,45 @@ const AddPostForm = () => {
           errors,
         }) => (
           <Form>
-            <MyTextInput label="Title" name="title" />
-
-            <Text fontSize="md">Text</Text>
-
-            <RichTextEditor
-              editorState={values.editorState}
-              onChange={setFieldValue}
-              onBlur={handleBlur}
-            />
-
-            <FileUploadInput setFieldValue={setFieldValue} name="img" label="Image" />
+            <Box>
+              <MyTextInput label="Title" name="title" />
+            </Box>
+            <Box>
+              <SimpleEditor/>
+            </Box>
+            <Box>
+              <FileUploadInput
+                setFieldValue={setFieldValue}
+                name="img"
+                label="Image"
+              />
+            </Box>
 
             <CheckboxContainer name="tags" label="Tags">
-              <CheckboxControl name="tags" value="Design">Design</CheckboxControl>
-              <CheckboxControl name="tags" value="Art">Art</CheckboxControl>
-              <CheckboxControl name="tags" value="Video">Video</CheckboxControl>
-              <CheckboxControl name="tags" value="Web">Web</CheckboxControl>
-              <CheckboxControl name="tags" value="Digital Art">Digital Art</CheckboxControl>
-              <CheckboxControl name="tags" value="3D">3D</CheckboxControl>
-              <CheckboxControl name="tags" value="Architecture">Architecture</CheckboxControl>
-              <CheckboxControl name="tags" value="Product Design">Product Design</CheckboxControl>
+              <CheckboxControl name="tags" value="Design">
+                Design
+              </CheckboxControl>
+              <CheckboxControl name="tags" value="Art">
+                Art
+              </CheckboxControl>
+              <CheckboxControl name="tags" value="Video">
+                Video
+              </CheckboxControl>
+              <CheckboxControl name="tags" value="Web">
+                Web
+              </CheckboxControl>
+              <CheckboxControl name="tags" value="Digital Art">
+                Digital Art
+              </CheckboxControl>
+              <CheckboxControl name="tags" value="3D">
+                3D
+              </CheckboxControl>
+              <CheckboxControl name="tags" value="Architecture">
+                Architecture
+              </CheckboxControl>
+              <CheckboxControl name="tags" value="Product Design">
+                Product Design
+              </CheckboxControl>
             </CheckboxContainer>
 
             <Stack>
