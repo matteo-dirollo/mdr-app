@@ -6,7 +6,6 @@ import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import MyTextInput from '../../auth/MyTextInput';
 import FileUploadInput from '../forms/FileUploadInput';
-// import Editor from '../forms/richText/Editor';
 import SimpleEditor from '../forms/richText/SimpleEditor';
 
 const AddPostForm = () => {
