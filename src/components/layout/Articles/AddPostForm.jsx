@@ -6,7 +6,7 @@ import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import MyTextInput from '../../auth/MyTextInput';
 import FileUploadInput from '../forms/FileUploadInput';
-import SimpleEditor from '../forms/richText/SimpleEditor';
+import Editor from '../lexicalEditor/Editor';
 
 const AddPostForm = () => {
   const toast = useToast();
@@ -45,6 +45,7 @@ const AddPostForm = () => {
   return (
     <Flex maxW="full" overflow="hidden">
       <Formik
+        enableReinitialize={true}
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
@@ -63,8 +64,9 @@ const AddPostForm = () => {
             <Box>
               <MyTextInput label="Title" name="title" />
             </Box>
-            <Box>
-              <SimpleEditor/>
+            <Box my={5}>
+              {/* EDITOR */}
+              <Editor/>
             </Box>
             <Box>
               <FileUploadInput
