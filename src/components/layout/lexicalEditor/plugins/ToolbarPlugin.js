@@ -426,6 +426,7 @@ export default function ToolbarPlugin() {
     false
   );
   const [codeLanguage, setCodeLanguage] = useState("");
+  // eslint-disable-next-line no-unused-vars
   const [isRTL, setIsRTL] = useState(false);
   const [isLink, setIsLink] = useState(false);
   const [isBold, setIsBold] = useState(false);
