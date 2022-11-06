@@ -1,6 +1,10 @@
+// import { useFormikContext } from 'formik';
 import { $getRoot } from 'lexical';
+import { useEffect } from 'react';
+import { useFormikContext } from 'formik';
 
-export default function OnChange(editorState, editor) {
+const OnChangeFormik = (editorState, editor) => {
+const formik = useFormikContext();
   editorState.read(() => {
     // Read the contents of the EditorState here.
     const root = $getRoot();
@@ -13,4 +17,7 @@ export default function OnChange(editorState, editor) {
 
     console.log(newEditorState);
   });
+  
 }
+
+export default OnChangeFormik;

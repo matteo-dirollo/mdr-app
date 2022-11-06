@@ -28,6 +28,7 @@ import CodeHighlightPlugin from '../lexicalEditor/plugins/CodeHighlightPlugin';
 import AutoLinkPlugin from '../lexicalEditor/plugins/AutoLinkPlugin';
 import Placeholder from '../lexicalEditor/Placeholder';
 import OnChange from '../lexicalEditor/OnChange';
+import OnChangeFormik from '../lexicalEditor/OnChangeFormik'
 import '../lexicalEditor/styles.css';
 
 const AddPostForm = () => {
@@ -107,7 +108,7 @@ const AddPostForm = () => {
                       placeholder={<Placeholder />}
                     />
                     <EditorBubbles editorInstanceRef={editorInstanceRef} />
-                    <OnChangePlugin onChange={OnChange} />
+                    <OnChangePlugin onChange={OnChangeFormik} />
                     <HistoryPlugin />
                     <TreeViewPlugin />
                     <AutoFocusPlugin />
