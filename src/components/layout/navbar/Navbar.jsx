@@ -26,6 +26,7 @@ const Navbar = () => {
   const { authenticated } = useSelector(state => state.auth);
   const { isOpen, onToggle } = useDisclosure();
   const dispatch = useDispatch();
+  
   return (
     <Box p={3}>
       <Flex
@@ -110,7 +111,7 @@ const Navbar = () => {
         </Stack>
       </Flex>
       <Collapse in={isOpen} animateOpacity>
-        <MobileNav />
+        <MobileNav onClick={onToggle} />
       </Collapse>
     </Box>
   );

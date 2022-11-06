@@ -9,12 +9,12 @@ import React from 'react';
 import MobileSidebar from './MobileSidebar';
 import SidebarContent from './SidebarContent';
 
-const AdminSidebar = ({children}) => {
+const AdminSidebar = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
       <SidebarContent
-        onClose={() => onClose}
+        onClose={onClose}
         display={{ base: 'none', md: 'block' }}
       />
       <Drawer
@@ -31,8 +31,10 @@ const AdminSidebar = ({children}) => {
         </DrawerContent>
       </Drawer>
       {/* MOBILE NAV */}
-      <MobileSidebar display={{ base: 'flex', md: 'none' }} onOpen={onOpen} />
-      <Box ml={{ base: 0, md: 60 }} p="4">{children}</Box>
+      <MobileSidebar onClose={onClose} display={{ base: 'flex', md: 'none' }} onOpen={onOpen} />
+      <Box ml={{ base: 0, md: 60 }} p="4">
+        {children}
+      </Box>
     </Box>
   );
 };

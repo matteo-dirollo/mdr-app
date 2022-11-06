@@ -12,7 +12,7 @@ import {
 import { Link as ReactRouterLink } from 'react-router-dom';
 import {ChevronDownIcon} from '@chakra-ui/icons';
 
-const MobileNavItem = ({ label, children, href }) => {
+const MobileNavItem = ({ label, children, href }, onClick) => {
   const { isOpen, onToggle } = useDisclosure();
   return (
     <Stack spacing={4} onClick={children && onToggle}>
@@ -54,7 +54,7 @@ const MobileNavItem = ({ label, children, href }) => {
         >
           {children &&
             children.map(child => (
-              <Link as={ReactRouterLink} key={child.label} py={2} to={child.href}>
+              <Link onClick={onClick} as={ReactRouterLink} key={child.label} py={2} to={child.href}>
                 {child.label}
               </Link>
             ))}

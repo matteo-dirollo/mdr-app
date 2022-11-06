@@ -9,7 +9,8 @@ import storage from 'redux-persist/lib/storage'; // defaults to localStorage for
 import authReducer from './reducers/authReducer';
 import asyncReducer from './reducers/asyncReducer';
 import modalReducer from './reducers/modalReducer';
-import postsReducer from './../components/layout/articles/postsSlice'
+import postsReducer from './../components/layout/articles/postsSlice';
+import mobileNavbarReducer from './reducers/mobileNavbarReducer';
 
 const persistConfig = {
   key: 'root',
@@ -25,8 +26,9 @@ const rootReducer = combineReducers({
   auth: authReducer,
   async: asyncReducer,
   modals: modalReducer,
+  mobNavbar: mobileNavbarReducer,
   router: routerReducer,
-  posts: postsReducer
+  posts: postsReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -44,4 +46,4 @@ export const store = configureStore({
 store.dispatch(verifyAuth());
 
 export const history = createReduxHistory(store);
-export const persistor = persistStore(store)
+export const persistor = persistStore(store);

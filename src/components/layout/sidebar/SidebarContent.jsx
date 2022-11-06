@@ -29,7 +29,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
       {AdminItems.map(item => (
-        <AdminItem link={item.to} key={item.label} icon={item.icon}>
+        <AdminItem onClose={onClose} link={item.to} key={item.label} icon={item.icon}>
           {item.label}
         </AdminItem>
       ))}

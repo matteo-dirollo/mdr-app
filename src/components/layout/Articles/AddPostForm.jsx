@@ -27,13 +27,14 @@ import ListMaxIndentLevelPlugin from '../lexicalEditor/plugins/ListMaxIndentLeve
 import CodeHighlightPlugin from '../lexicalEditor/plugins/CodeHighlightPlugin';
 import AutoLinkPlugin from '../lexicalEditor/plugins/AutoLinkPlugin';
 import Placeholder from '../lexicalEditor/Placeholder';
-import onChange from '../lexicalEditor/OnChange';
+import OnChange from '../lexicalEditor/OnChange';
 import '../lexicalEditor/styles.css';
-
 
 const AddPostForm = () => {
   const toast = useToast();
   const editorInstanceRef = useRef(null);
+  
+  
 
   const toastSuccess = () => {
     toast({
@@ -47,6 +48,7 @@ const AddPostForm = () => {
 
   const initialValues = {
     title: '',
+    editor: editorInstanceRef,
     img: [],
     tags: [],
   };
@@ -105,7 +107,7 @@ const AddPostForm = () => {
                       placeholder={<Placeholder />}
                     />
                     <EditorBubbles editorInstanceRef={editorInstanceRef} />
-                    <OnChangePlugin onChange={onChange} />
+                    <OnChangePlugin onChange={OnChange} />
                     <HistoryPlugin />
                     <TreeViewPlugin />
                     <AutoFocusPlugin />

@@ -3,12 +3,13 @@ import { Link as ReactRouterLink } from 'react-router-dom';
 import React from 'react';
 import { Icon } from 'semantic-ui-react';
 
-const AdminItem = ({ icon, children, link, ...rest }) => {
+const AdminItem = ({ icon, children, link, onClose, ...rest }) => {
   return (
     <Link
       to={link}
       as={ReactRouterLink}
       style={{ textDecoration: 'none' }}
+      onClick={onClose}
       _focus={{ boxShadow: 'none' }}
     >
       <Flex
