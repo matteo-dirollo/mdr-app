@@ -15,8 +15,18 @@ import React from 'react';
 import { MdFacebook } from 'react-icons/md';
 import { AiFillTwitterCircle } from 'react-icons/ai';
 import { FaInstagramSquare } from 'react-icons/fa';
+// import { useDispatch } from 'react-redux';
+
+
 
 const Post = () => {
+
+  // const dispatch = useDispatch();
+  // React.useEffect(() => {
+    
+  // }, [dispatch]);
+
+
   return (
     <Container my={10} align="stretch" maxW={800}>
       <Text fontSize="xs">Home/Blog/PostTitle </Text>

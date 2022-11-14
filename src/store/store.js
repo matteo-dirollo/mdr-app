@@ -10,7 +10,6 @@ import authReducer from './reducers/authReducer';
 import asyncReducer from './reducers/asyncReducer';
 import modalReducer from './reducers/modalReducer';
 import postsReducer from './../components/layout/articles/postsSlice';
-import mobileNavbarReducer from './reducers/mobileNavbarReducer';
 
 const persistConfig = {
   key: 'root',
@@ -26,7 +25,6 @@ const rootReducer = combineReducers({
   auth: authReducer,
   async: asyncReducer,
   modals: modalReducer,
-  mobNavbar: mobileNavbarReducer,
   router: routerReducer,
   posts: postsReducer,
 });

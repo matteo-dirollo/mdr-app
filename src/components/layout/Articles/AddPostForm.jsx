@@ -9,7 +9,7 @@ import FileUploadInput from '../forms/FileUploadInput';
 import EditorBubbles from '../lexicalEditor/plugins/EditorBubbles';
 
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
-import { editorConfig } from '../lexicalEditor/themes/editorConfig'; 
+import { editorConfig } from '../lexicalEditor/themes/editorConfig';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
@@ -21,21 +21,18 @@ import ToolbarPlugin from '../lexicalEditor/plugins/ToolbarPlugin';
 import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
 import { ListPlugin } from '@lexical/react/LexicalListPlugin';
 import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPlugin';
-import { TRANSFORMERS } from '@lexical/markdown';
 
 import ListMaxIndentLevelPlugin from '../lexicalEditor/plugins/ListMaxIndentLevelPlugin';
 import CodeHighlightPlugin from '../lexicalEditor/plugins/CodeHighlightPlugin';
 import AutoLinkPlugin from '../lexicalEditor/plugins/AutoLinkPlugin';
 import Placeholder from '../lexicalEditor/Placeholder';
-import OnChange from '../lexicalEditor/OnChange';
-import OnChangeFormik from '../lexicalEditor/OnChangeFormik'
 import '../lexicalEditor/styles.css';
+import { $convertToMarkdownString, TRANSFORMERS } from '@lexical/markdown';
+import EmoticonPlugin from '../lexicalEditor/plugins/EmoticonPlugin';
 
 const AddPostForm = () => {
   const toast = useToast();
   const editorInstanceRef = useRef(null);
-  
-  
 
   const toastSuccess = () => {
     toast({
@@ -49,7 +46,7 @@ const AddPostForm = () => {
 
   const initialValues = {
     title: '',
-    editor: editorInstanceRef,
+    editor: [],
     img: [],
     tags: [],
   };
@@ -65,11 +62,9 @@ const AddPostForm = () => {
     const currentStringifiedEditorState = JSON.stringify(
       editorInstanceRef.current.getEditorState()
     );
-    alert(
-      JSON.stringify({ ...values, currentStringifiedEditorState }, null, 2)
-    );
+    alert(JSON.stringify({ ...values }, null, 2));
     // dispatch(postAdded());
-    console.log(values);
+    console.log(values, currentStringifiedEditorState);
     toastSuccess();
     setSubmitting(false);
   };
@@ -96,7 +91,7 @@ const AddPostForm = () => {
             <Box>
               <MyTextInput label="Title" name="title" />
             </Box>
-            <Box my={5}>
+            <Box my={8}>
               <LexicalComposer initialConfig={editorConfig}>
                 <div className="editor-container">
                   <ToolbarPlugin />
@@ -108,7 +103,15 @@ const AddPostForm = () => {
                       placeholder={<Placeholder />}
                     />
                     <EditorBubbles editorInstanceRef={editorInstanceRef} />
-                    <OnChangePlugin onChange={OnChangeFormik} />
+                    <OnChangePlugin
+                      onChange={(editorState, editor) => {
+                        editorState.read(() => {
+                          const markdown =
+                            $convertToMarkdownString(TRANSFORMERS);
+                          setFieldValue('editor', markdown);
+                        });
+                      }}
+                    />
                     <HistoryPlugin />
                     <TreeViewPlugin />
                     <AutoFocusPlugin />
@@ -116,12 +119,14 @@ const AddPostForm = () => {
                     <ListPlugin />
                     <LinkPlugin />
                     <AutoLinkPlugin />
+                    <EmoticonPlugin />
                     <ListMaxIndentLevelPlugin maxDepth={7} />
                     <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
                   </div>
                 </div>
               </LexicalComposer>
             </Box>
+            <br />
             <Box>
               <FileUploadInput
                 setFieldValue={setFieldValue}
@@ -129,6 +134,7 @@ const AddPostForm = () => {
                 label="Image"
               />
             </Box>
+            <br />
 
             <CheckboxContainer name="tags" label="Tags">
               <CheckboxControl name="tags" value="Design">
@@ -156,7 +162,7 @@ const AddPostForm = () => {
                 Product Design
               </CheckboxControl>
             </CheckboxContainer>
-
+            <br />
             <Stack>
               <Button onClick={handleReset} colorScheme="gray">
                 Reset
