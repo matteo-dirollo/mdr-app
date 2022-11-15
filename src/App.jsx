@@ -24,7 +24,7 @@ import Analytics from './components/layout/admin/Analytics';
 import PrivacyPolicy from './components/pages/footer/PrivacyPolicy';
 import Terms from './components/pages/footer/Terms';
 import DigitalSketches from './components/pages/DigitalSketches';
-import Post from './components/layout/articles/Post';
+import Post from './components/layout/articles/posts/Post';
 import Posts from './components/layout/admin/Posts';
 
 function App() {

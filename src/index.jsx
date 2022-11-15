@@ -5,7 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-import { PersistGate } from 'redux-persist/integration/react'
+import { PersistGate } from 'reduxjs-toolkit-persist/integration/react';
 
 import { Provider } from 'react-redux';
 import { store, history, persistor } from './store/store';
@@ -16,11 +16,11 @@ const root = ReactDOM.createRoot(container);
 root.render(
   <HelmetProvider>
     <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-      <BrowserRouter history={history}>
-        <ColorModeScript />
-        <App />
-      </BrowserRouter>
+      <PersistGate loading={null} persistor={persistor}>
+        <BrowserRouter history={history}>
+          <ColorModeScript />
+          <App />
+        </BrowserRouter>
       </PersistGate>
     </Provider>
   </HelmetProvider>

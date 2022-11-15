@@ -1,19 +1,20 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-// import reducers from './reducers';
-import thunk from 'redux-thunk';
 import { verifyAuth } from './actions/authActions';
 import { createReduxHistoryContext } from 'redux-first-history';
 import { createBrowserHistory } from 'history';
-import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
+import { persistReducer, persistStore } from 'reduxjs-toolkit-persist';
+import storage from 'reduxjs-toolkit-persist/lib/storage' // defaults to localStorage for web
+import autoMergeLevel1 from 'reduxjs-toolkit-persist/lib/stateReconciler/autoMergeLevel1';
 import authReducer from './reducers/authReducer';
 import asyncReducer from './reducers/asyncReducer';
 import modalReducer from './reducers/modalReducer';
-import postsReducer from './../components/layout/articles/postsSlice';
+import postsReducer from '../components/layout/articles/posts/postsSlice';
+import usersReducer from '../components/auth/usersSlice'
 
 const persistConfig = {
   key: 'root',
-  storage,
+  storage: storage,
+  stateReconciler: autoMergeLevel1,
 };
 
 const { createReduxHistory, routerMiddleware, routerReducer } =
@@ -21,22 +22,22 @@ const { createReduxHistory, routerMiddleware, routerReducer } =
     history: createBrowserHistory(),
   });
 
-const rootReducer = combineReducers({
+const appReducers = combineReducers({
   auth: authReducer,
   async: asyncReducer,
   modals: modalReducer,
   router: routerReducer,
   posts: postsReducer,
+  users: usersReducer,
 });
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+const _persistedReducer = persistReducer(persistConfig, appReducers);
 
 export const store = configureStore({
-  reducer: persistedReducer,
+  reducer: _persistedReducer,
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
-      thunk,
-      serializableCheck: false,
+      serializableCheck: false
     }),
   routerMiddleware: [routerMiddleware],
 });

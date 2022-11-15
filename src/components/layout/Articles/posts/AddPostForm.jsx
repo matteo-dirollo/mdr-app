@@ -4,35 +4,39 @@ import { CheckboxContainer, CheckboxControl } from 'formik-chakra-ui';
 import { Form, Formik } from 'formik';
 
 import * as Yup from 'yup';
-import MyTextInput from '../../auth/MyTextInput';
-import FileUploadInput from '../forms/FileUploadInput';
-import EditorBubbles from '../lexicalEditor/plugins/EditorBubbles';
+import MyTextInput from '../../../auth/MyTextInput';
+import FileUploadInput from '../../forms/FileUploadInput';
+import EditorBubbles from '../../lexicalEditor/plugins/EditorBubbles';
 
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
-import { editorConfig } from '../lexicalEditor/themes/editorConfig';
+import { editorConfig } from '../../lexicalEditor/themes/editorConfig';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
 import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
-import TreeViewPlugin from '../lexicalEditor/plugins/TreeViewPlugin';
-import ToolbarPlugin from '../lexicalEditor/plugins/ToolbarPlugin';
+import TreeViewPlugin from '../../lexicalEditor/plugins/TreeViewPlugin';
+import ToolbarPlugin from '../../lexicalEditor/plugins/ToolbarPlugin';
 
 import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
 import { ListPlugin } from '@lexical/react/LexicalListPlugin';
 import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPlugin';
 
-import ListMaxIndentLevelPlugin from '../lexicalEditor/plugins/ListMaxIndentLevelPlugin';
-import CodeHighlightPlugin from '../lexicalEditor/plugins/CodeHighlightPlugin';
-import AutoLinkPlugin from '../lexicalEditor/plugins/AutoLinkPlugin';
-import Placeholder from '../lexicalEditor/Placeholder';
-import '../lexicalEditor/styles.css';
-import { $convertToMarkdownString, TRANSFORMERS } from '@lexical/markdown';
-import EmoticonPlugin from '../lexicalEditor/plugins/EmoticonPlugin';
+import ListMaxIndentLevelPlugin from '../../lexicalEditor/plugins/ListMaxIndentLevelPlugin';
+import CodeHighlightPlugin from '../../lexicalEditor/plugins/CodeHighlightPlugin';
+import AutoLinkPlugin from '../../lexicalEditor/plugins/AutoLinkPlugin';
+import Placeholder from '../../lexicalEditor/Placeholder';
+import '../../lexicalEditor/styles.css';
+import { TRANSFORMERS } from '@lexical/markdown';
+import EmoticonPlugin from '../../lexicalEditor/plugins/EmoticonPlugin';
+
+import { useDispatch } from 'react-redux';
+import { clearBlog, addNewPost } from './postsSlice';
 
 const AddPostForm = () => {
   const toast = useToast();
   const editorInstanceRef = useRef(null);
+  const dispatch = useDispatch();
 
   const toastSuccess = () => {
     toast({
@@ -46,7 +50,7 @@ const AddPostForm = () => {
 
   const initialValues = {
     title: '',
-    editor: [],
+    editor: {},
     img: [],
     tags: [],
   };
@@ -57,15 +61,26 @@ const AddPostForm = () => {
     tags: Yup.array().min(1),
   });
 
+  const onSavePost = values => {
+    if (values) {
+      dispatch(addNewPost(values));
+    }
+  };
+
   const handleSubmit = async (values, { setSubmitting }) => {
+    // const body = values.toJSON();
+    // onSavePost(title, body);
     await new Promise(resolve => setTimeout(resolve, 500));
-    const currentStringifiedEditorState = JSON.stringify(
-      editorInstanceRef.current.getEditorState()
-    );
+    // const currentStringifiedEditorState = JSON.stringify(
+    //   editorInstanceRef.current.getEditorState()
+    // );
+    onSavePost(values);
     alert(JSON.stringify({ ...values }, null, 2));
-    // dispatch(postAdded());
-    console.log(values, currentStringifiedEditorState);
+    // console.log(body);
+    // console.log(JSON.stringify({ ...values }, null, 2));
     toastSuccess();
+    console.log(values);
+
     setSubmitting(false);
   };
 
@@ -106,9 +121,10 @@ const AddPostForm = () => {
                     <OnChangePlugin
                       onChange={(editorState, editor) => {
                         editorState.read(() => {
-                          const markdown =
-                            $convertToMarkdownString(TRANSFORMERS);
-                          setFieldValue('editor', markdown);
+                          editor.toJSON();
+                          // const markdown =
+                          //   $convertToMarkdownString(TRANSFORMERS);
+                          setFieldValue('editor', editor);
                         });
                       }}
                     />
@@ -164,7 +180,13 @@ const AddPostForm = () => {
             </CheckboxContainer>
             <br />
             <Stack>
-              <Button onClick={handleReset} colorScheme="gray">
+              <Button
+                onClick={() => {
+                  handleReset();
+                  dispatch(clearBlog());
+                }}
+                colorScheme="gray"
+              >
                 Reset
               </Button>
               <Button

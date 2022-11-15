@@ -1,14 +1,14 @@
 // import { Box, Text } from '@chakra-ui/react';
-import { Box, Heading } from '@chakra-ui/react';
-import React, { useEffect } from 'react';
+import { Box } from '@chakra-ui/react';
+import React from 'react';
+import PostsList from './posts/PostsList';
 
 const Blog = () => {
-  useEffect(() => {}, []);
+
 
   return (
     <Box>
-      <Heading>Posts</Heading>
-      <Box></Box>
+      <PostsList />
     </Box>
   );
 };

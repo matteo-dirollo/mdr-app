@@ -1,6 +1,6 @@
 import { Heading } from '@chakra-ui/react';
 import React from 'react';
-import AddPostForm from '../articles/AddPostForm';
+import AddPostForm from '../articles/posts/AddPostForm';
 
 const Posts = () => {
     return (
