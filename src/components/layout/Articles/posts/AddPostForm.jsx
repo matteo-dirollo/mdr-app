@@ -124,7 +124,7 @@ const AddPostForm = () => {
                           // const markdown =
                           //   $convertToMarkdownString(TRANSFORMERS);
                           // const html = $generateHtmlFromNodes(editor, null)
-                          setFieldValue('editor', editor);
+                          setFieldValue('editor', editorState);
                         });
                       }}
                     />

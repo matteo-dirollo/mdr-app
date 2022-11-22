@@ -15,12 +15,11 @@ const PostsList = () => {
   const postsStatus = useSelector(getPostsStatus);
   //   const error = useSelector(getPostsError);
 
-    useEffect(() => {
-      if (postsStatus === 'idle') {
-        dispatch(fetchPosts());
-      }
-    }, [postsStatus, dispatch]);
-
+  useEffect(() => {
+    if (postsStatus === 'idle') {
+      dispatch(fetchPosts());
+    }
+  }, [postsStatus, dispatch]);
 
   const renderPosts = posts.map(post => (
     <Box my="10px" as="article" key={post.date}>
@@ -32,7 +31,6 @@ const PostsList = () => {
     </Box>
   ));
 
- 
   return (
     <Container as="section">
       <Heading>Posts</Heading>

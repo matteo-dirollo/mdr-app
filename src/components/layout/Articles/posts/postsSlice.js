@@ -28,7 +28,7 @@ export const addNewPost = createAsyncThunk(
       const postsDoc = collection(db, 'Posts');
       await addDoc(postsDoc, {
         title: posts.title,
-        body: posts.editor.toJSON(),
+        body: JSON.stringify(posts.editor),
         category: posts.tags,
         author: getState().auth.currentUser.displayName,
         authorId: getState().auth.currentUser.uid,

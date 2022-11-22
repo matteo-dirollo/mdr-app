@@ -16,10 +16,8 @@ export default function ChangeEditorState({
   // latest state via .getEditorState())
 
   editor.update(() => {
-    
-   editor.setEditorState(stateInstance.editorState);
+    editor.setEditorState(stateInstance);
   });
-
 
   if (editorInstanceRef.current === null) {
     editorInstanceRef.current = editor;
