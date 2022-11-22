@@ -15,6 +15,7 @@ const persistConfig = {
   key: 'root',
   storage: storage,
   stateReconciler: autoMergeLevel1,
+  blacklist: ['posts']
 };
 
 const { createReduxHistory, routerMiddleware, routerReducer } =

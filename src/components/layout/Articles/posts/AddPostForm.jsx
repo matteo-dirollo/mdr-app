@@ -30,6 +30,8 @@ import '../../lexicalEditor/styles.css';
 import { TRANSFORMERS } from '@lexical/markdown';
 import EmoticonPlugin from '../../lexicalEditor/plugins/EmoticonPlugin';
 
+// import {$generateHtmlFromNodes} from '@lexical/html';
+
 import { useDispatch } from 'react-redux';
 import { clearBlog, addNewPost } from './postsSlice';
 
@@ -75,11 +77,8 @@ const AddPostForm = () => {
     //   editorInstanceRef.current.getEditorState()
     // );
     onSavePost(values);
-    alert(JSON.stringify({ ...values }, null, 2));
-    // console.log(body);
-    // console.log(JSON.stringify({ ...values }, null, 2));
+    // alert(JSON.stringify({ ...values }, null, 2));
     toastSuccess();
-    console.log(values);
 
     setSubmitting(false);
   };
@@ -124,6 +123,7 @@ const AddPostForm = () => {
                           editor.toJSON();
                           // const markdown =
                           //   $convertToMarkdownString(TRANSFORMERS);
+                          // const html = $generateHtmlFromNodes(editor, null)
                           setFieldValue('editor', editor);
                         });
                       }}

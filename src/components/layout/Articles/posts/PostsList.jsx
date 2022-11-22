@@ -1,9 +1,10 @@
-import { Box, Heading, Text } from '@chakra-ui/react';
+import { Box, Container, Heading } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import PlainEditor from '../../lexicalEditor/PlainEditor';
 import {
   fetchPosts,
-//   getPostsError,
+  //   getPostsError,
   getPostsStatus,
   selectAllPosts,
 } from './postsSlice';
@@ -12,27 +13,31 @@ const PostsList = () => {
   const dispatch = useDispatch();
   const posts = useSelector(selectAllPosts);
   const postsStatus = useSelector(getPostsStatus);
-//   const error = useSelector(getPostsError);
+  //   const error = useSelector(getPostsError);
 
-  useEffect(() => {
-    if (postsStatus === 'idle') {
-      dispatch(fetchPosts());
-    }
-  }, [postsStatus, dispatch]);
+    useEffect(() => {
+      if (postsStatus === 'idle') {
+        dispatch(fetchPosts());
+      }
+    }, [postsStatus, dispatch]);
 
-  console.log(posts)
 
   const renderPosts = posts.map(post => (
-    <Box as="article" key={post.id}>
-      <Heading>{post.title}</Heading>
-      <Text as="p">{post.body}</Text>
+    <Box my="10px" as="article" key={post.date}>
+      <Heading as="h3" size="lg">
+        {post.title}
+      </Heading>
+      {/* <Text>{post.body}</Text> */}
+      <PlainEditor stateInstance={post.body} />
     </Box>
   ));
+
+ 
   return (
-    <Box as="section">
+    <Container as="section">
       <Heading>Posts</Heading>
       {renderPosts}
-    </Box>
+    </Container>
   );
 };
 
