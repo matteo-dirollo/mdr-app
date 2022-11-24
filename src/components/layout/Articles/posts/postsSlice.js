@@ -1,6 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { db } from '../../../../apis/firestore/firebase-config';
-import { addDoc, collection, getDocs, Timestamp } from 'firebase/firestore';
+import { db, storage } from '../../../../apis/firestore/firebase-config';
+import { collection, getDocs, Timestamp, setDoc, doc } from 'firebase/firestore';
+import { v4 } from 'uuid';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import _ from 'lodash';
 
 const initialState = {
   posts: [],
@@ -23,18 +26,23 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
 
 export const addNewPost = createAsyncThunk(
   'posts/addNewPost',
-  async (posts, { getState }) => {
+  async (post, { getState }) => {
     try {
-      const postsDoc = collection(db, 'Posts');
-      await addDoc(postsDoc, {
-        title: posts.title,
-        body: JSON.stringify(posts.editor),
-        category: posts.tags,
+      const imgRef = ref(storage, `Blog/covers/${post.img.name + v4()}`);
+      await uploadBytes(imgRef, post.img);
+      const imgUrl = await getDownloadURL(imgRef);
+      const postId = _.kebabCase(post.title);
+      const postsDoc = doc(db, 'Posts', postId);
+      await setDoc(postsDoc, {
+        title: post.title,
+        imageUrl: imgUrl,
+        body: JSON.stringify(post.editor),
+        category: post.tags,
         author: getState().auth.currentUser.displayName,
         authorId: getState().auth.currentUser.uid,
         date: Timestamp.fromDate(new Date()),
+        postId: postsDoc.id
       });
-      console.log(posts);
     } catch (error) {
       console.log('Error adding document: ', error);
     }
@@ -45,8 +53,8 @@ const postsSlice = createSlice({
   name: 'posts',
   initialState,
   reducers: {
-    postAdded: (state, {payload}) => {
-        state.push(...payload)
+    postAdded: (state, { payload }) => {
+      state.push(...payload);
     },
     clearBlog: state => {
       return initialState;
@@ -73,7 +81,6 @@ const postsSlice = createSlice({
       })
       .addCase(addNewPost.pending, (state, action) => {
         state.status = 'loading';
-
       })
       .addCase(addNewPost.fulfilled, (state, action) => {
         state.status = 'succeeded';

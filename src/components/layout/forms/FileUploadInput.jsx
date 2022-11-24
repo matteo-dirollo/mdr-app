@@ -14,6 +14,7 @@ import {
 
 export default function FileUploadInput({
   isValid,
+  onChange,
   setFieldValue,
   label,
   ...props
@@ -35,13 +36,13 @@ export default function FileUploadInput({
         <Input
           {...field}
           {...props}
-
+          onChange={onChange}
           type="file"
           sx={{
             '::file-selector-button': {
               height: 10,
               padding: 0,
-              mr: 4,
+              mr: 8,
               background: 'none',
               border: 'none',
               fontWeight: 'bold',

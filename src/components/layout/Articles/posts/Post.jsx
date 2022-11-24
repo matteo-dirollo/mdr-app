@@ -11,28 +11,34 @@ import {
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { MdFacebook } from 'react-icons/md';
 import { AiFillTwitterCircle } from 'react-icons/ai';
 import { FaInstagramSquare } from 'react-icons/fa';
-// import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchPosts, getPostsStatus, selectAllPosts } from './postsSlice';
+import PlainEditor from '../../lexicalEditor/PlainEditor';
 
 
 
 const Post = () => {
 
-  // const dispatch = useDispatch();
-  // React.useEffect(() => {
-    
-  // }, [dispatch]);
+  const dispatch = useDispatch();
+  const posts = useSelector(selectAllPosts);
+  const postsStatus = useSelector(getPostsStatus);
 
+  useEffect(() => {
+    if (postsStatus === 'idle') {
+      dispatch(fetchPosts());
+    }
+  }, [postsStatus, dispatch]);
 
   return (
     <Container my={10} align="stretch" maxW={800}>
       <Text fontSize="xs">Home/Blog/PostTitle </Text>
       <Box as='article'>
         <Heading as="h1" size="2xl">
-          Post Title
+          {posts.title}
         </Heading>
         <Text fontSize="sm">Author | Category | a min ago</Text>
         <Box mt={5} mb={5}>
@@ -40,24 +46,10 @@ const Post = () => {
             objectFit="cover"
             width="100%"
             height="400px"
-            src={
-              'https://images.unsplash.com/photo-1661783758573-e1fac356dba2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1658&q=80'
-            }
+            src={posts.imageUrl}
           />
         </Box>
-        <Text as="p" fontSize="lg">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ligula
-          nibh, interdum non enim sit amet, iaculis aliquet nunc. Class aptent
-          taciti sociosqu ad litora torquent per conubia nostra, per inceptos
-          himenaeos. Aliquam sit amet ipsum ac velit egestas ultrices.
-          Vestibulum et neque id ex semper varius a sit amet metus. Vivamus
-          congue dolor eget aliquam hendrerit. Etiam iaculis finibus egestas.
-          Nam viverra urna quis odio efficitur malesuada. Maecenas rhoncus enim
-          eu scelerisque rutrum. Pellentesque et mollis enim. Lorem ipsum dolor
-          sit amet, consectetur adipiscing elit. Curabitur sed commodo leo.
-          Suspendisse potenti. Maecenas gravida ipsum placerat ligula posuere,
-          ut rhoncus velit eleifend.
-        </Text>
+        <PlainEditor stateInstance={posts.body}/>
       </Box>
       <Divider my={10} />
       <HStack>

@@ -1,11 +1,23 @@
 import React, { useRef } from 'react';
-import { Box, Button, Flex, Stack, useToast } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Flex,
+  Stack,
+  useToast,
+  useColorModeValue,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Icon,
+  FormLabel,
+} from '@chakra-ui/react';
 import { CheckboxContainer, CheckboxControl } from 'formik-chakra-ui';
 import { Form, Formik } from 'formik';
 
 import * as Yup from 'yup';
 import MyTextInput from '../../../auth/MyTextInput';
-import FileUploadInput from '../../forms/FileUploadInput';
+
 import EditorBubbles from '../../lexicalEditor/plugins/EditorBubbles';
 
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
@@ -33,12 +45,14 @@ import EmoticonPlugin from '../../lexicalEditor/plugins/EmoticonPlugin';
 // import {$generateHtmlFromNodes} from '@lexical/html';
 
 import { useDispatch } from 'react-redux';
-import { clearBlog, addNewPost } from './postsSlice';
+import { addNewPost } from './postsSlice';
+import { FiFile } from 'react-icons/fi';
 
 const AddPostForm = () => {
   const toast = useToast();
   const editorInstanceRef = useRef(null);
   const dispatch = useDispatch();
+  const textColor = useColorModeValue('gray.700', 'gray.100');
 
   const toastSuccess = () => {
     toast({
@@ -53,13 +67,13 @@ const AddPostForm = () => {
   const initialValues = {
     title: '',
     editor: {},
-    img: [],
+    img: null,
     tags: [],
   };
 
   const validationSchema = Yup.object({
     title: Yup.string().required('Required'),
-    // img: Yup.mixed().required('Required'),
+    img: Yup.mixed().required(),
     tags: Yup.array().min(1),
   });
 
@@ -70,16 +84,9 @@ const AddPostForm = () => {
   };
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    // const body = values.toJSON();
-    // onSavePost(title, body);
     await new Promise(resolve => setTimeout(resolve, 500));
-    // const currentStringifiedEditorState = JSON.stringify(
-    //   editorInstanceRef.current.getEditorState()
-    // );
     onSavePost(values);
-    // alert(JSON.stringify({ ...values }, null, 2));
     toastSuccess();
-
     setSubmitting(false);
   };
 
@@ -107,9 +114,18 @@ const AddPostForm = () => {
             </Box>
             <Box my={8}>
               <LexicalComposer initialConfig={editorConfig}>
-                <div className="editor-container">
+                <Box
+                  sx={{
+                    '.other:h2': {
+                      fontSize: '18px',
+                      color: textColor,
+                      marginBottom: '7px',
+                    },
+                  }}
+                  className="editor-container"
+                >
                   <ToolbarPlugin />
-                  <div className="editor-inner">
+                  <Box className="editor-inner">
                     <RichTextPlugin
                       contentEditable={
                         <ContentEditable className="editor-input" />
@@ -120,10 +136,6 @@ const AddPostForm = () => {
                     <OnChangePlugin
                       onChange={(editorState, editor) => {
                         editorState.read(() => {
-                          editor.toJSON();
-                          // const markdown =
-                          //   $convertToMarkdownString(TRANSFORMERS);
-                          // const html = $generateHtmlFromNodes(editor, null)
                           setFieldValue('editor', editorState);
                         });
                       }}
@@ -138,20 +150,41 @@ const AddPostForm = () => {
                     <EmoticonPlugin />
                     <ListMaxIndentLevelPlugin maxDepth={7} />
                     <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
-                  </div>
-                </div>
+                  </Box>
+                </Box>
               </LexicalComposer>
             </Box>
             <br />
             <Box>
-              <FileUploadInput
-                setFieldValue={setFieldValue}
-                name="img"
-                label="Image"
-              />
+              <FormLabel>Image</FormLabel>
+              <InputGroup>
+                <InputLeftElement>
+                  <Icon as={FiFile} />
+                </InputLeftElement>
+                <Input
+                  id="file"
+                  type="file"
+                  accept="image/*"
+                  onChange={e => {
+                    const file = e.target;
+                    setFieldValue('img', file.files[0]);
+                  }}
+                  name="img"
+                  label="Image"
+                  sx={{
+                    '::file-selector-button': {
+                      height: 10,
+                      padding: 0,
+                      mr: 8,
+                      background: 'none',
+                      border: 'none',
+                      fontWeight: 'bold',
+                    },
+                  }}
+                />
+              </InputGroup>
             </Box>
             <br />
-
             <CheckboxContainer name="tags" label="Tags">
               <CheckboxControl name="tags" value="Design">
                 Design
@@ -183,7 +216,6 @@ const AddPostForm = () => {
               <Button
                 onClick={() => {
                   handleReset();
-                  dispatch(clearBlog());
                 }}
                 colorScheme="gray"
               >

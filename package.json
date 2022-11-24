@@ -11,6 +11,7 @@
     "@editorjs/paragraph": "^2.8.0",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.0",
+    "@lagunovsky/redux-react-router": "^4.3.0",
     "@lexical/react": "^0.4.1",
     "@mantine/core": "^5.3.0",
     "@mantine/hooks": "^5.3.0",
@@ -50,6 +51,7 @@
     "slate-react": "^0.83.2",
     "styled-components": "^5.3.5",
     "thunk": "^0.0.1",
+    "uuid": "^9.0.0",
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11"
   },

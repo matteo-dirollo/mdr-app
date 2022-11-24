@@ -1,4 +1,4 @@
-import { Box, Image, Text, Badge, Flex } from '@chakra-ui/react';
+import { Box, Text, Badge, Flex } from '@chakra-ui/react';
 import React from 'react';
 import { articles } from './articles';
 
@@ -6,7 +6,7 @@ const Projects = () => {
   const renderArticles = articles.map((item, index) => {
     return (
       <Box margin="auto" key={index}>
-        <Box my='0.6em'>
+        <Box my="0.6em">
           <Box
             boxSize={{
               base: '8em',
@@ -15,11 +15,16 @@ const Projects = () => {
               md: '10em',
               sm: '8em',
             }}
-          >
-            <Image borderRadius="4px" src={item.src} />
-          </Box>
+            borderRadius="4px"
+            sx={{
+              backgroundImage: `url(${item.src})`,
+              backgroundPosition: 'center',
+              backgroundSize: 'cover',
+            }}
+          />
+
           <Badge
-            fontSize={{ base: '8px', xl: '12px', md: '8px', sm: '8px' }}
+            fontSize={{ base: '12px', xl: '16px', md: '12px', sm: '12px' }}
             variant="outline"
             colorScheme="teal"
           >
@@ -40,7 +45,7 @@ const Projects = () => {
       marginX="auto"
       spacing={{ base: '25px', '2xl': '25px', xl: '3', md: '3', sm: '3' }}
       justifySelf="stretch"
-      justify='space-evenly'
+      justify="space-evenly"
     >
       {renderArticles}
     </Flex>

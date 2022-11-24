@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
-import './styles.css';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
 import CodeHighlightPlugin from './plugins/CodeHighlightPlugin';
@@ -14,6 +13,8 @@ import ListMaxIndentLevelPlugin from './plugins/ListMaxIndentLevelPlugin';
 import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPlugin';
 import { TRANSFORMERS } from '@lexical/markdown';
 import { editorConfig } from './themes/editorConfig';
+// import './styles.css'
+import { Box, useColorModeValue } from '@chakra-ui/react';
 
 function PlainEditor({ stateInstance }) {
 
@@ -25,8 +26,8 @@ function PlainEditor({ stateInstance }) {
 
   return (
     <LexicalComposer initialConfig={newEditorConfig}>
-      <div className="editor-container">
-        <div className="editor-inner">
+      <Box maxW='100%' className="editor-container">
+        <Box sx={{'*':{color:useColorModeValue('gray.700', 'gray.100')}}} className="readonlyeditor-inner">
           <RichTextPlugin
             contentEditable={<ContentEditable className="editor-input" />}
           />
@@ -39,8 +40,8 @@ function PlainEditor({ stateInstance }) {
           <EmoticonPlugin />
           <ListMaxIndentLevelPlugin maxDepth={7} />
           <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
-        </div>
-      </div>
+        </Box>
+      </Box>
     </LexicalComposer>
   );
 }
