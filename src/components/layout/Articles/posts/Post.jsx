@@ -5,11 +5,11 @@ import {
   Heading,
   HStack,
   IconButton,
-  Image,
   Spacer,
   Tag,
   Text,
   useColorModeValue,
+  VStack,
 } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { MdFacebook } from 'react-icons/md';
@@ -18,146 +18,133 @@ import { FaInstagramSquare } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPosts, getPostsStatus, selectAllPosts } from './postsSlice';
 import PlainEditor from '../../lexicalEditor/PlainEditor';
-
-
+import { useParams } from 'react-router-dom';
+import _ from 'lodash';
 
 const Post = () => {
-
   const dispatch = useDispatch();
   const posts = useSelector(selectAllPosts);
   const postsStatus = useSelector(getPostsStatus);
+  const textColor = useColorModeValue('gray.700', 'gray.100');
+  const buttonColor = useColorModeValue('teal.600', 'teal.500');
+  const buttonHoverColor = useColorModeValue('teal.100', 'teal.700');
+  const { articleId } = useParams();
+  const article = posts.find(post => post.postId === articleId);
 
   useEffect(() => {
     if (postsStatus === 'idle') {
       dispatch(fetchPosts());
     }
   }, [postsStatus, dispatch]);
+  console.log(article);
 
-  return (
-    <Container my={10} align="stretch" maxW={800}>
-      <Text fontSize="xs">Home/Blog/PostTitle </Text>
-      <Box as='article'>
-        <Heading as="h1" size="2xl">
-          {posts.title}
+  const renderCards = posts.slice(0, 2).map(post => (
+    <React.Fragment>
+      <VStack justify='start'>
+        <Text as="b" fontSize="md" color={textColor}>
+          {post.title}
+        </Text>
+        <Box
+          boxSize="250px"
+          sx={{
+            backgroundImage: `url(${post.imageUrl})`,
+            backgroundPosition: 'center',
+            backgroundSize: 'cover',
+          }}
+        />
+      </VStack>
+    </React.Fragment>
+  ));
+
+  if (article) {
+    return (
+      <Container my={10} align="stretch" maxW={800}>
+        <Box as="article" key={article.postId}>
+          <Text color={textColor} fontSize="xs">
+            Home/Blog/{article.postId}
+          </Text>
+          <Heading my={2} color={textColor} as="h1" size="2xl">
+            {article.title}
+          </Heading>
+          <Text color={textColor} fontSize="xs">
+            Author: {article.author} | {_.first(article.category)} |{' '}
+            {new Date(
+              article.date.seconds * 1000 + article.date.nanoseconds / 1000000
+            ).toLocaleDateString()}
+          </Text>
+          <Box
+            w="100%"
+            minH={400}
+            sx={{
+              backgroundImage: `url(${article.imageUrl})`,
+              backgroundPosition: 'center',
+              backgroundSize: 'cover',
+            }}
+            mt={5}
+            mb={5}
+          />
+
+          <PlainEditor stateInstance={article.body} />
+        </Box>
+        <Divider my={10} />
+        <HStack>
+          <Box>
+            <Text fontSize="md" as="b" color={textColor}>
+              Share this
+            </Text>
+          </Box>
+          <Box>
+            <IconButton
+              aria-label="facebook"
+              variant="ghost"
+              size="sm"
+              isRound={true}
+              color={buttonColor}
+              _hover={{ color: `${buttonHoverColor}` }}
+              icon={<MdFacebook size="28px" />}
+            />
+          </Box>
+          <Box>
+            <IconButton
+              aria-label="twitter"
+              variant="ghost"
+              size="sm"
+              isRound={true}
+              color={buttonColor}
+              _hover={{ color: `${buttonHoverColor}` }}
+              icon={<AiFillTwitterCircle size="28px" />}
+            />
+          </Box>
+          <Box>
+            <IconButton
+              aria-label="facebook"
+              variant="ghost"
+              size="sm"
+              isRound={true}
+              color={buttonColor}
+              _hover={{ color: `${buttonHoverColor}` }}
+              icon={<FaInstagramSquare size="28px" />}
+            />
+          </Box>
+          <Spacer />
+          <Tag>Web</Tag>
+          <Tag>Design</Tag>
+          <Tag>Art</Tag>
+        </HStack>
+        <br />
+        <Heading mb={5} as="h2" size="md">
+          More Posts
         </Heading>
-        <Text fontSize="sm">Author | Category | a min ago</Text>
-        <Box mt={5} mb={5}>
-          <Image
-            objectFit="cover"
-            width="100%"
-            height="400px"
-            src={posts.imageUrl}
-          />
-        </Box>
-        <PlainEditor stateInstance={posts.body}/>
-      </Box>
-      <Divider my={10} />
-      <HStack>
-        <Box>
-          <Text
-            fontSize="md"
-            as="b"
-            color={useColorModeValue('gray.400', 'gray.400')}
-          >
-            Share this
-          </Text>
-        </Box>
-        <Box>
-          <IconButton
-            aria-label="facebook"
-            variant="ghost"
-            size="lg"
-            isRound={true}
-            _hover={{ border: '2px solid teal' }}
-            icon={<MdFacebook color="teal" size="28px" />}
-          />
-        </Box>
-        <Box>
-          <IconButton
-            aria-label="facebook"
-            variant="ghost"
-            size="lg"
-            isRound={true}
-            _hover={{ border: '2px solid teal' }}
-            icon={<AiFillTwitterCircle color="teal" size="28px" />}
-          />
-        </Box>
-        <Box>
-          <IconButton
-            aria-label="facebook"
-            variant="ghost"
-            size="lg"
-            isRound={true}
-            _hover={{ border: '2px solid teal' }}
-            icon={<FaInstagramSquare color="teal" size="28px" />}
-          />
-        </Box>
+        <HStack mb={5}>{renderCards}</HStack>
         <Spacer />
-        <Tag>Web</Tag>
-        <Tag>Design</Tag>
-        <Tag>Art</Tag>
-      </HStack>
-      <br />
-      <Heading mb={5} as="h2" size="md">
-        More Posts
-      </Heading>
-      <HStack mb={5}>
-        <Box>
-          <Image
-            objectFit="cover"
-            width="100%"
-            src={
-              'https://images.unsplash.com/photo-1661783758573-e1fac356dba2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1658&q=80'
-            }
-          />
-          <Text
-            as="b"
-            fontSize="md"
-            color={useColorModeValue('gray.600', 'gray.300')}
-          >
-            Post Title
-          </Text>
-        </Box>
-        <Spacer />
-        <Box>
-          <Image
-            objectFit="cover"
-            width="100%"
-            src={
-              'https://images.unsplash.com/photo-1661783758573-e1fac356dba2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1658&q=80'
-            }
-          />
-          <Text
-            as="b"
-            fontSize="md"
-            color={useColorModeValue('gray.600', 'gray.300')}
-          >
-            Post Title
-          </Text>
-        </Box>
-        <Spacer />
-        <Box>
-          <Image
-            objectFit="cover"
-            width="100%"
-            src={
-              'https://images.unsplash.com/photo-1661783758573-e1fac356dba2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1658&q=80'
-            }
-          />
-          <Text
-            as="b"
-            fontSize="md"
-            color={useColorModeValue('gray.600', 'gray.300')}
-          >
-            Post Titlte
-          </Text>
-        </Box>
-      </HStack>
-      <Heading as="h2" size="md">
-        Comments
-      </Heading>
-    </Container>
-  );
+        {/* <Heading as="h2" size="md">
+          Comments
+        </Heading> */}
+      </Container>
+    );
+  } else {
+    return null;
+  }
 };
 
 export default Post;

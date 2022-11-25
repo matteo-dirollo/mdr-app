@@ -26,11 +26,9 @@ import Terms from './components/pages/footer/Terms';
 import DigitalSketches from './components/pages/DigitalSketches';
 import Post from './components/layout/articles/posts/Post';
 import Posts from './components/layout/admin/Posts';
-import { selectAllPosts } from './components/layout/articles/posts/postsSlice';
 
 function App() {
   const initialized = useSelector(state => state.async);
-  const posts = useSelector(selectAllPosts)
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -76,8 +74,10 @@ function App() {
               <Route path="/contact" exact element={<Contact />} />
               <Route path="/privacy-policy" exact element={<PrivacyPolicy />} />
               <Route path="/terms-and-conditions" exact element={<Terms />} />
-              <Route path="/blog" exact element={<Blog />} />
-              <Route path={`/blog/:${posts.postId}`} exact element={<Post />} />
+              <Route path="/blog" exact element={<Blog />}/>
+              <Route path="blog/:articleId" element={<Post />} />
+              
+              
               <Route path="*" element={<PageNotFound />} />
               {/* PRIVATE ROUTES */}
               <Route element={<PrivateRoutes />}>

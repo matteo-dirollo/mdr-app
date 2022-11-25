@@ -2,13 +2,6 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { verifyAuth } from './actions/authActions';
 import { createReduxHistoryContext } from 'redux-first-history';
 import { createBrowserHistory } from 'history';
-
-import { createRouterMiddleware, createRouterReducerMapObject, push, ReduxRouter } from '@lagunovsky/redux-react-router';
-import { createRoot } from 'react-dom/client'
-import { Provider, useDispatch } from 'react-redux'
-import { Route, Routes } from 'react-router'
-import { NavLink } from 'react-router-dom'
-
 import { persistReducer, persistStore } from 'reduxjs-toolkit-persist';
 import storage from 'reduxjs-toolkit-persist/lib/storage' // defaults to localStorage for web
 import autoMergeLevel1 from 'reduxjs-toolkit-persist/lib/stateReconciler/autoMergeLevel1';

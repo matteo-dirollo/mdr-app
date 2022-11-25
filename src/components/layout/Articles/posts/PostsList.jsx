@@ -26,6 +26,7 @@ const PostsList = () => {
     }
   }, [postsStatus, dispatch]);
 
+  console.log(posts);
   const renderPosts = posts.map(post => (
     <Box my="10px" as="article" key={post.date}>
       <Heading color={textColor} as="h3" size="lg">

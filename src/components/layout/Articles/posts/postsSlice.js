@@ -1,6 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { db, storage } from '../../../../apis/firestore/firebase-config';
-import { collection, getDocs, Timestamp, setDoc, doc } from 'firebase/firestore';
+import {
+  collection,
+  getDocs,
+  Timestamp,
+  setDoc,
+  doc,
+} from 'firebase/firestore';
 import { v4 } from 'uuid';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import _ from 'lodash';
@@ -15,7 +21,7 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
   try {
     const response = [];
     const querySnapshot = await getDocs(collection(db, 'Posts'));
-    querySnapshot.forEach(doc => {
+    querySnapshot.forEach((doc) => {
       response.push(doc.data());
     });
     return response;
@@ -41,7 +47,7 @@ export const addNewPost = createAsyncThunk(
         author: getState().auth.currentUser.displayName,
         authorId: getState().auth.currentUser.uid,
         date: Timestamp.fromDate(new Date()),
-        postId: postsDoc.id
+        postId: postsDoc.id,
       });
     } catch (error) {
       console.log('Error adding document: ', error);
