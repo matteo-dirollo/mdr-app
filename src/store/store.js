@@ -41,6 +41,7 @@ export const store = configureStore({
       serializableCheck: false
     }),
   routerMiddleware: [routerMiddleware],
+  devTools: false,
 });
 
 store.dispatch(verifyAuth());
