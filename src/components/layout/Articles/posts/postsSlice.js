@@ -5,7 +5,7 @@ import {
   getDocs,
   Timestamp,
   setDoc,
-  doc,
+  doc
 } from 'firebase/firestore';
 import { v4 } from 'uuid';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
@@ -17,12 +17,14 @@ const initialState = {
   error: null,
 };
 
+
+
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
   try {
     const response = [];
     const querySnapshot = await getDocs(collection(db, 'Posts'));
-    querySnapshot.forEach((doc) => {
-      response.push(doc.data());
+    querySnapshot.forEach(doc => {
+      response.push({ id: doc.id, ...doc.data() });
     });
     return response;
   } catch (err) {
@@ -47,7 +49,6 @@ export const addNewPost = createAsyncThunk(
         author: getState().auth.currentUser.displayName,
         authorId: getState().auth.currentUser.uid,
         date: Timestamp.fromDate(new Date()),
-        postId: postsDoc.id,
       });
     } catch (error) {
       console.log('Error adding document: ', error);

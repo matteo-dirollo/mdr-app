@@ -8,7 +8,7 @@ const Blog = () => {
 
   return (
     <Box>
-      <PostsList />
+      <PostsList/>
     </Box>
   );
 };

@@ -49,7 +49,7 @@ export default function HeroSection() {
             </Text>
           </Heading>
           <Text color={'gray.500'}>
-            Passionate about design, generative art and new media theories. Currently exploring the NFT world
+            
           </Text>
           <Stack
             spacing={{ base: 4, sm: 6 }}

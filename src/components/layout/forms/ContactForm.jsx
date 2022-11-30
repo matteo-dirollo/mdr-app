@@ -27,6 +27,8 @@ import { addDoc, collection, Timestamp } from 'firebase/firestore';
 const ContactForm = () => {
   const toast = useToast();
   const textColor = useColorModeValue('gray.700', 'gray.100');
+  const buttonColor = useColorModeValue('teal.500', 'teal.300');
+  const buttonHoverColor = useColorModeValue('teal.600', 'teal.400');
   const tastSuccess = () => {
     toast({
       title: 'Messsage sent.',
@@ -125,26 +127,28 @@ const ContactForm = () => {
                     <IconButton
                       aria-label="facebook"
                       variant="ghost"
-                      size="lg"
-                      isRound={true}
-                      _hover={{ border: '2px solid teal' }}
-                      icon={<MdFacebook color="teal" size="28px" />}
+                      size="sm"
+                      color={buttonColor}
+                      _hover={{ color: `${buttonHoverColor}` }}
+                      icon={<MdFacebook size="32px" />}
                     />
                     <IconButton
                       aria-label="github"
                       variant="ghost"
-                      size="lg"
+                      size="sm"
                       isRound={true}
-                      _hover={{ border: '2px solid teal' }}
-                      icon={<BsGithub color="teal" size="28px" />}
+                      color={buttonColor}
+                      _hover={{ color: `${buttonHoverColor}` }}
+                      icon={<BsGithub size="28px" />}
                     />
                     <IconButton
                       aria-label="discord"
                       variant="ghost"
-                      size="lg"
+                      size="sm"
                       isRound={true}
-                      _hover={{ border: '2px solid teal' }}
-                      icon={<BsDiscord color="teal" size="28px" />}
+                      color={buttonColor}
+                      _hover={{ color: `${buttonHoverColor}` }}
+                      icon={<BsDiscord size="28px" />}
                     />
                   </HStack>
                 </Box>
