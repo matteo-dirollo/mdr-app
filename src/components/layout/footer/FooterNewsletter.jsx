@@ -20,9 +20,13 @@ import { Form, Formik } from 'formik';
 import BuyMeCoffee from '../buttons/BuyMeCoffee';
 import Expire from '../animations/Expire';
 import { Link as ReactRouterLink } from 'react-router-dom';
+import { FaMastodon } from 'react-icons/fa';
+import { BsGithub } from 'react-icons/bs';
 
 const FooterNewsletter = () => {
   const toast = useToast();
+  const buttonColor = useColorModeValue('teal.500', 'teal.300');
+  const buttonHoverColor = useColorModeValue('teal.600', 'teal.400');
 
   const initialValues = {
     email: '',
@@ -83,9 +87,29 @@ const FooterNewsletter = () => {
             <Box>
               <Logo width={30} color={useColorModeValue('gray.700', 'white')} />
             </Box>
+
             <Text fontSize={'sm'}>© 2022 All rights reserved</Text>
             <Stack direction={'row'} spacing={6}>
-              {/* SOCIAL ICONS */}
+              <IconButton
+                aria-label="github"
+                variant="ghost"
+                size="sm"
+                isRound={true}
+                color={buttonColor}
+                _hover={{ color: `${buttonHoverColor}` }}
+                icon={<BsGithub size="28px" />}
+              />
+              <a rel="me noreferrer" href="https://masto.ai/@matteodirollo" target='_blank'>
+                <IconButton
+                  aria-label="Mastodon"
+                  variant="ghost"
+                  size="sm"
+                  isRound={true}
+                  color={buttonColor}
+                  _hover={{ color: `${buttonHoverColor}` }}
+                  icon={<FaMastodon size="28px" />}
+                />
+              </a>
             </Stack>
           </Stack>
           <Stack align={'flex-start'}>
@@ -111,17 +135,18 @@ const FooterNewsletter = () => {
             {/* <Link fontSize={'0.8em'} href={'#'}>
               Help Center
             </Link> */}
-            <Link as={ReactRouterLink} fontSize={'0.8em'} to='/terms-and-conditions'>
+            <Link
+              as={ReactRouterLink}
+              fontSize={'0.8em'}
+              to="/terms-and-conditions"
+            >
               Terms of Service
             </Link>
             <Link fontSize={'0.8em'} href={'#'}>
               Legal
             </Link>
-            <Link as={ReactRouterLink} fontSize={'0.8em'} to='/privacy-policy'>
+            <Link as={ReactRouterLink} fontSize={'0.8em'} to="/privacy-policy">
               Privacy Policy
-            </Link>
-            <Link fontSize={'0.8em'} href={'#'}>
-              Satus
             </Link>
           </Stack>
           <Stack align={'flex-start'}>

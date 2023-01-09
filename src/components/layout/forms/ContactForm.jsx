@@ -19,8 +19,9 @@ import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import MyTextInput from '../../auth/MyTextInput';
 import TextareaInput from './TextareaInput';
-import { MdEmail, MdFacebook } from 'react-icons/md';
-import { BsGithub, BsDiscord } from 'react-icons/bs';
+import { MdEmail } from 'react-icons/md';
+import { FaMastodon } from 'react-icons/fa';
+import { BsGithub } from 'react-icons/bs';
 import { db } from '../../../apis/firestore/firebase-config';
 import { addDoc, collection, Timestamp } from 'firebase/firestore';
 
@@ -124,14 +125,7 @@ const ContactForm = () => {
                     px={5}
                     alignItems="flex-start"
                   >
-                    <IconButton
-                      aria-label="facebook"
-                      variant="ghost"
-                      size="sm"
-                      color={buttonColor}
-                      _hover={{ color: `${buttonHoverColor}` }}
-                      icon={<MdFacebook size="32px" />}
-                    />
+           
                     <IconButton
                       aria-label="github"
                       variant="ghost"
@@ -142,13 +136,13 @@ const ContactForm = () => {
                       icon={<BsGithub size="28px" />}
                     />
                     <IconButton
-                      aria-label="discord"
+                      aria-label="Mastodon"
                       variant="ghost"
                       size="sm"
                       isRound={true}
                       color={buttonColor}
                       _hover={{ color: `${buttonHoverColor}` }}
-                      icon={<BsDiscord size="28px" />}
+                      icon={<FaMastodon size="28px" />}
                     />
                   </HStack>
                 </Box>
