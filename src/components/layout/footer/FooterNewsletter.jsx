@@ -99,7 +99,7 @@ const FooterNewsletter = () => {
                 _hover={{ color: `${buttonHoverColor}` }}
                 icon={<BsGithub size="28px" />}
               />
-              <a rel="me noreferrer" href="https://masto.ai/@matteodirollo" target='_blank'>
+              <a rel="me" href="https://masto.ai/@matteodirollo" target='_blank'>
                 <IconButton
                   aria-label="Mastodon"
                   variant="ghost"
