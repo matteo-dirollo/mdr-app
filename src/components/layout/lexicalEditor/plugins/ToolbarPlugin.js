@@ -16,7 +16,7 @@ import {
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
 import {
   $isParentElementRTL,
-  $wrapLeafNodesInElements,
+  $wrapNodes,
   $isAtNodeEnd,
 } from '@lexical/selection';
 import { $getNearestNodeOfType, mergeRegister } from '@lexical/utils';
@@ -39,6 +39,12 @@ import {
   getDefaultCodeLanguage,
   getCodeLanguages,
 } from '@lexical/code';
+import {
+  // INSERT_IMAGE_COMMAND,
+  InsertImageDialog,
+  // InsertImagePayload,
+} from '../plugins/ImagesPlugin';
+import useModal from '../hooks/useModal';
 
 const LowPriority = 1;
 
@@ -297,7 +303,7 @@ function BlockOptionsDropdownList({
         const selection = $getSelection();
 
         if ($isRangeSelection(selection)) {
-          $wrapLeafNodesInElements(selection, () => $createParagraphNode());
+          $wrapNodes(selection, () => $createParagraphNode());
         }
       });
     }
@@ -310,7 +316,7 @@ function BlockOptionsDropdownList({
         const selection = $getSelection();
 
         if ($isRangeSelection(selection)) {
-          $wrapLeafNodesInElements(selection, () => $createHeadingNode('h1'));
+          $wrapNodes(selection, () => $createHeadingNode('h1'));
         }
       });
     }
@@ -323,7 +329,7 @@ function BlockOptionsDropdownList({
         const selection = $getSelection();
 
         if ($isRangeSelection(selection)) {
-          $wrapLeafNodesInElements(selection, () => $createHeadingNode('h2'));
+          $wrapNodes(selection, () => $createHeadingNode('h2'));
         }
       });
     }
@@ -354,7 +360,7 @@ function BlockOptionsDropdownList({
         const selection = $getSelection();
 
         if ($isRangeSelection(selection)) {
-          $wrapLeafNodesInElements(selection, () => $createQuoteNode());
+          $wrapNodes(selection, () => $createQuoteNode());
         }
       });
     }
@@ -367,7 +373,7 @@ function BlockOptionsDropdownList({
         const selection = $getSelection();
 
         if ($isRangeSelection(selection)) {
-          $wrapLeafNodesInElements(selection, () => $createCodeNode());
+          $wrapNodes(selection, () => $createCodeNode());
         }
       });
     }
@@ -417,6 +423,7 @@ function BlockOptionsDropdownList({
 
 export default function ToolbarPlugin() {
   const [editor] = useLexicalComposerContext();
+  const [activeEditor, setActiveEditor] = useState(editor);
   const toolbarRef = useRef(null);
   const [canUndo, setCanUndo] = useState(false);
   const [canRedo, setCanRedo] = useState(false);
@@ -433,6 +440,7 @@ export default function ToolbarPlugin() {
   const [isUnderline, setIsUnderline] = useState(false);
   const [isStrikethrough, setIsStrikethrough] = useState(false);
   const [isCode, setIsCode] = useState(false);
+  const [modal, showModal] = useModal();
 
   const updateToolbar = useCallback(() => {
     const selection = $getSelection();
@@ -490,6 +498,7 @@ export default function ToolbarPlugin() {
         SELECTION_CHANGE_COMMAND,
         (_payload, newEditor) => {
           updateToolbar();
+          setActiveEditor(newEditor);
           return false;
         },
         LowPriority
@@ -535,6 +544,11 @@ export default function ToolbarPlugin() {
       editor.dispatchCommand(TOGGLE_LINK_COMMAND, null);
     }
   }, [editor, isLink]);
+
+//   const insertGifOnClick = (payload) => {
+//     activeEditor.dispatchCommand(INSERT_IMAGE_COMMAND, payload);
+// };
+
 
   return (
     <div className="toolbar" ref={toolbarRef}>
@@ -662,6 +676,21 @@ export default function ToolbarPlugin() {
           </button>
           {isLink &&
             createPortal(<FloatingLinkEditor editor={editor} />, document.body)}
+          <button
+            type="button"
+            onClick={()=>{
+              showModal('Insert Image', (onClose)=> (
+                <InsertImageDialog
+                  activeEditor={activeEditor}
+                  onClose={onClose}
+                />
+              ))
+            }}
+            className="toolbar-item spaced"
+            aria-label="Insert Image"
+          >
+            <i className="format image" />
+          </button>
           <Divider />
           <button
             type="button"
@@ -705,6 +734,7 @@ export default function ToolbarPlugin() {
           </button>{' '}
         </>
       )}
+      {modal}
     </div>
   );
 }

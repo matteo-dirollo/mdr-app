@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react';
 import { CheckboxContainer, CheckboxControl } from 'formik-chakra-ui';
 import { Form, Formik } from 'formik';
+import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 
 import * as Yup from 'yup';
 import MyTextInput from '../../../auth/MyTextInput';
@@ -47,6 +48,7 @@ import EmoticonPlugin from '../../lexicalEditor/plugins/EmoticonPlugin';
 import { useDispatch } from 'react-redux';
 import { addNewPost } from './postsSlice';
 import { FiFile } from 'react-icons/fi';
+import ImagesPlugin from '../../lexicalEditor/plugins/ImagesPlugin';
 
 const AddPostForm = () => {
   const toast = useToast();
@@ -131,6 +133,7 @@ const AddPostForm = () => {
                         <ContentEditable className="editor-input" />
                       }
                       placeholder={<Placeholder />}
+                      ErrorBoundary={LexicalErrorBoundary}
                     />
                     <EditorBubbles editorInstanceRef={editorInstanceRef} />
                     <OnChangePlugin
@@ -144,6 +147,7 @@ const AddPostForm = () => {
                     <TreeViewPlugin />
                     <AutoFocusPlugin />
                     <CodeHighlightPlugin />
+                    <ImagesPlugin />
                     <ListPlugin />
                     <LinkPlugin />
                     <AutoLinkPlugin />

@@ -6,7 +6,8 @@ import SignUp from '../../auth/SignUp'
 export default function ModalManager() {
     const modalLookup = {
       SignIn,
-      SignUp
+      SignUp,
+      
     };
     const currentModal = useSelector((state) => state.modals);
     let renderedModal;
