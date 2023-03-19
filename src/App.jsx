@@ -76,8 +76,8 @@ function App() {
               <Route path="/contact" exact element={<Contact />} />
               <Route path="/privacy-policy" exact element={<PrivacyPolicy />} />
               <Route path="/terms-and-conditions" exact element={<Terms />} />
-              <Route path="/blog" exact element={<Blog />} />
-              <Route path="blog/:articleId" element={<Post />} />
+              {/* <Route path="/blog" exact element={<Blog />} /> */}
+              {/* <Route path="blog/:articleId" element={<Post />} /> */}
               <Route path="*" element={<PageNotFound />} />
               {/* PRIVATE ROUTES */}
               <Route element={<PrivateRoutes />}>
