@@ -15,6 +15,7 @@ import { TRANSFORMERS } from '@lexical/markdown';
 import { editorConfig } from './themes/editorConfig';
 // import './styles.css'
 import { Box, useColorModeValue } from '@chakra-ui/react';
+import ImagesPlugin from './plugins/ImagesPlugin';
 
 function PlainEditor({ stateInstance }) {
 
@@ -34,6 +35,7 @@ function PlainEditor({ stateInstance }) {
 
           <AutoFocusPlugin />
           <CodeHighlightPlugin />
+          <ImagesPlugin />
           <ListPlugin />
           <LinkPlugin />
           <AutoLinkPlugin />
