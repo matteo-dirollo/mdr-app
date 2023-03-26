@@ -16,9 +16,11 @@ import { editorConfig } from './themes/editorConfig';
 // import './styles.css'
 import { Box, useColorModeValue } from '@chakra-ui/react';
 import ImagesPlugin from './plugins/ImagesPlugin';
+import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 
 function PlainEditor({ stateInstance }) {
 
+  
   const [newEditorConfig] = useState({
     ...editorConfig,
     editable: false,
@@ -31,8 +33,8 @@ function PlainEditor({ stateInstance }) {
         <Box sx={{'*':{color:useColorModeValue('gray.700', 'gray.100')}}} className="readonlyeditor-inner">
           <RichTextPlugin
             contentEditable={<ContentEditable className="editor-input" />}
+            ErrorBoundary={LexicalErrorBoundary}
           />
-
           <AutoFocusPlugin />
           <CodeHighlightPlugin />
           <ImagesPlugin />

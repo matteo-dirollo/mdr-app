@@ -53,6 +53,7 @@ export const addNewPost = createAsyncThunk(
     } catch (error) {
       console.log('Error adding document: ', error);
     }
+    console.log(JSON.stringify(post.editor))
   }
 );
 
