@@ -58,7 +58,7 @@ function App() {
       <ModalManager />
       <ScrollToTop />
       <CookieConsent
-        style={{ background: '#429EBD', color: '#ffffff !important' }}
+        style={{ background: '#e6d3b5', color: '#ffffff !important' }}
         buttonStyle={{ color: '#4e503b', fontSize: '13px' }}
       >
         <p className="cookies-message">

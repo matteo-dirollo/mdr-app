@@ -3,7 +3,7 @@ import React from 'react';
 
 const Terms = () => {
   return (
-    <Box maxW="80%" margin="auto">
+    <Box paddingY="40px" maxW="80%" margin="auto">
       <Text>
         Terms & Conditions By downloading or using the app, these terms will
         automatically apply to you – you should make sure therefore that you
