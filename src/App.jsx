@@ -8,7 +8,7 @@ import Navbar from './components/layout/navbar/Navbar';
 import Home from './components/pages/Home';
 import Works from './components/pages/Works';
 import Contact from './components/pages/Contact';
-import Blog from './components/layout/articles/Blog';
+// import Blog from './components/layout/articles/Blog';
 import Sandbox from './components/pages/Sandbox';
 import AccountProfile from './components/pages/AccountProfile';
 import ModalManager from './components/layout/modal/ModalManager';
@@ -76,7 +76,7 @@ function App() {
               <Route path="/contact" exact element={<Contact />} />
               <Route path="/privacy-policy" exact element={<PrivacyPolicy />} />
               <Route path="/terms-and-conditions" exact element={<Terms />} />
-              <Route path="/blog" exact element={<Blog />} />
+              {/* <Route path="/blog" exact element={<Blog />} /> */}
               <Route path="blog/:articleId" element={<Post />} />
               <Route path="*" element={<PageNotFound />} />
               {/* PRIVATE ROUTES */}
