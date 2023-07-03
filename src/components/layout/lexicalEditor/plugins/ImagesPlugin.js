@@ -125,29 +125,40 @@ export function InsertImageUploadedDialogBody({ onClick }) {
     </>
   )
 }
-export function InsertImageDialog({ activeEditor, onClose, }) {
-    const [mode, setMode] = useState(null);
-    const hasModifier = useRef(false);
-    useEffect(() => {
-        hasModifier.current = false;
-        const handler = (e) => {
-            hasModifier.current = e.altKey;
-        };
-        document.addEventListener('keydown', handler);
-        return () => {
-            document.removeEventListener('keydown', handler);
-        };
-    }, [activeEditor]);
-    const onClick = (payload) => {
-        activeEditor.dispatchCommand(INSERT_IMAGE_COMMAND, payload);
-        onClose();
-    };
-    return (React.createElement(React.Fragment, null,
-        !mode && (React.createElement(DialogButtonsList, null,
-            React.createElement(Button, { "data-test-id": "image-modal-option-sample", onClick: () => onClick(hasModifier.current
-                    ? {
-                        altText: 'Daylight fir trees forest glacier green high ice landscape',
-                        src: landscapeImage,
+
+export function InsertImageDialog({ activeEditor, onClose }) {
+  const [mode, setMode] = useState(null)
+  const hasModifier = useRef(false)
+
+  useEffect(() => {
+    hasModifier.current = false
+    const handler = e => {
+      hasModifier.current = e.altKey
+    }
+    document.addEventListener("keydown", handler)
+    return () => {
+      document.removeEventListener("keydown", handler)
+    }
+  }, [activeEditor])
+
+  const onClick = payload => {
+    activeEditor.dispatchCommand(INSERT_IMAGE_COMMAND, payload)
+    onClose()
+  }
+
+  return (
+    <>
+      {!mode && (
+        <DialogButtonsList>
+          <Button
+            data-test-id="image-modal-option-sample"
+            onClick={() =>
+              onClick(
+                hasModifier.current
+                  ? {
+                      altText:
+                        "Daylight fir trees forest glacier green high ice landscape",
+                      src: landscapeImage
                     }
                   : {
                       altText: "Yellow flower in tilt shift lens",
