@@ -28,7 +28,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
   
   return (
-    <Box p={3}>
+    <Box p={3} paddingBottom={0}>
       <Flex
         bg={useColorModeValue('white', 'gray.800')}
         color={useColorModeValue('gray.600', 'white')}
