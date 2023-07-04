@@ -44,7 +44,10 @@ import {
   InsertImageDialog,
   // InsertImagePayload,
 } from '../plugins/ImagesPlugin';
+import DropDown, {DropDownItem} from '../ui/DropDown'
 import useModal from '../hooks/useModal';
+import { EmbedConfigs } from './AutoembedPlugin';
+import { INSERT_EMBED_COMMAND } from '@lexical/react/LexicalAutoEmbedPlugin';
 
 const LowPriority = 1;
 
@@ -441,6 +444,8 @@ export default function ToolbarPlugin() {
   const [isStrikethrough, setIsStrikethrough] = useState(false);
   const [isCode, setIsCode] = useState(false);
   const [modal, showModal] = useModal();
+  const [isEditable, setIsEditable] = useState(() => editor.isEditable())
+
 
   const updateToolbar = useCallback(() => {
     const selection = $getSelection();
@@ -489,6 +494,9 @@ export default function ToolbarPlugin() {
 
   useEffect(() => {
     return mergeRegister(
+      editor.registerEditableListener((editable) => {
+        setIsEditable(editable);
+      }),
       editor.registerUpdateListener(({ editorState }) => {
         editorState.read(() => {
           updateToolbar();
@@ -691,6 +699,28 @@ export default function ToolbarPlugin() {
           >
             <i className="format image" />
           </button>
+          <Divider />
+          <DropDown
+            disabled={!isEditable}
+            buttonClassName="toolbar-item spaced"
+            buttonLabel="Insert"
+            buttonAriaLabel="Insert specialized editor node"
+            buttonIconClassName="icon plus">
+              {EmbedConfigs.map((embedConfig) => (
+              <DropDownItem
+                key={embedConfig.type}
+                onClick={() => {
+                  activeEditor.dispatchCommand(
+                    INSERT_EMBED_COMMAND,
+                    embedConfig.type,
+                  );
+                }}
+                className="item">
+                {embedConfig.icon}
+                <span className="text">{embedConfig.contentName}</span>
+              </DropDownItem>
+            ))}
+            </DropDown>
           <Divider />
           <button
             type="button"
