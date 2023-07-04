@@ -1,4 +1,8 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../../apis/firestore/firebase-config';
+import { APP_LOADED } from '../../store/reducers/asyncReducer';
+
 
 const initialState = {
   authenticated: false,
@@ -6,12 +10,52 @@ const initialState = {
   currentLocation: null,
 };
 
-const userSlice = createSlice({
-  name: 'users',
-  initialState,
-  reducers: {},
+export const verifyAuth = createAsyncThunk('users/verifyAuth', async (_, { dispatch }) => {
+  try {
+    return new Promise((resolve) => {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          dispatch(usersSlice.actions.signInUser(user));
+          dispatch({ type: APP_LOADED });
+        } else {
+          dispatch(usersSlice.actions.signOutUser());
+          dispatch({ type: APP_LOADED });
+        }
+        resolve();
+      });
+    });
+  } catch (error) {
+    console.error('Error verifying authentication:', error);
+    throw error;
+  }
 });
 
-export const selectAllUsers = state => state.users;
+const usersSlice = createSlice({
+  name: 'users',
+  initialState,
+  reducers: {
+    signInUser: (state, action) => {
+      const { email, photoURL, uid, displayName, providerData } = action.payload;
+      state.authenticated = true;
+      state.currentUser = {
+        email,
+        photoURL,
+        uid,
+        displayName,
+        providerId: providerData[0]?.providerId,
+      };
+    },
+    signOutUser: (state) => {
+      state.authenticated = false;
+      state.currentUser = null;
+    },
+    setLocation: (state, action) => {
+      state.prevLocation = state.currentLocation;
+      state.currentLocation = action.payload;
+    },
+  },
+});
 
-export default userSlice.reducer;
+export const { signInUser, signOutUser, setLocation } = usersSlice.actions;
+
+export default usersSlice.reducer;

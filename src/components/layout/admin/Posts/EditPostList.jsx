@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+    deletePost,
   fetchPosts,
   getPostsStatus,
   selectAllPosts,
@@ -21,6 +22,12 @@ const EditPostList = () => {
   const dispatch = useDispatch();
   const posts = useSelector(selectAllPosts);
   const postsStatus = useSelector(getPostsStatus);
+
+  const onSubmit = postId => {
+    if (postId) {
+      dispatch(deletePost(postId));
+    }
+  };
 
   useEffect(() => {
     if (postsStatus === 'idle') {
@@ -49,11 +56,11 @@ const EditPostList = () => {
             <Text fontSize="xs">{post.author}</Text>
           </Box>
         </HStack>
-        <Box>
+        <Box mt='5px' ml='25px'>
             <Button leftIcon={<EditIcon/>} colorScheme="blue" mx="3px" size="xs">
               Modify
             </Button>
-            <Button leftIcon={<DeleteIcon/>} colorScheme="red" mx="3px" size="xs">
+            <Button onClick={()=>{onSubmit(post.id)}} leftIcon={<DeleteIcon/>} colorScheme="red" mx="3px" size="xs">
               Delete
             </Button>
           </Box>
