@@ -25,8 +25,10 @@ import Analytics from './components/layout/admin/Analytics';
 import PrivacyPolicy from './components/pages/footer/PrivacyPolicy';
 import Terms from './components/pages/footer/Terms';
 import DigitalSketches from './components/pages/DigitalSketches';
+
 import Post from './components/layout/articles/posts/Post';
 import Posts from './components/layout/admin/Posts/Posts';
+
 import ScrollToTop from './components/utils/ScrollToTop';
 
 import "@fontsource/epilogue"; // Defaults to weight 400
@@ -65,7 +67,7 @@ function App() {
       <ModalManager />
       <ScrollToTop />
       <CookieConsent
-        style={{ background: '#e6d3b5', color: '#ffffff !important' }}
+        style={{ background: '#429EBD', color: '#ffffff !important' }}
         buttonStyle={{ color: '#4e503b', fontSize: '13px' }}
       >
         <p className="cookies-message">
@@ -83,8 +85,10 @@ function App() {
               <Route path="/contact" exact element={<Contact />} />
               <Route path="/privacy-policy" exact element={<PrivacyPolicy />} />
               <Route path="/terms-and-conditions" exact element={<Terms />} />
+
               <Route path="/blog" exact element={<Blog />} />
               <Route path="blog/:articleId" element={<Post />} />
+
               <Route path="*" element={<PageNotFound />} />
               {/* PRIVATE ROUTES */}
               <Route element={<PrivateRoutes />}>
