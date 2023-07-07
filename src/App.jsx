@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import ReactGA from 'react-ga4';
 import { matchPath, Route, Routes, useLocation } from 'react-router-dom';
-import { ChakraProvider, Box, Grid, theme } from '@chakra-ui/react';
+import { ChakraProvider, Box, Grid, CSSReset } from '@chakra-ui/react';
+import theme from './theme';
 import PageNotFound from './components/pages/PageNotFound';
 import CookieConsent from 'react-cookie-consent';
 import Navbar from './components/layout/navbar/Navbar';
@@ -28,6 +29,10 @@ import Post from './components/layout/articles/posts/Post';
 import Posts from './components/layout/admin/Posts/Posts';
 import ScrollToTop from './components/utils/ScrollToTop';
 
+import "@fontsource/epilogue"; // Defaults to weight 400
+import "@fontsource/epilogue/400.css"; // Specify weight
+import "@fontsource/epilogue/400-italic.css";
+
 function App() {
   const initialized = useSelector(state => state.async);
   const { pathname } = useLocation();
@@ -49,12 +54,14 @@ function App() {
   if (!initialized)
     return (
       <ChakraProvider theme={theme}>
+        <CSSReset/>
         <LoadingSpinner />
       </ChakraProvider>
     );
 
   return (
     <ChakraProvider theme={theme}>
+      <CSSReset/>
       <ModalManager />
       <ScrollToTop />
       <CookieConsent

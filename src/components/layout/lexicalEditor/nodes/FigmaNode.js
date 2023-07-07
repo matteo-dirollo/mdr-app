@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/iframe-has-title */
 import { BlockWithAlignableContents } from "@lexical/react/LexicalBlockWithAlignableContents"
 import { DecoratorBlockNode } from "@lexical/react/LexicalDecoratorBlockNode"
 import * as React from "react"

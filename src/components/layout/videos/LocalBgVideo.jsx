@@ -1,17 +1,18 @@
-import { AbsoluteCenter, Box, Heading, Text } from '@chakra-ui/react';
-import React, { useRef } from 'react';
-import YoutubeBackground from 'react-youtube-background';
+import { AbsoluteCenter, Box, Flex, Heading, Text } from '@chakra-ui/react';
+import { motion } from 'framer-motion';
+import React from 'react';
 
 const BackgroundVideo = () => {
-  const videoRef = useRef(null);
-  const handleVideoEnd = event => {
-    // Seek to the beginning of the video when it ends
-    if (event.data === window.YT.PlayerState.ENDED) {
-      event.target.seekTo(0);
-    }
-  };
+    const videoUrl = 'https://firebasestorage.googleapis.com/v0/b/matteo-dirollo-com.appspot.com/o/Videos%2Flosange.mp4?alt=media&token=9f972aec-d7ca-4a07-b946-c12f7fd54cb1'
   return (
     <Box
+      pos="relative"
+      top={0}
+      left={0}
+      width="100%"
+      height="100%"
+      zIndex={-1}
+      overflow="hidden"
       sx={{
         width: '100%',
         height: '100%',
@@ -23,26 +24,44 @@ const BackgroundVideo = () => {
           pointerEvents: 'none',
         },
       }}
-      w="100%"
       minHeight="100vh"
       marginTop="0"
     >
-      <YoutubeBackground
-        videoId="ZwZVB8GPkG8"
-        playerOptions={'loop=1'}
-        onReady={player => {
-          player.mute();
-          player.playVideo();
-        }}
-        onEnd={handleVideoEnd}
-        ref={videoRef}
+
+      <motion.video
+        autoPlay
+        loop
+        muted
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 1 }}
+        w="100%"
+        h="100%"
+        objectFit="cover"
       >
-        <Box w="100%" minHeight="100vh" marginTop="0">
-          <AbsoluteCenter borderRadius="12px" backgroundColor="#623cea">
+        <source
+          src={videoUrl}
+          type="video/mp4"
+        />
+        
+      </motion.video>
+      <Flex
+        pos="absolute"
+        top={0}
+        left={0}
+        w="100%"
+        h="100%"
+        justify="center"
+        align="center"
+        zIndex={1}
+      >
+         <Box w="100%" minHeight="100vh" marginTop="0">
+          <AbsoluteCenter borderRadius="12px" >
             <Heading
               lineHeight={1.1}
               fontWeight={600}
-              fontSize={{ base: '3xl', sm: '4xl', lg: '6xl' }}
+              fontSize={{ base: '3xl', sm: '4xl', lg: '8xl' }}
               color={'white'}
               p={8}
             >
@@ -63,13 +82,13 @@ const BackgroundVideo = () => {
                 Freelance
               </Text>
               <br />
-              <Text as={'span'} color={'teal.400'}>
+              <Text as={'span'} color={'white'}>
                 Graphic Designer & Creative
               </Text>
             </Heading>
           </AbsoluteCenter>
         </Box>
-      </YoutubeBackground>
+      </Flex>
     </Box>
   );
 };
