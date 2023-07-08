@@ -17,7 +17,7 @@ import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import DesktopNav from './DesktopNav';
 import MobileNav from './MobileNav';
 import { useDispatch, useSelector } from 'react-redux';
-import { openModal } from '../../../store/reducers/modalReducer';
+import { openModal } from '../modal/modalSlice'; 
 import SignOut from '../../auth/SignOut';
 import { ColorModeSwitcher } from '../../../ColorModeSwitcher';
 import Logo from '../logo/Logo';
