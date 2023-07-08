@@ -1,15 +1,13 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-// import { verifyAuth } from './actions/authActions';
 import { createReduxHistoryContext } from 'redux-first-history';
 import { createBrowserHistory } from 'history';
 import { persistReducer, persistStore } from 'reduxjs-toolkit-persist';
 import storage from 'reduxjs-toolkit-persist/lib/storage'; // defaults to localStorage for web
 import autoMergeLevel1 from 'reduxjs-toolkit-persist/lib/stateReconciler/autoMergeLevel1';
-import authReducer from '../components/auth/authSlice';
 import asyncReducer from './asyncSlice';
 import modalReducer from '../components/layout/modal/modalSlice';
 import postsReducer from '../components/layout/articles/posts/postsSlice';
-import usersReducer, { verifyAuth } from '../components/auth/usersSlice';
+import authReducer, { verifyAuth } from '../components/auth/authSlice';
 
 const persistConfig = {
   key: 'root',
@@ -24,12 +22,11 @@ const { createReduxHistory, routerMiddleware, routerReducer } =
   });
 
 const appReducers = combineReducers({
-  auth: authReducer,
   async: asyncReducer,
   modals: modalReducer,
   router: routerReducer,
   posts: postsReducer,
-  users: usersReducer,
+  auth: authReducer,
 });
 
 const _persistedReducer = persistReducer(persistConfig, appReducers);
