@@ -14,7 +14,7 @@ import Sandbox from './components/pages/Sandbox';
 import AccountProfile from './components/pages/AccountProfile';
 import ModalManager from './components/layout/modal/ModalManager';
 import PrivateRoutes from './components/layout/routing/PrivateRoutes';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import LoadingSpinner from './components/layout/loader/LoadingSpinner';
 import FooterNewsletter from './components/layout/footer/FooterNewsletter';
 import AdminRoutes from './components/layout/routing/AdminRoutes';
@@ -34,10 +34,18 @@ import ScrollToTop from './components/utils/ScrollToTop';
 import "@fontsource/epilogue"; // Defaults to weight 400
 import "@fontsource/epilogue/400.css"; // Specify weight
 import "@fontsource/epilogue/400-italic.css";
+import { setLocation } from './store/locationSlice';
 
 function App() {
   const initialized = useSelector(state => state.async);
+  // const navigate = useNavigate();
+  const location = useLocation();
+  const dispatch = useDispatch();
   const { pathname } = useLocation();
+
+  useEffect(() => {
+    dispatch(setLocation(location.pathname)); // Dispatch the setLocation action when the location changes
+  }, [location, dispatch]);
 
   useEffect(() => {
     ReactGA.initialize([
