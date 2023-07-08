@@ -3,14 +3,13 @@ import { motion } from 'framer-motion';
 import React from 'react';
 
 const LocalBgVideo = () => {
-  const videoUrl =
-    'https://firebasestorage.googleapis.com/v0/b/matteo-dirollo-com.appspot.com/o/Videos%2Flosange.mp4?alt=media&token=9f972aec-d7ca-4a07-b946-c12f7fd54cb1';
+  const videoUrl = 'https://firebasestorage.googleapis.com/v0/b/matteo-dirollo-com.appspot.com/o/Videos%2Floange_newone.mp4?alt=media&token=9f801a48-4a55-4558-8500-ded209d54108'
 
   return (
     <Box
       pos="relative"
       width="100%"
-      minHeight={['20vh', '40vh', '60vh', '100vh']}
+      minHeight={['20vh', '40vh', '60vh', '80vh']}
       overflow="hidden"
       display="flex"
       alignItems="center"

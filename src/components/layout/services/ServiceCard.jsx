@@ -1,9 +1,10 @@
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
+import LottieIcon from '../lottie/LottieIcon';
 
-const ServiceCard = ({title, description}) => {
-    return (
-        <Box
+const ServiceCard = ({ title, description, animationData }) => {
+  return (
+    <VStack
       maxW="sm"
       // borderWidth="1px"
       // borderRadius="lg"
@@ -11,13 +12,18 @@ const ServiceCard = ({title, description}) => {
       m={4}
       // boxShadow="lg"
       width="300px"
+      textAlign={'center'}
     >
-      <Text as="h3" fontSize="2xl" fontWeight="600" mb={4}>
+      <Box w={180} h={180} mb={10}>
+        <LottieIcon animationData={animationData} />
+      </Box>
+
+      <Text as="h3" fontSize="3xl" fontWeight="600" mb={4}>
         {title}
       </Text>
-      <Text>{description}</Text>
-    </Box>
-    );
-}
+      <Text fontSize={'sm'}>{description}</Text>
+    </VStack>
+  );
+};
 
 export default ServiceCard;

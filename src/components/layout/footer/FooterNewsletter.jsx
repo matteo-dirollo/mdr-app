@@ -151,7 +151,7 @@ const FooterNewsletter = () => {
             </Link>
           </Stack>
           <Stack align={'flex-start'}>
-            <Text>Stay up to date</Text>
+            <Text>Get some news</Text>
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
