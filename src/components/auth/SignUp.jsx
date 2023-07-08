@@ -13,7 +13,7 @@ import {
   Divider,
 } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
-import { closeModal, openModal } from '../../store/reducers/modalReducer';
+import { closeModal, openModal } from '../layout/modal/modalSlice';
 import { auth } from '../../apis/firestore/firebase-config';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import SocialLogin from './SocialLogin';

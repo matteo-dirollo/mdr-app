@@ -12,7 +12,7 @@ import {
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { openModal } from '../../../store/reducers/modalReducer';
+import { openModal } from './modalSlice';
 
 export default function UnauthModal() {
   const [open, setOpen] = useState(true);

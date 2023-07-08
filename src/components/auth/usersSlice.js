@@ -1,7 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../apis/firestore/firebase-config';
-import { APP_LOADED } from '../../store/reducers/asyncReducer';
+// import { APP_LOADED } from '../../store/reducers/asyncReducer';
+import { appLoaded, asyncActionError } from '../../store/asyncSlice';
+
 
 
 const initialState = {
@@ -16,16 +18,17 @@ export const verifyAuth = createAsyncThunk('users/verifyAuth', async (_, { dispa
       onAuthStateChanged(auth, (user) => {
         if (user) {
           dispatch(usersSlice.actions.signInUser(user));
-          dispatch({ type: APP_LOADED });
+          dispatch(appLoaded());
         } else {
           dispatch(usersSlice.actions.signOutUser());
-          dispatch({ type: APP_LOADED });
+          dispatch(appLoaded());
         }
         resolve();
       });
     });
   } catch (error) {
     console.error('Error verifying authentication:', error);
+    dispatch(asyncActionError(error.message));
     throw error;
   }
 });

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
-import { closeModal } from '../../store/reducers/modalReducer';
+import { closeModal } from '../layout/modal/modalSlice';
 import { socialLogin } from '../../apis/firestore/firebaseService';
 import { FaFacebook, FaGoogle } from 'react-icons/fa';
 
