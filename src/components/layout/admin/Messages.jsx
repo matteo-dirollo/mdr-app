@@ -16,13 +16,12 @@ import {
   asyncActionError,
   asyncActionFinish,
   asyncActionStart,
-} from '../../../store/reducers/asyncReducer';
+} from '../../../store/asyncSlice';
 // import Placeholder from '../Loader/Placeholder';
 
 const Messages = () => {
   const [docs, setDocs] = useState([]);
   const dispatch = useDispatch();
-  
 
   useEffect(() => {
     async function fetchUserMsg() {
@@ -99,14 +98,16 @@ const Messages = () => {
 
   return (
     <>
-    <Text fontSize='sm' as='b' color="gray.600" >Contact Form</Text>
-    <VStack
-      divider={<StackDivider borderColor="gray.200" />}
-      spacing={4}
-      align="stretch"
-    >
-      <List p={10}>{renderUserMessages}</List>
-    </VStack>
+      <Text fontSize="sm" as="b" color="gray.600">
+        Contact Form
+      </Text>
+      <VStack
+        divider={<StackDivider borderColor="gray.200" />}
+        spacing={4}
+        align="stretch"
+      >
+        <List p={10}>{renderUserMessages}</List>
+      </VStack>
     </>
   );
 };

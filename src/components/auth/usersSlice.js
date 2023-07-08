@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { onAuthStateChanged } from 'firebase/auth';
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../apis/firestore/firebase-config';
-// import { APP_LOADED } from '../../store/reducers/asyncReducer';
 import { appLoaded, asyncActionError } from '../../store/asyncSlice';
 
 
@@ -12,7 +11,7 @@ const initialState = {
   currentLocation: null,
 };
 
-export const verifyAuth = createAsyncThunk('users/verifyAuth', async (_, { dispatch }) => {
+export const verifyAuth = createAsyncThunk('auth/verifyAuth', async (_, { dispatch }) => {
   try {
     return new Promise((resolve) => {
       onAuthStateChanged(auth, (user) => {
@@ -33,8 +32,30 @@ export const verifyAuth = createAsyncThunk('users/verifyAuth', async (_, { dispa
   }
 });
 
+export const signInWithEmail = createAsyncThunk(
+  'auth/signIn',
+  async ({ email, password }) => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
+export const registerUser = createAsyncThunk(
+  'auth/register',
+  async ({ email, password }) => {
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
 const usersSlice = createSlice({
-  name: 'users',
+  name: 'auth',
   initialState,
   reducers: {
     signInUser: (state, action) => {
