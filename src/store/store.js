@@ -31,7 +31,7 @@ export const store = configureStore({
     getDefaultMiddleware({
       serializableCheck: false,
     }),
-  devTools: true,
+  devTools: false,
 });
 
 store.dispatch(verifyAuth());
