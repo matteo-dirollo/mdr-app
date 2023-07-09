@@ -7,9 +7,9 @@ import WebDesign from '../lottie/WebDesign.json'
 
 const Services = () => {
   return (
-    <Flex direction="column" align="center" py={10}>
+    
 
-      <Flex justifyContent="space-between" flexWrap="wrap">
+      <Flex justifyContent="center" flexWrap="wrap">
         <ServiceCard
           title="Graphic Design Solutions"
           description="Providing visually appealing and impactful designs for various purposes, including logos, branding materials, marketing collaterals, and more."
@@ -26,7 +26,7 @@ const Services = () => {
           animationData={WebDesign}
         />
       </Flex>
-    </Flex>
+    
   );
 };
 

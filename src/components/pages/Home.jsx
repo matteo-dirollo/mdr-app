@@ -12,7 +12,7 @@ const Home = () => {
   return (
     <Box>
       <TabTitle title="Home" />
-      <VStack>
+      <VStack justifyContent='center' alignItems='center'>
         <LocalBgVideo />
         <Services />
         {/* <LatestPosts /> */}
