@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import ReactGA from 'react-ga4';
 import { matchPath, Route, Routes, useLocation } from 'react-router-dom';
-import { ChakraProvider, Box, Grid, theme } from '@chakra-ui/react';
+import { ChakraProvider, Box, Grid, CSSReset } from '@chakra-ui/react';
+import theme from './theme';
 import PageNotFound from './components/pages/PageNotFound';
 import CookieConsent from 'react-cookie-consent';
 import Navbar from './components/layout/navbar/Navbar';
@@ -13,7 +14,7 @@ import Sandbox from './components/pages/Sandbox';
 import AccountProfile from './components/pages/AccountProfile';
 import ModalManager from './components/layout/modal/ModalManager';
 import PrivateRoutes from './components/layout/routing/PrivateRoutes';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import LoadingSpinner from './components/layout/loader/LoadingSpinner';
 import FooterNewsletter from './components/layout/footer/FooterNewsletter';
 import AdminRoutes from './components/layout/routing/AdminRoutes';
@@ -24,13 +25,27 @@ import Analytics from './components/layout/admin/Analytics';
 import PrivacyPolicy from './components/pages/footer/PrivacyPolicy';
 import Terms from './components/pages/footer/Terms';
 import DigitalSketches from './components/pages/DigitalSketches';
-import Post from './components/layout/articles/posts/Post';
-import Posts from './components/layout/admin/Posts';
+
+// import Post from './components/layout/articles/posts/Post';
+import Posts from './components/layout/admin/Posts/Posts';
+
 import ScrollToTop from './components/utils/ScrollToTop';
+
+import "@fontsource/epilogue"; // Defaults to weight 400
+import "@fontsource/epilogue/400.css"; // Specify weight
+import "@fontsource/epilogue/400-italic.css";
+import { setLocation } from './store/locationSlice';
 
 function App() {
   const initialized = useSelector(state => state.async);
+  // const navigate = useNavigate();
+  const location = useLocation();
+  const dispatch = useDispatch();
   const { pathname } = useLocation();
+
+  useEffect(() => {
+    dispatch(setLocation(location.pathname)); // Dispatch the setLocation action when the location changes
+  }, [location, dispatch]);
 
   useEffect(() => {
     ReactGA.initialize([
@@ -49,16 +64,18 @@ function App() {
   if (!initialized)
     return (
       <ChakraProvider theme={theme}>
+        <CSSReset/>
         <LoadingSpinner />
       </ChakraProvider>
     );
 
   return (
     <ChakraProvider theme={theme}>
+      <CSSReset/>
       <ModalManager />
       <ScrollToTop />
       <CookieConsent
-        style={{ background: '#e6d3b5', color: '#ffffff !important' }}
+        style={{ background: '#429EBD', color: '#ffffff !important' }}
         buttonStyle={{ color: '#4e503b', fontSize: '13px' }}
       >
         <p className="cookies-message">
@@ -76,8 +93,10 @@ function App() {
               <Route path="/contact" exact element={<Contact />} />
               <Route path="/privacy-policy" exact element={<PrivacyPolicy />} />
               <Route path="/terms-and-conditions" exact element={<Terms />} />
-              {/* <Route path="/blog" exact element={<Blog />} /> */}
-              <Route path="blog/:articleId" element={<Post />} />
+
+              {/* <Route path="/blog" exact element={<Blog />} />
+              <Route path="blog/:articleId" element={<Post />} /> */}
+
               <Route path="*" element={<PageNotFound />} />
               {/* PRIVATE ROUTES */}
               <Route element={<PrivateRoutes />}>

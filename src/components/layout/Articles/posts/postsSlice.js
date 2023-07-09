@@ -5,7 +5,8 @@ import {
   getDocs,
   Timestamp,
   setDoc,
-  doc
+  doc,
+  deleteDoc
 } from 'firebase/firestore';
 import { v4 } from 'uuid';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
@@ -57,12 +58,28 @@ export const addNewPost = createAsyncThunk(
   }
 );
 
+export const deletePost = createAsyncThunk(
+  'posts/deletePost',
+  async (postId) => {
+    try {
+      const postDoc = doc(db, 'Posts', postId);
+      await deleteDoc(postDoc);
+      return postId;
+    } catch (error) {
+      console.log('Error deleting document: ', error);
+    }
+  }
+);
+
 const postsSlice = createSlice({
   name: 'posts',
   initialState,
   reducers: {
     postAdded: (state, { payload }) => {
       state.push(...payload);
+    },
+    postDeleted: (state, { payload }) => {
+      state.posts = state.posts.filter((post) => post.id !== payload);
     },
     clearBlog: state => {
       return initialState;
@@ -108,7 +125,18 @@ const postsSlice = createSlice({
       })
       .addCase(addNewPost.rejected, (state, action) => {
         state.status = 'failed';
+      })
+      .addCase(deletePost.pending, (state, action) => {
+        state.status = 'loading';
+      })
+      .addCase(deletePost.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.posts = state.posts.filter((post) => post.id !== action.payload);
+      })
+      .addCase(deletePost.rejected, (state, action) => {
+        state.status = 'failed';
       });
+      
   },
 });
 

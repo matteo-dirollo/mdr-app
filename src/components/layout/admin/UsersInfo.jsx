@@ -5,7 +5,7 @@ import {
   asyncActionError,
   asyncActionFinish,
   asyncActionStart,
-} from '../../../store/reducers/asyncReducer';
+} from '../../../store/asyncSlice';
 import { db } from '../../../apis/firestore/firebase-config';
 import { Box, Flex, List, ListItem, StackDivider, Text, VStack } from '@chakra-ui/react';
 import { Divider } from 'semantic-ui-react';

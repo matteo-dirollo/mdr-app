@@ -49,6 +49,10 @@ import { useDispatch } from 'react-redux';
 import { addNewPost } from './postsSlice';
 import { FiFile } from 'react-icons/fi';
 import ImagesPlugin from '../../lexicalEditor/plugins/ImagesPlugin';
+import YouTubePlugin from '../../lexicalEditor/plugins/YoutubePlugin';
+import AutoEmbedPlugin from '../../lexicalEditor/plugins/AutoembedPlugin';
+import FigmaPlugin from '../../lexicalEditor/plugins/FigmaPlugin';
+import TwitterPlugin from '../../lexicalEditor/plugins/TwitterPlugin';
 
 const AddPostForm = () => {
   const toast = useToast();
@@ -146,9 +150,13 @@ const AddPostForm = () => {
                     />
                     <HistoryPlugin />
                     <TreeViewPlugin />
+                    <AutoEmbedPlugin />
                     <AutoFocusPlugin />
                     <CodeHighlightPlugin />
+                    <YouTubePlugin />
                     <ImagesPlugin />
+                    <FigmaPlugin />
+                    <TwitterPlugin />
                     <ListPlugin />
                     <LinkPlugin />
                     <AutoLinkPlugin />

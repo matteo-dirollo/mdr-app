@@ -10,7 +10,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
-import { closeModal } from '../../../store/reducers/modalReducer';
+import { closeModal } from './modalSlice';
 
 const ModalWindow = ({ children, header, modalFooter }) => {
   const dispatch = useDispatch();

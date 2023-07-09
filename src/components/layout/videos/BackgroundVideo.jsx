@@ -9,7 +9,6 @@ const BackgroundVideo = () => {
     if (event.data === window.YT.PlayerState.ENDED) {
       event.target.seekTo(0);
     }
-    console.log(event.data);
   };
   return (
     <Box

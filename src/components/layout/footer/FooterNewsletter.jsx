@@ -89,6 +89,19 @@ const FooterNewsletter = () => {
               <Logo width={30} color={useColorModeValue('gray.700', 'white')} />
             </Box>
 
+            {/* <Box>
+              <Text fontSize="lg" fontWeight="bold">
+                Let's work together
+              </Text>
+              <Text fontSize={'xs'}>
+                Are you looking for a graphic designer and creative for your
+                project? Whether it's designing a logo, creating stunning
+                visuals, or developing a website, I'm here to help. Let's
+                discuss your requirements and bring your ideas to life. I'm also
+                open to collaborations and new opportunities. Contact me today!
+              </Text>
+            </Box> */}
+
             <Text fontSize={'sm'}>© 2022 All rights reserved</Text>
             <Stack direction={'row'} spacing={6}>
               <IconButton
@@ -100,7 +113,11 @@ const FooterNewsletter = () => {
                 _hover={{ color: `${buttonHoverColor}` }}
                 icon={<BsGithub size="28px" />}
               />
-              <a rel="me" href="https://masto.ai/@matteodirollo" target='_blank'>
+              <a
+                rel="me"
+                href="https://masto.ai/@matteodirollo"
+                target="_blank"
+              >
                 <IconButton
                   aria-label="Mastodon"
                   variant="ghost"
@@ -151,7 +168,7 @@ const FooterNewsletter = () => {
             </Link>
           </Stack>
           <Stack align={'flex-start'}>
-            <Text>Stay up to date</Text>
+            <Text>Get some news</Text>
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
