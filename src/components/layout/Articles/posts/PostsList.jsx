@@ -28,7 +28,7 @@ const PostsList = () => {
 
 
   const paginate = pageNumber => setCurrentPage(pageNumber);
-
+  
   useEffect(() => {
     if (postsStatus === 'idle') {
       dispatch(fetchPosts());

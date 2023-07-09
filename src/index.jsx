@@ -8,7 +8,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import { PersistGate } from 'reduxjs-toolkit-persist/integration/react';
 
 import { Provider } from 'react-redux';
-import { store, history, persistor } from './store/store';
+import { store, persistor } from './store/store';
 
 const container = document.getElementById('root');
 const root = ReactDOM.createRoot(container);
@@ -17,7 +17,7 @@ root.render(
   <HelmetProvider>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <BrowserRouter history={history}>
+        <BrowserRouter>
           <ColorModeScript />
           <App />
         </BrowserRouter>

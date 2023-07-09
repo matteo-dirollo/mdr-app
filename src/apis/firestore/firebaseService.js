@@ -8,7 +8,7 @@ import {
   updateProfile,
   getAdditionalUserInfo,
 } from 'firebase/auth';
-import { signInUser } from '../../store/actions/authActions';
+import { signInUser } from '../../components/auth/authSlice';
 import { auth } from './firebase-config';
 import { firebaseProviderUsersCollection } from './firestoreService';
 // import { firebaseUsersDoc } from './firestoreService';

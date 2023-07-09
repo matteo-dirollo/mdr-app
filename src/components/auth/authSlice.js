@@ -1,15 +1,36 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../apis/firestore/firebase-config';
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from 'firebase/auth';
+import { appLoaded, asyncActionError } from '../../store/asyncSlice';
+
+
 
 const initialState = {
   authenticated: false,
   currentUser: null,
   currentLocation: null,
 };
+
+export const verifyAuth = createAsyncThunk('auth/verifyAuth', async (_, { dispatch }) => {
+  try {
+    return new Promise((resolve) => {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          dispatch(authSlice.actions.signInUser(user));
+          dispatch(appLoaded());
+        } else {
+          dispatch(authSlice.actions.signOutUser());
+          dispatch(appLoaded());
+        }
+        resolve();
+      });
+    });
+  } catch (error) {
+    console.error('Error verifying authentication:', error);
+    dispatch(asyncActionError(error.message));
+    throw error;
+  }
+});
 
 export const signInWithEmail = createAsyncThunk(
   'auth/signIn',
@@ -37,26 +58,28 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    signInUser(state, action) {
-      state.push({
-        authenticated: true,
-        currentUser: {
-          email: action.payload.email,
-          photoUrl: action.payload.photoURL,
-          uid: action.payload.uid,
-          displayName: action.payload.displayName,
-          providerId: action.payload.providerData[0].providerId,
-        },
-      });
-    },
-    signOutUser(state) {
-      return {
-        ...state,
-        authenticated: false,
-        currentUser: null,
+    signInUser: (state, action) => {
+      const { email, photoURL, uid, displayName, providerData } = action.payload;
+      state.authenticated = true;
+      state.currentUser = {
+        email,
+        photoURL,
+        uid,
+        displayName,
+        providerId: providerData[0]?.providerId,
       };
+    },
+    signOutUser: (state) => {
+      state.authenticated = false;
+      state.currentUser = null;
+    },
+    setLocation: (state, action) => {
+      state.prevLocation = state.currentLocation;
+      state.currentLocation = action.payload;
     },
   },
 });
+
+export const { signInUser, signOutUser, setLocation } = authSlice.actions;
 
 export default authSlice.reducer;

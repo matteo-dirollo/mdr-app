@@ -9,6 +9,9 @@ import ExampleTheme from './ExampleTheme';
 import { MentionNode } from '../nodes/MentionNode';
 import { EmojiNode } from '../nodes/EmojiNode';
 import { KeywordNode } from '../nodes/KeywordNode';
+import { YouTubeNode } from '../nodes/YoutubeNode';
+import { FigmaNode } from '../nodes/FigmaNode';
+import { TweetNode } from '../nodes/TweetNode';
 
 export const editorConfig = {
   // The editor theme
@@ -32,6 +35,9 @@ export const editorConfig = {
     LinkNode,
     EmoticonNode,
     ImageNode,
+    YouTubeNode,
+    FigmaNode,
+    TweetNode,
     MentionNode,
     EmojiNode,
     KeywordNode

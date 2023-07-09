@@ -16,6 +16,7 @@ import { editorConfig } from './themes/editorConfig';
 // import './styles.css'
 import { Box, useColorModeValue } from '@chakra-ui/react';
 import ImagesPlugin from './plugins/ImagesPlugin';
+import YouTubePlugin from './plugins/YoutubePlugin';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 
 function PlainEditor({ stateInstance }) {
@@ -38,6 +39,7 @@ function PlainEditor({ stateInstance }) {
           <AutoFocusPlugin />
           <CodeHighlightPlugin />
           <ImagesPlugin />
+          <YouTubePlugin />
           <ListPlugin />
           <LinkPlugin />
           <AutoLinkPlugin />

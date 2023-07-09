@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import SignOut from '../../auth/SignOut';
-import { openModal } from '../../../store/reducers/modalReducer';
+import { openModal } from '../modal/modalSlice';
 
 
 const BreadCrumbNavbar = () => {
