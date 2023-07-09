@@ -9,7 +9,7 @@ import Navbar from './components/layout/navbar/Navbar';
 import Home from './components/pages/Home';
 import Works from './components/pages/Works';
 import Contact from './components/pages/Contact';
-import Blog from './components/layout/articles/Blog';
+// import Blog from './components/layout/articles/Blog';
 import Sandbox from './components/pages/Sandbox';
 import AccountProfile from './components/pages/AccountProfile';
 import ModalManager from './components/layout/modal/ModalManager';
@@ -26,7 +26,7 @@ import PrivacyPolicy from './components/pages/footer/PrivacyPolicy';
 import Terms from './components/pages/footer/Terms';
 import DigitalSketches from './components/pages/DigitalSketches';
 
-import Post from './components/layout/articles/posts/Post';
+// import Post from './components/layout/articles/posts/Post';
 import Posts from './components/layout/admin/Posts/Posts';
 
 import ScrollToTop from './components/utils/ScrollToTop';
@@ -94,8 +94,8 @@ function App() {
               <Route path="/privacy-policy" exact element={<PrivacyPolicy />} />
               <Route path="/terms-and-conditions" exact element={<Terms />} />
 
-              <Route path="/blog" exact element={<Blog />} />
-              <Route path="blog/:articleId" element={<Post />} />
+              {/* <Route path="/blog" exact element={<Blog />} />
+              <Route path="blog/:articleId" element={<Post />} /> */}
 
               <Route path="*" element={<PageNotFound />} />
               {/* PRIVATE ROUTES */}

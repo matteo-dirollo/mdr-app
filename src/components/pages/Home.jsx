@@ -5,7 +5,7 @@ import LocalBgVideo from '../layout/videos/LocalBgVideo';
 
 import { TabTitle } from '../layout/routing/TabTitle';
 import Services from '../layout/services/Services';
-import LatestPosts from '../layout/articles/LatestPosts';
+// import LatestPosts from '../layout/articles/LatestPosts';
 // import BackgroundVideo from '../layout/videos/BackgroundVideo';
 
 const Home = () => {
@@ -15,7 +15,7 @@ const Home = () => {
       <VStack>
         <LocalBgVideo />
         <Services />
-        <LatestPosts />
+        {/* <LatestPosts /> */}
       </VStack>
     </Box>
   );
