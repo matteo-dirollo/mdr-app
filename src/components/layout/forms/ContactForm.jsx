@@ -9,7 +9,6 @@ import {
   HStack,
   useColorModeValue,
   useToast,
-  Center,
 } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
@@ -24,6 +23,7 @@ import { addDoc, collection, Timestamp } from 'firebase/firestore';
 const ContactForm = () => {
   const toast = useToast();
   const textColor = useColorModeValue('gray.700', 'gray.100');
+  const emailToColor = useColorModeValue('teal.100', 'teal.500');
   const buttonColor = useColorModeValue('teal.500', 'teal.300');
   const buttonHoverColor = useColorModeValue('teal.600', 'teal.400');
   const tastSuccess = () => {
@@ -90,7 +90,7 @@ const ContactForm = () => {
       justifyContent="center"
       flexDirection={['column', 'column', 'row']}
     >
-      <Box mx={10} minW={[250,300,500]} maxW={700}>
+      <Box mx={10} minW={[250, 300, 500]} maxW={700}>
         <Heading color={textColor}>Let's work together !</Heading>
         <Text mt={{ sm: 3, md: 3, lg: 5 }} maxW={700} color={textColor}>
           Have a project in mind? Let's collaborate and bring it to life! From
@@ -103,10 +103,10 @@ const ContactForm = () => {
           my={{ base: 5, sm: 5, md: 8, lg: 10 }}
           size="md"
           height="48px"
-          width="full"
+          width="auto"
           variant="ghost"
           color={textColor}
-          _hover={{ backgroundColor: '#e6e0fb' }}
+          _hover={{ backgroundColor: emailToColor }}
           border={'2px solid teal'}
           leftIcon={<MdEmail color="teal" size="20px" />}
           onClick={handleClick}
@@ -169,17 +169,18 @@ const ContactForm = () => {
                 </Text>
               )}
 
-              <Center m={10} position={'relative'}>
-                <Button
-                  isLoading={isSubmitting}
-                  disable={!isValid || !dirty || isSubmitting}
-                  type="submit"
-                  colorScheme="teal"
-                  minW={150}
-                >
-                  Send
-                </Button>
-              </Center>
+              <Button
+                isLoading={isSubmitting}
+                disable={!isValid || !dirty || isSubmitting}
+                type="submit"
+                colorScheme="teal"
+                minW={200}
+                p={5}
+                py={7}
+                my={6}
+              >
+                Send
+              </Button>
             </Form>
           )}
         </Formik>
