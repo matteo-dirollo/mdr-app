@@ -7,6 +7,7 @@ import modalReducer from '../components/layout/modal/modalSlice';
 import postsReducer from '../components/layout/articles/posts/postsSlice';
 import authReducer, { verifyAuth } from '../components/auth/authSlice';
 import locationReducer from './locationSlice'; // Import the location reducer
+import storageReducer from '../apis/storageSlice';
 
 const persistConfig = {
   key: 'root',
@@ -21,6 +22,7 @@ const appReducers = combineReducers({
   posts: postsReducer,
   auth: authReducer,
   location: locationReducer,
+  storage: storageReducer,
 });
 
 const _persistedReducer = persistReducer(persistConfig, appReducers);
