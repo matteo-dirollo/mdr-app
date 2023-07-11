@@ -1,10 +1,18 @@
 import { Box, Center, Heading, Text } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchObjects, selectObjectData } from '../../../apis/storageSlice';
 
 const LocalBgVideo = () => {
-  const videoUrl = 'https://firebasestorage.googleapis.com/v0/b/matteo-dirollo-com.appspot.com/o/Videos%2Floange_newone.mp4?alt=media&token=9f801a48-4a55-4558-8500-ded209d54108'
+  const videoUrl = 'https://firebasestorage.googleapis.com/v0/b/matteo-dirollo-com.appspot.com/o/Videos%2Flosange-derniere.mp4?alt=media&token=0314676b-851b-404f-a5d8-97109ebf33cc'
+  const dispatch = useDispatch();
+  const objectData = useSelector(selectObjectData);
+  useEffect(() => {
+    dispatch(fetchObjects());
+  }, [dispatch]);
 
+  console.log(objectData)
   return (
     <Box
       pos="relative"
