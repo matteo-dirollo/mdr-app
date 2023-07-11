@@ -5,14 +5,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchObjects, selectObjectData } from '../../../apis/storageSlice';
 
 const LocalBgVideo = () => {
-  const videoUrl = 'https://firebasestorage.googleapis.com/v0/b/matteo-dirollo-com.appspot.com/o/Videos%2Flosange-derniere.mp4?alt=media&token=0314676b-851b-404f-a5d8-97109ebf33cc'
+  
   const dispatch = useDispatch();
   const objectData = useSelector(selectObjectData);
+  const desiredObjectName = 'losange-derniere.mp4';
+
+
   useEffect(() => {
     dispatch(fetchObjects());
   }, [dispatch]);
 
-  console.log(objectData)
+  const videoUrl = objectData[desiredObjectName];
+
   return (
     <Box
       pos="relative"
