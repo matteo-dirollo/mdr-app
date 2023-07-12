@@ -37,7 +37,8 @@ import "@fontsource/epilogue/400-italic.css";
 import { setLocation } from './store/locationSlice';
 
 function App() {
-  const initialized = useSelector(state => state.async);
+  const initialized = useSelector(state => state.async.initialized);
+
   // const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();

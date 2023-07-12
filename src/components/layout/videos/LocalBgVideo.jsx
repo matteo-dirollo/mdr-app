@@ -1,21 +1,49 @@
 import { Box, Center, Heading, Text } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchObjects, selectObjectData } from '../../../apis/storageSlice';
+import { fetchObject, clearStorage } from '../../../apis/storageSlice';
+import {
+  appLoaded,
+  asyncActionFinish,
+  asyncActionStart,
+} from '../../../store/asyncSlice';
 
 const LocalBgVideo = () => {
-  
   const dispatch = useDispatch();
-  const objectData = useSelector(selectObjectData);
-  const desiredObjectName = 'losange-derniere.mp4';
-
+  const desiredObjectName = 'Videos/losange-derniere.mp4';
+  const [isVideoLoaded, setVideoLoaded] = useState(false);
+  const videoUrl = useSelector(state => {
+    const desiredObject = state.storage.objectData[desiredObjectName];
+    return desiredObject ? desiredObject : null;
+  });
 
   useEffect(() => {
-    dispatch(fetchObjects());
+    
+    // Fetch objects using the fetchObjects action from the storageSlice
+    const fetchObjectsFromStorage = async () => {
+      dispatch(appLoaded());
+      try {
+        dispatch(asyncActionStart());
+        dispatch(clearStorage());
+        dispatch(fetchObject(desiredObjectName));
+
+        dispatch(asyncActionFinish());
+        
+
+      } catch (error) {
+        console.log(error);
+      } 
+    };
+
+    fetchObjectsFromStorage();
   }, [dispatch]);
 
-  const videoUrl = objectData[desiredObjectName];
+  useEffect(() => {
+    if (videoUrl) {
+      setVideoLoaded(true);
+    }
+  }, [videoUrl]);
 
   return (
     <Box
@@ -35,23 +63,27 @@ const LocalBgVideo = () => {
         height="100%"
         zIndex={-1}
       >
-        <motion.video
-          autoPlay
-          loop
-          muted
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1 }}
-          width="100%"
-          height="100%"
-          objectFit="cover"
-        >
-          <source src={videoUrl} type="video/mp4" />
-        </motion.video>
+                {isVideoLoaded ? (
+          <motion.video
+            autoPlay
+            loop
+            muted
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1 }}
+            width="100%"
+            height="100%"
+            objectFit="cover"
+          >
+            <source src={videoUrl} type="video/mp4" />
+          </motion.video>
+        ) : (
+          <div>Loading video...</div>
+        )}
       </Box>
       <Center zIndex={1}>
-        <Box maxW={['300','450','600px']}>
+        <Box maxW={['300', '450', '600px']}>
           <Heading
             lineHeight={1.1}
             fontWeight={600}
