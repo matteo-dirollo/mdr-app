@@ -1,13 +1,19 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { storage } from './firestore/firebase-config'; // Import your initialized Firebase storage instance
+import { storage } from './firestore/firebase-config';
 import { getDownloadURL, listAll, ref } from 'firebase/storage';
 
 export const fetchObject = createAsyncThunk(
   'storage/fetchObject',
-  async objectId => {
-    const objectRef = storage.ref().child(objectId);
-    const downloadURL = await objectRef.getDownloadURL();
-    return { objectId, downloadURL };
+  async (objectId, { rejectWithValue }) => {
+    try {
+      const objectRef = ref(storage, objectId);
+      const downloadURL = await getDownloadURL(objectRef);
+
+      return { objectId, downloadURL };
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.message);
+    }
   }
 );
 
@@ -35,6 +41,8 @@ export const fetchObjects = createAsyncThunk(
   }
 );
 
+
+
 const storageSlice = createSlice({
   name: 'storage',
   initialState: {
@@ -42,7 +50,13 @@ const storageSlice = createSlice({
     objectData: {},
     error: null,
   },
-  reducers: {},
+  reducers: {
+    clearStorage: () => ({
+      loading: false,
+      objectData: {},
+      error: null,
+    }),
+  },
   extraReducers: builder => {
     builder
       .addCase(fetchObject.pending, state => {
@@ -80,11 +94,10 @@ const storageSlice = createSlice({
   },
 });
 
-export const { reducer: storageReducer } = storageSlice;
+export const { clearStorage } = storageSlice.actions;
 
 export const selectLoading = state => state.storage.loading;
 export const selectObjectData = state => state.storage.objectData;
-
 export const selectError = state => state.storage.error;
 
-export default storageReducer;
+export default storageSlice.reducer;
