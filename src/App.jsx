@@ -31,13 +31,14 @@ import Posts from './components/layout/admin/Posts/Posts';
 
 import ScrollToTop from './components/utils/ScrollToTop';
 
-import "@fontsource/epilogue"; // Defaults to weight 400
-import "@fontsource/epilogue/400.css"; // Specify weight
-import "@fontsource/epilogue/400-italic.css";
+import '@fontsource/epilogue'; // Defaults to weight 400
+import '@fontsource/epilogue/400.css'; // Specify weight
+import '@fontsource/epilogue/400-italic.css';
 import { setLocation } from './store/locationSlice';
 
 function App() {
   const initialized = useSelector(state => state.async.initialized);
+  
 
   // const navigate = useNavigate();
   const location = useLocation();
@@ -65,14 +66,14 @@ function App() {
   if (!initialized)
     return (
       <ChakraProvider theme={theme}>
-        <CSSReset/>
+        <CSSReset />
         <LoadingSpinner />
       </ChakraProvider>
     );
 
   return (
     <ChakraProvider theme={theme}>
-      <CSSReset/>
+      <CSSReset />
       <ModalManager />
       <ScrollToTop />
       <CookieConsent
