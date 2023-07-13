@@ -8,6 +8,7 @@ import {
   asyncActionFinish,
   asyncActionStart,
 } from '../../../store/asyncSlice';
+import LoadingSpinner from '../loader/LoadingSpinner';
 
 const LocalBgVideo = () => {
   const dispatch = useDispatch();
@@ -22,14 +23,13 @@ const LocalBgVideo = () => {
     
     // Fetch objects using the fetchObjects action from the storageSlice
     const fetchObjectsFromStorage = async () => {
-      dispatch(appLoaded());
       try {
         dispatch(asyncActionStart());
         dispatch(clearStorage());
         await dispatch(fetchObject(desiredObjectName));
 
         dispatch(asyncActionFinish());
-        
+        dispatch(appLoaded());
 
       } catch (error) {
         console.log(error);
@@ -77,7 +77,7 @@ const LocalBgVideo = () => {
             <source src={videoUrl} type="video/mp4" />
           </motion.video>
         ) : (
-          <div>Loading video...</div>
+          <LoadingSpinner />
         )}
       </Box>
       <Center zIndex={1}>
