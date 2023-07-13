@@ -13,7 +13,7 @@ const persistConfig = {
   key: 'root',
   storage: storage,
   stateReconciler: autoMergeLevel1,
-  blacklist: ['posts'],
+  blacklist: ['posts', 'async', 'storage'],
 };
 
 const appReducers = combineReducers({
@@ -37,6 +37,5 @@ export const store = configureStore({
 });
 
 store.dispatch(verifyAuth());
-
 
 export const persistor = persistStore(store);

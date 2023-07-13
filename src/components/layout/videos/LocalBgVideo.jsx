@@ -1,8 +1,8 @@
 import { Box, Center, Heading, Text } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchObject, clearStorage } from '../../../apis/storageSlice';
+import { fetchObject, clearStorage, selectLoading } from '../../../apis/storageSlice';
 import {
   appLoaded,
   asyncActionFinish,
@@ -12,7 +12,7 @@ import {
 const LocalBgVideo = () => {
   const dispatch = useDispatch();
   const desiredObjectName = 'Videos/losange-derniere.mp4';
-  const [isVideoLoaded, setVideoLoaded] = useState(false);
+  const loading = useSelector(selectLoading);
   const videoUrl = useSelector(state => {
     const desiredObject = state.storage.objectData[desiredObjectName];
     return desiredObject ? desiredObject : null;
@@ -26,7 +26,7 @@ const LocalBgVideo = () => {
       try {
         dispatch(asyncActionStart());
         dispatch(clearStorage());
-        dispatch(fetchObject(desiredObjectName));
+        await dispatch(fetchObject(desiredObjectName));
 
         dispatch(asyncActionFinish());
         
@@ -39,11 +39,9 @@ const LocalBgVideo = () => {
     fetchObjectsFromStorage();
   }, [dispatch]);
 
-  useEffect(() => {
-    if (videoUrl) {
-      setVideoLoaded(true);
-    }
-  }, [videoUrl]);
+
+
+  
 
   return (
     <Box
@@ -63,7 +61,7 @@ const LocalBgVideo = () => {
         height="100%"
         zIndex={-1}
       >
-                {isVideoLoaded ? (
+                {!loading ? (
           <motion.video
             autoPlay
             loop
