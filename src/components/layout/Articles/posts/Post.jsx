@@ -20,6 +20,7 @@ import { fetchPosts, getPostsStatus, selectAllPosts } from './postsSlice';
 import PlainEditor from '../../lexicalEditor/PlainEditor';
 import { Link, useParams } from 'react-router-dom';
 import _ from 'lodash';
+import Comments from './Comments';
 
 const Post = () => {
   const dispatch = useDispatch();
@@ -50,7 +51,12 @@ const Post = () => {
           to={`/blog/${card.id}`}
           sx={{ 'a:hover': { textDecoration: 'none' } }}
         >
-          <Text mb='8px' color={textColor} fontSize='14px' sx={{lineHeight:'1.5 !important', fontWeight:'bold'}}>
+          <Text
+            mb="8px"
+            color={textColor}
+            fontSize="14px"
+            sx={{ lineHeight: '1.5 !important', fontWeight: 'bold' }}
+          >
             {card.title}
           </Text>
           <Box
@@ -67,7 +73,9 @@ const Post = () => {
   ));
   const renderTags = tags.map((tag, index) => {
     const categories = tag.category;
-    const renderCategories = categories.map((category, index) => <Tag key={index}>{category}</Tag>);
+    const renderCategories = categories.map((category, index) => (
+      <Tag key={index}>{category}</Tag>
+    ));
     return <React.Fragment key={index}>{renderCategories}</React.Fragment>;
   });
 
@@ -144,6 +152,11 @@ const Post = () => {
           <Spacer />
           {renderTags}
         </HStack>
+        
+        <Heading my={5} as="h2" size="md">
+          Comments
+        </Heading>
+        <Comments comments={article.comments}/>
         <br />
         <Heading mb={5} as="h2" size="md">
           More Posts
