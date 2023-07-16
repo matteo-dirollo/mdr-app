@@ -2,15 +2,15 @@ import React from 'react';
 import { Button } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
 import { closeModal } from '../layout/modal/modalSlice';
-import { socialLogin } from '../../apis/firestore/firebaseService';
+import { socialLogin } from './authSlice';
 import { FaFacebook, FaGoogle } from 'react-icons/fa';
 
 const SocialLogin = () => {
   const dispatch = useDispatch();
-  function handleSocialLogin(provider) {
+  const handleSocialLogin = provider => {
     dispatch(closeModal());
-    socialLogin(provider);
-  }
+    dispatch(socialLogin(provider));
+  };
   return (
     <>
       <Button

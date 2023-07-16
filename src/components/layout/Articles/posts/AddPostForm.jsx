@@ -94,7 +94,7 @@ const AddPostForm = () => {
     onSavePost(values);
     toastSuccess();
     setSubmitting(false);
-    console.log(values.editor)
+    // console.log(values.editor)
   };
 
   return (

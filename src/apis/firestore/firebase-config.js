@@ -3,6 +3,13 @@ import {getAnalytics} from 'firebase/analytics'
 import { getFirestore } from '@firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { getStorage } from 'firebase/storage';
+import { config as adminConfig } from 'firebase-admin';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const adminServiceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+adminConfig.credential = adminConfig.credential.cert(adminServiceAccount);
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -21,4 +28,4 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 const storage = getStorage(app);
 
-export { db, auth, storage, analytics };
+export { db, auth, storage, analytics, adminConfig };

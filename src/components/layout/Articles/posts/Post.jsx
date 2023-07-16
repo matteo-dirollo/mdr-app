@@ -152,11 +152,11 @@ const Post = () => {
           <Spacer />
           {renderTags}
         </HStack>
-        
+
         <Heading my={5} as="h2" size="md">
           Comments
         </Heading>
-        <Comments comments={article.comments}/>
+        <Comments comments={article.comments} />
         <br />
         <Heading mb={5} as="h2" size="md">
           More Posts

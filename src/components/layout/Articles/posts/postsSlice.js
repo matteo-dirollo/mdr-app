@@ -8,12 +8,14 @@ import {
   doc,
   deleteDoc,
   updateDoc,
+  getDoc,
 } from 'firebase/firestore';
 import { v4 } from 'uuid';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import _ from 'lodash';
 import { getCurrentUserFromState } from '../../../auth/authSlice';
 import { v4 as uuidv4 } from 'uuid';
+import { useParams } from 'react-router-dom';
 
 const initialState = {
   posts: [],
@@ -55,7 +57,7 @@ export const addNewPost = createAsyncThunk(
     } catch (error) {
       console.log('Error adding document: ', error);
     }
-    console.log(JSON.stringify(post.editor));
+    // console.log(JSON.stringify(post.editor));
   }
 );
 
@@ -71,27 +73,40 @@ export const deletePost = createAsyncThunk('posts/deletePost', async postId => {
 
 export const addComment = createAsyncThunk(
   'posts/addComment',
-  async ({ postId, comment, commentId, currentUser }) => {
+  async ({ postId, comment }) => {
     // Save the comment to Firestore
-    const commentsDoc = doc(db, 'Comments', commentId);
-    await setDoc(commentsDoc, {
-      postId,
-      comment,
-      userId: currentUser.uid,
-    });
-
-    return { postId, comment, currentUser };
+    try {
+      const commentId = uuidv4();
+      const postsDoc = doc(db, 'Posts', postId);
+      const currentUser = getCurrentUserFromState();
+      const timestamp = Timestamp.now();
+      await updateDoc(postsDoc, {
+        [`comments.${commentId}`]: {
+          postId,
+          comment,
+          uid: currentUser.uid,
+          timestamp
+        },
+      });
+      return { postId, comment };
+    } catch (error) {
+      console.log(error);
+    }
   }
 );
 
 export const deleteComment = createAsyncThunk(
-  'posts/deleteComment',
+  'comments/deleteComment',
   async ({ postId, commentId }) => {
-    // Delete the comment from Firestore
-    const commentDoc = doc(db, 'Comments', commentId);
-    await deleteDoc(commentDoc);
-
-    return { postId, commentId };
+    try {
+      const postsDoc = doc(db, 'Posts', postId);
+      await updateDoc(postsDoc, {
+        [`comments.${commentId}`]: null,
+      });
+      return { postId, commentId };
+    } catch (error) {
+      console.log(error);
+    }
   }
 );
 
@@ -99,25 +114,25 @@ export const modifyComment = createAsyncThunk(
   'posts/modifyComment',
   async ({ postId, commentId, newComment }) => {
     // Update the comment in Firestore
-    const commentDoc = doc(db, 'Comments', commentId);
-    await updateDoc(commentDoc, { comment: newComment });
+    try {
+      const commentDoc = doc(db, 'Comments', commentId);
+      await updateDoc(commentDoc, { comment: newComment });
 
-    return { postId, commentId, newComment };
+      return { postId, commentId, newComment };
+    } catch (error) {
+      console.log(error);
+    }
   }
 );
 export const fetchComments = createAsyncThunk(
-  'posts/fetchComments',
+  'comments/fetchComments',
   async postId => {
     try {
-      // Fetch comments from the database
-      const commentsSnapshot = await getDocs(collection(db, 'Comments'));
-      const comments = [];
-      commentsSnapshot.forEach(doc => {
-        const comment = { id: doc.id, ...doc.data() };
-        comments.push(comment);
-      });
-
-      return { postId, comments };
+      const postsDoc = doc(db, 'Posts', postId);
+      const docSnapshot = await getDoc(postsDoc);
+      const post = { id: docSnapshot.id, ...docSnapshot.data() };
+      const comments = Object.values(post.comments || {});
+      return comments;
     } catch (error) {
       throw new Error('Failed to fetch comments');
     }
@@ -129,7 +144,7 @@ const postsSlice = createSlice({
   initialState,
   reducers: {
     postAdded: (state, { payload }) => {
-      state.push({ ...payload, comments: [] });
+      state.posts.push({ ...payload, comments: [] });
     },
     postDeleted: (state, { payload }) => {
       state.posts = state.posts.filter(post => post.id !== payload);
@@ -147,13 +162,13 @@ const postsSlice = createSlice({
     },
     commentAdded: (state, action) => {
       const { postId, comment } = action.payload;
-      const user = getCurrentUserFromState();
       const post = state.posts.find(post => post.id === postId);
       if (post) {
         if (!post.comments) {
           post.comments = []; // Initialize the comments array if it doesn't exist
+        } else {
+          post.comments.push(comment);
         }
-        post.comments.push({ user, comment });
       }
     },
     commentDeleted: (state, action) => {
@@ -234,14 +249,17 @@ const postsSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(fetchComments.fulfilled, (state, action) => {
-        // Update the status to 'succeeded' and populate the comments in the state
         state.status = 'succeeded';
-        const { postId, comments } = action.payload;
-        const post = state.posts.find(post => post.id === postId);
-        if (post) {
-          post.comments = comments;
-        }
+        const comments = action.payload; // The payload is an array of comments
+        state.posts.forEach(post => {
+          if (post.comments) {
+            post.comments = comments.filter(
+              comment => comment.postId === post.id
+            );
+          }
+        });
       })
+
       .addCase(fetchComments.rejected, (state, action) => {
         // Update the status to 'failed' and set the error message
         state.status = 'failed';
@@ -253,18 +271,18 @@ const postsSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(addComment.fulfilled, (state, action) => {
-        // Update the status to 'succeeded' and add the new comment to the state
         state.status = 'succeeded';
-        const { postId, comment, currentUser } = action.payload;
-        const post = state.posts.find(post => post.id === postId);
+        const { comment } = action.payload;
+        const { articleId } = useParams();
+        const post = _.find(state.posts, { id: articleId });
         if (post) {
-          post.comments.push({
-            id: uuidv4(),
-            comment,
-            user: currentUser,
-          });
+          if (!post.comments) {
+            post.comments = []; // Initialize the comments array if it doesn't exist
+          }
+          post.comments.push(comment);
         }
       })
+
       .addCase(addComment.rejected, (state, action) => {
         // Update the status to 'failed' and set the error message
         state.status = 'failed';
@@ -321,6 +339,8 @@ const postsSlice = createSlice({
 export const selectAllPosts = state => state.posts.posts;
 export const getPostsStatus = state => state.posts.status;
 export const getPostsError = state => state.posts.error;
+export const selectCommentsByPostId = (state, postId) =>
+  state.posts.comments.filter(comment => comment.postId === postId);
 
 export const {
   postAdded,
