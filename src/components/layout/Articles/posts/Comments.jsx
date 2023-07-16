@@ -18,7 +18,7 @@ import {
   asyncActionFinish,
   asyncActionStart,
 } from '../../../../store/asyncSlice';
-import { fetchUserById, getUsersFromState } from '../../../auth/authSlice';
+// import { fetchUserById, getUsersFromState } from '../../../auth/authSlice';
 
 const Comments = () => {
   const dispatch = useDispatch();
@@ -26,9 +26,9 @@ const Comments = () => {
   const { articleId } = useParams();
   const article = _.find(posts, { id: articleId });
   const comments = article?.comments ? Object.values(article.comments) : [];
-  const users = useSelector(getUsersFromState);
+  // const users = useSelector(getUsersFromState);
 
-  console.log(users);
+  // console.log(users);
 
   useEffect(() => {
     dispatch(fetchComments(article));
@@ -67,18 +67,18 @@ const Comments = () => {
   };
 
   const renderComments = comments.map((comment, index) => {
-    dispatch(fetchUserById(comment.uid));
-    const user = users.find(user => user.uid === comment.uid);
-    const displayName = user?.displayName || 'Unknown User';
-    const photoURL = user?.photoURL || ''; // Provide a default value if photoURL is not available
+    // dispatch(fetchUserById(comment.uid));
+    // const user = users.find(user => user.uid === comment.uid);
+    // const displayName = user?.displayName || 'Unknown User';
+    // const photoURL = user?.photoURL || ''; // Provide a default value if photoURL is not available
     console.log(comment);
     return (
       <Box key={index} mb={2}>
         <Flex alignItems="center">
-          <Avatar size="sm" name={displayName} src={photoURL} />
+          <Avatar size="sm" name={''} src={''} />
           <Box ml={2}>
             <Text fontSize="sm" fontWeight="bold">
-              {displayName}
+              {''}
             </Text>
             <Text fontSize={'xs'}>{comment.comment}</Text>
           </Box>

@@ -3,7 +3,6 @@ import { db, storage } from '../../../../apis/firestore/firebase-config';
 import {
   collection,
   getDocs,
-  Timestamp,
   setDoc,
   doc,
   deleteDoc,
@@ -16,6 +15,7 @@ import _ from 'lodash';
 import { getCurrentUserFromState } from '../../../auth/authSlice';
 import { v4 as uuidv4 } from 'uuid';
 import { useParams } from 'react-router-dom';
+import { Timestamp } from '@firebase/firestore';
 
 const initialState = {
   posts: [],

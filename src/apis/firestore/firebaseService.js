@@ -1,16 +1,12 @@
 import {
   createUserWithEmailAndPassword,
-  FacebookAuthProvider,
-  GoogleAuthProvider,
   signInWithEmailAndPassword,
-  signInWithPopup,
   signOut,
-  updateProfile,
-  getAdditionalUserInfo,
+  updateProfile
 } from 'firebase/auth';
-import { signInUser } from '../../components/auth/authSlice';
 import { auth } from './firebase-config';
-import { firebaseProviderUsersCollection } from './firestoreService';
+
+
 // import { firebaseUsersDoc } from './firestoreService';
 // import { setUserProfileData } from './firestoreService';
 
@@ -50,26 +46,26 @@ export async function registerFirebase(creds) {
   }
 }
 
-export async function socialLogin(selectedProvider) {
-  let provider;
-  if (selectedProvider === 'facebook') {
-    provider = new FacebookAuthProvider();
-  }
-  if (selectedProvider === 'google') {
-    provider = new GoogleAuthProvider();
-  }
-  try {
-    const result = await signInWithPopup(auth, provider);
-    const user = result.user;
-    const { isNewUser } = getAdditionalUserInfo(result);
-    signInUser(user);
-    if (isNewUser === true) {
-      firebaseProviderUsersCollection(user)
-    }
-  } catch (error) {
-    throw error;
-  }
-}
+// export async function socialLogin(selectedProvider) {
+//   let provider;
+//   if (selectedProvider === 'facebook') {
+//     provider = new FacebookAuthProvider();
+//   }
+//   if (selectedProvider === 'google') {
+//     provider = new GoogleAuthProvider();
+//   }
+//   try {
+//     const result = await signInWithPopup(auth, provider);
+//     const user = result.user;
+//     const { isNewUser } = getAdditionalUserInfo(result);
+//     signInUser(user);
+//     if (isNewUser === true) {
+//       firebaseProviderUsersCollection(user)
+//     }
+//   } catch (error) {
+//     throw error;
+//   }
+// }
 
 //   export async function registerFirebase(creds){
 //     try {

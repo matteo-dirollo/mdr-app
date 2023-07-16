@@ -8,7 +8,7 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
 } from 'firebase/auth';
-import { adminConfig, auth, db } from '../../apis/firestore/firebase-config';
+import { auth, db } from '../../apis/firestore/firebase-config';
 import { appLoaded, asyncActionError } from '../../store/asyncSlice';
 import { doc, getDoc } from 'firebase/firestore';
 import { firebaseProviderUsersCollection } from '../../apis/firestore/firestoreService';
@@ -88,18 +88,18 @@ export const socialLogin = createAsyncThunk(
   }
 );
 
-export const fetchUsers = createAsyncThunk('auth/fetchUsers', async () => {
-  try {
-    const listUsersResult = await adminConfig.auth().listUsers();
-    const users = listUsersResult.users;
-    // Process the list of users as needed
-    console.log(users);
-    return users;
-  } catch (error) {
-    console.log('Error fetching users:', error);
-    throw new Error('Failed to fetch users');
-  }
-});
+// export const fetchUsers = createAsyncThunk('auth/fetchUsers', async () => {
+//   try {
+//     const listUsersResult = await adminConfig.auth().listUsers();
+//     const users = listUsersResult.users;
+//     // Process the list of users as needed
+//     console.log(users);
+//     return users;
+//   } catch (error) {
+//     console.log('Error fetching users:', error);
+//     throw new Error('Failed to fetch users');
+//   }
+// });
 
 export const fetchUserById = createAsyncThunk(
   'auth/fetchUserById',
@@ -143,13 +143,13 @@ const authSlice = createSlice({
   },
   extraReducers: builder => {
     builder
-      .addCase(fetchUsers.fulfilled, (state, action) => {
-        state.users = action.payload;
-      })
-      .addCase(fetchUsers.rejected, (state, action) => {
-        // Handle the error if needed
-        console.error('Error fetching users:', action.error.message);
-      })
+      // .addCase(fetchUsers.fulfilled, (state, action) => {
+      //   state.users = action.payload;
+      // })
+      // .addCase(fetchUsers.rejected, (state, action) => {
+      //   // Handle the error if needed
+      //   console.error('Error fetching users:', action.error.message);
+      // })
       .addCase(fetchUserById.fulfilled, (state, action) => {
         const user = action.payload;
         state.users[user.id] = user; // Store the user data in the users object using the user ID as the key

@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import * as Yup from 'yup';
 import { db } from '../../../apis/firestore/firebase-config';
-import { setDoc, doc, Timestamp } from '@firebase/firestore';
+import { setDoc, doc } from '@firebase/firestore';
 import Logo from '../logo/Logo';
 import { BiMailSend } from 'react-icons/bi';
 import MyTextInput from '../../auth/MyTextInput';
@@ -23,6 +23,7 @@ import Expire from '../animations/Expire';
 import { Link as ReactRouterLink } from 'react-router-dom';
 import { FaMastodon } from 'react-icons/fa';
 import { BsGithub } from 'react-icons/bs';
+import { Timestamp } from 'firebase/firestore';
 
 const FooterNewsletter = () => {
   const toast = useToast();
