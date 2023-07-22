@@ -7,7 +7,7 @@ import PageNotFound from './components/pages/PageNotFound';
 import CookieConsent from 'react-cookie-consent';
 import Navbar from './components/layout/navbar/Navbar';
 import Home from './components/pages/Home';
-import Works from './components/pages/Works';
+// import Works from './components/pages/Works';
 import Contact from './components/pages/Contact';
 import Blog from './components/layout/articles/Blog';
 import Sandbox from './components/pages/Sandbox';
@@ -38,15 +38,13 @@ import { setLocation } from './store/locationSlice';
 
 function App() {
   const initialized = useSelector(state => state.async.initialized);
-  
 
-  // const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
   const { pathname } = useLocation();
 
   useEffect(() => {
-    dispatch(setLocation(location.pathname)); // Dispatch the setLocation action when the location changes
+    dispatch(setLocation(location.pathname));
   }, [location, dispatch]);
 
   useEffect(() => {
@@ -91,12 +89,12 @@ function App() {
             <Routes>
               {/* PUBLIC ROUTES */}
               <Route path="/" exact element={<Home />} />
-              <Route path="/work" exact element={<Works />} />
+              <Route path="/work" exact element={<Blog />} />
               <Route path="/contact" exact element={<Contact />} />
               <Route path="/privacy-policy" exact element={<PrivacyPolicy />} />
               <Route path="/terms-and-conditions" exact element={<Terms />} />
 
-              <Route path="/blog" exact element={<Blog />} />
+              {/* <Route path="/blog" exact element={<Blog />} /> */}
               <Route path="blog/:articleId" element={<Post />} />
 
               <Route path="*" element={<PageNotFound />} />

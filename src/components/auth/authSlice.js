@@ -7,15 +7,16 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signInWithPopup,
+  signOut,
 } from 'firebase/auth';
-import { auth, db } from '../../apis/firestore/firebase-config';
+import { auth } from '../../apis/firestore/firebase-config';
 import { appLoaded, asyncActionError } from '../../store/asyncSlice';
-import { doc, getDoc } from 'firebase/firestore';
 import { firebaseProviderUsersCollection } from '../../apis/firestore/firestoreService';
 
 const initialState = {
   authenticated: false,
   currentUser: null,
+  users: {},
 };
 
 export const verifyAuth = createAsyncThunk(
@@ -88,30 +89,58 @@ export const socialLogin = createAsyncThunk(
   }
 );
 
-// export const fetchUsers = createAsyncThunk('auth/fetchUsers', async () => {
-//   try {
-//     const listUsersResult = await adminConfig.auth().listUsers();
-//     const users = listUsersResult.users;
-//     // Process the list of users as needed
-//     console.log(users);
-//     return users;
-//   } catch (error) {
-//     console.log('Error fetching users:', error);
-//     throw new Error('Failed to fetch users');
-//   }
-// });
+export const signOutFirebase = createAsyncThunk(
+  'auth/signOutFirebase',
+  async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
+export const fetchUsers = createAsyncThunk('auth/fetchUsers', async () => {
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_FIREBASE_SERVICE_ACCOUNT_URL}/users`
+    ); // Replace with your Cloud Function URL
+    if (!response.ok) {
+      throw new Error('Failed to fetch users');
+    }
+    const users = await response.json();
+
+    const usersObject = users.reduce((acc, user) => {
+      acc[user.uid] = user;
+
+      return acc;
+    }, {});
+    return usersObject;
+  } catch (error) {
+    console.log('Error fetching users:', error);
+    throw error;
+  }
+});
 
 export const fetchUserById = createAsyncThunk(
   'auth/fetchUserById',
-  async userId => {
+  async (userId, { getState, dispatch }) => {
     try {
-      const userDoc = doc(db, 'users', userId);
-      const userSnapshot = await getDoc(userDoc);
-      const user = userSnapshot.data();
-      return user;
+      const response = await fetch(
+        `${process.env.REACT_APP_FIREBASE_SERVICE_ACCOUNT_URL}/users/${userId}`
+      );
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        console.log('Error response:', errorResponse);
+        throw new Error('Failed to fetch user');
+      }
+      const user = await response.json();
+
+      // Dispatch the user data to the state
+      dispatch(authSlice.actions.setUser(user));
     } catch (error) {
-      console.log('Failed to fetch user', error);
-      throw new Error('Failed to fetch user');
+      console.log('Failed to fetch user:', error);
+      throw error;
     }
   }
 );
@@ -140,22 +169,50 @@ const authSlice = createSlice({
       state.prevLocation = state.currentLocation;
       state.currentLocation = action.payload;
     },
+    setUser: (state, action) => {
+      state.users[action.payload.id] = action.payload;
+    },
   },
   extraReducers: builder => {
     builder
-      // .addCase(fetchUsers.fulfilled, (state, action) => {
-      //   state.users = action.payload;
-      // })
-      // .addCase(fetchUsers.rejected, (state, action) => {
-      //   // Handle the error if needed
-      //   console.error('Error fetching users:', action.error.message);
-      // })
+      .addCase(fetchUsers.fulfilled, (state, action) => {
+        state.users = action.payload;
+      })
+      .addCase(fetchUsers.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+        console.error('Error fetching users:', action.error.message);
+      })
       .addCase(fetchUserById.fulfilled, (state, action) => {
         const user = action.payload;
-        state.users[user.id] = user; // Store the user data in the users object using the user ID as the key
+        console.log('User object:', user);
+        state.users[user.uid] = {
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+          emailVerified: user.emailVerified,
+          providerData: user.providerData,
+          metadata: user.metadata,
+        };
       })
       .addCase(fetchUserById.rejected, (state, action) => {
-        // Handle the rejected case if needed
+        state.status = 'failed';
+        state.error = action.error.message;
+        console.log('Failed to fetch user:', action.error);
+      })
+      // Add the following case to handle when setUser is called without fetching users first
+      .addCase(authSlice.actions.setUser, (state, action) => {
+        const user = action.payload;
+        state.users[user.uid] = {
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+          emailVerified: user.emailVerified,
+          providerData: user.providerData,
+          metadata: user.metadata,
+        };
       })
       .addCase(socialLogin.pending, (state, action) => {
         // Update the status to 'loading'
@@ -171,12 +228,22 @@ const authSlice = createSlice({
         // Update the status to 'failed' and set the error message
         state.status = 'failed';
         state.error = action.error.message;
+      })
+      .addCase(signOutFirebase.fulfilled, state => {
+        state.authenticated = false;
+        state.currentUser = null;
+      })
+      .addCase(signOutFirebase.rejected, (state, action) => {
+        // Handle the rejected case if needed
+        state.status = 'failed';
+        state.error = action.error.message;
       });
   },
 });
 
 export const { signInUser, signOutUser, setLocation } = authSlice.actions;
-export const getCurrentUserFromState = state => state.auth.currentUser;
+export const getAuthentication = state => auth.authenticated;
+export const getCurrentUserFromState = state => auth.currentUser;
 export const getUsersFromState = state => state.auth.users;
 export const getUserById = (state, userId) => state.auth.users[userId];
 

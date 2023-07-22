@@ -13,10 +13,15 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { MdFacebook } from 'react-icons/md';
-import { AiFillTwitterCircle } from 'react-icons/ai';
-import { FaInstagramSquare } from 'react-icons/fa';
+import { AiFillTwitterCircle, AiFillLinkedin } from 'react-icons/ai';
+import { BsMastodon } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPosts, getPostsStatus, selectAllPosts } from './postsSlice';
+import {
+  fetchComments,
+  fetchPosts,
+  getPostsStatus,
+  selectAllPosts,
+} from './postsSlice';
 import PlainEditor from '../../lexicalEditor/PlainEditor';
 import { Link, useParams } from 'react-router-dom';
 import _ from 'lodash';
@@ -31,6 +36,8 @@ const Post = () => {
   const buttonHoverColor = useColorModeValue('teal.600', 'teal.400');
   const { articleId } = useParams();
   const article = _.find(posts, { id: articleId });
+  const comments = article?.comments ? Object.values(article.comments) : [];
+
   const tags = _.filter(posts, function (post) {
     return post === article;
   });
@@ -42,7 +49,10 @@ const Post = () => {
     if (postsStatus === 'idle') {
       dispatch(fetchPosts());
     }
-  }, [postsStatus, dispatch]);
+    if (article) {
+      dispatch(fetchComments(article.id));
+    }
+  }, [postsStatus, dispatch, article]);
 
   const renderPosts = _.slice(cards, 0, 3).map(card => (
     <React.Fragment key={card.id}>
@@ -83,14 +93,12 @@ const Post = () => {
     return (
       <Container my={10} align="stretch" maxW={800}>
         <Box as="article" key={article.id}>
-          <Text color={textColor} fontSize="xs">
-            Home/Blog/{article.id}
-          </Text>
+        
           <Heading my={2} color={textColor} as="h1" size="2xl">
             {article.title}
           </Heading>
           <Text color={textColor} fontSize="xs">
-            Author: {article.author} | {_.first(article.category)} |{' '}
+             {article.author} | {_.first(article.category)} |{' '}
             {new Date(
               article.date.seconds * 1000 + article.date.nanoseconds / 1000000
             ).toLocaleDateString()}
@@ -140,13 +148,24 @@ const Post = () => {
           </Box>
           <Box>
             <IconButton
-              aria-label="facebook"
+              aria-label="mastodon"
               variant="ghost"
               size="sm"
               isRound={true}
               color={buttonColor}
               _hover={{ color: `${buttonHoverColor}` }}
-              icon={<FaInstagramSquare size="28px" />}
+              icon={<BsMastodon size="28px" />}
+            />
+          </Box>
+          <Box>
+            <IconButton
+              aria-label="linkedin"
+              variant="ghost"
+              size="sm"
+              isRound={true}
+              color={buttonColor}
+              _hover={{ color: `${buttonHoverColor}` }}
+              icon={<AiFillLinkedin size="28px" />}
             />
           </Box>
           <Spacer />
@@ -156,16 +175,17 @@ const Post = () => {
         <Heading my={5} as="h2" size="md">
           Comments
         </Heading>
-        <Comments comments={article.comments} />
+        <Comments articleId={article.id} comments={comments} />
         <br />
-        <Heading mb={5} as="h2" size="md">
-          More Posts
-        </Heading>
-        <HStack mb={5}>{renderPosts}</HStack>
-        <Spacer />
-        {/* <Heading as="h2" size="md">
-          Comments
-        </Heading> */}
+
+        {cards.length > 0 && (
+          <Box>
+            <Heading mb={5} as="h2" size="md">
+              More Posts
+            </Heading>
+            <HStack mb={5}>{renderPosts}</HStack>
+          </Box>
+        )}
       </Container>
     );
   } else {

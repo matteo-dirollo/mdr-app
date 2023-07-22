@@ -8,13 +8,13 @@ import {
   deleteDoc,
   updateDoc,
   getDoc,
+  deleteField,
 } from 'firebase/firestore';
 import { v4 } from 'uuid';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import _ from 'lodash';
 import { getCurrentUserFromState } from '../../../auth/authSlice';
 import { v4 as uuidv4 } from 'uuid';
-import { useParams } from 'react-router-dom';
 import { Timestamp } from '@firebase/firestore';
 
 const initialState = {
@@ -57,7 +57,6 @@ export const addNewPost = createAsyncThunk(
     } catch (error) {
       console.log('Error adding document: ', error);
     }
-    // console.log(JSON.stringify(post.editor));
   }
 );
 
@@ -85,10 +84,16 @@ export const addComment = createAsyncThunk(
           postId,
           comment,
           uid: currentUser.uid,
-          timestamp
+          timestamp,
         },
       });
-      return { postId, comment };
+      return {
+        id: commentId,
+        postId,
+        comment,
+        uid: currentUser.uid,
+        timestamp,
+      };
     } catch (error) {
       console.log(error);
     }
@@ -101,11 +106,12 @@ export const deleteComment = createAsyncThunk(
     try {
       const postsDoc = doc(db, 'Posts', postId);
       await updateDoc(postsDoc, {
-        [`comments.${commentId}`]: null,
+        [`comments.${commentId}`]: deleteField(),
       });
       return { postId, commentId };
     } catch (error) {
       console.log(error);
+      throw error; // Rethrow the error
     }
   }
 );
@@ -131,9 +137,16 @@ export const fetchComments = createAsyncThunk(
       const postsDoc = doc(db, 'Posts', postId);
       const docSnapshot = await getDoc(postsDoc);
       const post = { id: docSnapshot.id, ...docSnapshot.data() };
-      const comments = Object.values(post.comments || {});
-      return comments;
+      const comments = post.comments || {};
+
+      // Convert the comments object into an array of comment objects with their IDs
+      const commentsWithIds = Object.keys(comments).map(commentId => ({
+        id: commentId,
+        ...comments[commentId],
+      }));
+      return commentsWithIds;
     } catch (error) {
+      console.log('Failed to fetch comments:', error);
       throw new Error('Failed to fetch comments');
     }
   }
@@ -199,12 +212,6 @@ const postsSlice = createSlice({
       })
       .addCase(fetchPosts.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        // let min = 1;
-        // const loadedPosts = action.payload.map(post => {
-        //   post.date = sub(new Date(), { minutes: min++ }).toISOString();
-        //   return post;
-        // });
-        // state.posts = state.posts.concat(loadedPosts);
         state.posts.push(...action.payload);
       })
       .addCase(fetchPosts.rejected, (state, action) => {
@@ -253,9 +260,13 @@ const postsSlice = createSlice({
         const comments = action.payload; // The payload is an array of comments
         state.posts.forEach(post => {
           if (post.comments) {
-            post.comments = comments.filter(
-              comment => comment.postId === post.id
-            );
+            // Convert the comments array to an object with comment IDs as keys
+            post.comments = comments.reduce((acc, comment) => {
+              if (comment.postId === post.id) {
+                acc[comment.id] = comment;
+              }
+              return acc;
+            }, {});
           }
         });
       })
@@ -272,14 +283,13 @@ const postsSlice = createSlice({
       })
       .addCase(addComment.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        const { comment } = action.payload;
-        const { articleId } = useParams();
-        const post = _.find(state.posts, { id: articleId });
+        const { postId, ...commentData } = action.payload;
+        const post = _.find(state.posts, { id: postId });
         if (post) {
           if (!post.comments) {
-            post.comments = []; // Initialize the comments array if it doesn't exist
+            post.comments = {}; // Initialize the comments object if it doesn't exist
           }
-          post.comments.push(comment);
+          post.comments[commentData.id] = commentData; // Use the comment ID as the key
         }
       })
 
@@ -299,9 +309,19 @@ const postsSlice = createSlice({
         const { postId, commentId } = action.payload;
         const post = state.posts.find(post => post.id === postId);
         if (post) {
-          post.comments = post.comments.filter(
-            comment => comment.id !== commentId
-          );
+          // Create a new comments object without the deleted comment
+          const updatedComments = { ...post.comments };
+          delete updatedComments[commentId];
+
+          // Create a new post object with the updated comments
+          const updatedPost = {
+            ...post,
+            comments: updatedComments,
+          };
+
+          // Find the index of the old post and replace it with the updated one
+          const postIndex = state.posts.findIndex(post => post.id === postId);
+          state.posts[postIndex] = updatedPost;
         }
       })
       .addCase(deleteComment.rejected, (state, action) => {
