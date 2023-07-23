@@ -245,6 +245,17 @@ export const { signInUser, signOutUser, setLocation } = authSlice.actions;
 export const getAuthentication = state => auth.authenticated;
 export const getCurrentUserFromState = state => auth.currentUser;
 export const getUsersFromState = state => state.auth.users;
-export const getUserById = (state, userId) => state.auth.users[userId];
+export const getUserById = (state, userId) => {
+  if (!userId) {
+    return null;
+  }
+  if (!state.auth || !state.auth.users) {
+    return null;
+  }
+  const user = state.auth.users[userId];
+  if (!user) {
+  }
+  return user;
+};
 
 export default authSlice.reducer;

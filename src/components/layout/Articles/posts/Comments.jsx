@@ -1,14 +1,13 @@
-import { Box } from '@chakra-ui/react';
-import { useDispatch } from 'react-redux';
+import { Box, Heading } from '@chakra-ui/react';
+import { useDispatch, useSelector } from 'react-redux';
 import { deleteComment } from './postsSlice';
 import CommentItem from './CommentItem';
 import CommentForm from './CommentForm';
 import _ from 'lodash';
-import { getAuthentication } from '../../../auth/authSlice';
 
 const Comments = ({ articleId, comments }) => {
   const dispatch = useDispatch();
-  const authenticated = getAuthentication();
+  const { authenticated } = useSelector(state => state.auth);
 
   const handleDelete = commentId => {
     try {
@@ -30,8 +29,14 @@ const Comments = ({ articleId, comments }) => {
 
   return (
     <Box>
-      {authenticated ? <CommentForm articleId={articleId} /> : null}
-      {comments ? renderComments : null}
+      {(authenticated || comments.length > 0) && (
+        <Heading my={5} as="h2" size="md">
+          Comments
+        </Heading>
+      )}
+
+      {authenticated && <CommentForm articleId={articleId} />}
+      {comments.length > 0 ? renderComments : null}
     </Box>
   );
 };

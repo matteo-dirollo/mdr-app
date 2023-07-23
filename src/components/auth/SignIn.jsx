@@ -72,11 +72,7 @@ export default function SignIn({ onClose }) {
               yet ✌️
             </Text>
           </Stack> */}
-          <Box
-            rounded={'lg'}
-            p={10}
-            pb={5}
-          >
+          <Box rounded={'lg'} p={10} pb={5}>
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
@@ -124,8 +120,8 @@ export default function SignIn({ onClose }) {
                 Not registered?{' '}
                 <Link
                   onClick={() => {
-                    dispatch(closeModal())
-                    dispatch(openModal({modalType: 'SignUp'}))
+                    dispatch(closeModal());
+                    dispatch(openModal({ modalType: 'SignUp' }));
                   }}
                   color={'blue.400'}
                 >

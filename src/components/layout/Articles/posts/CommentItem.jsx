@@ -9,14 +9,18 @@ import { Avatar, Box, Flex, Link, Text } from '@chakra-ui/react';
 import { useEffect } from 'react';
 
 const CommentItem = ({ comment, handleDelete }) => {
-  const user = useSelector(state => getUserById(state, comment.uid));
+  const user = useSelector(state => getUserById(state, comment?.uid));
   const currentUser = getCurrentUserFromState();
   const isCurrentUserComment = currentUser && currentUser.uid === comment.uid;
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchUsers());
-  }, [dispatch]);
+    if (comment) {
+      dispatch(fetchUsers());
+    }
+  }, [dispatch, comment]);
+  
+  
   return (
     <>
       <Flex alignItems="center">
