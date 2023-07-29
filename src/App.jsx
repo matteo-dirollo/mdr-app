@@ -89,12 +89,12 @@ function App() {
             <Routes>
               {/* PUBLIC ROUTES */}
               <Route path="/" exact element={<Home />} />
-              <Route path="/work" exact element={<Blog />} />
+              {/* <Route path="/work" exact element={<Works />} /> */}
               <Route path="/contact" exact element={<Contact />} />
               <Route path="/privacy-policy" exact element={<PrivacyPolicy />} />
               <Route path="/terms-and-conditions" exact element={<Terms />} />
 
-              {/* <Route path="/blog" exact element={<Blog />} /> */}
+              <Route path="/blog" exact element={<Blog />} />
               <Route path="blog/:articleId" element={<Post />} />
 
               <Route path="*" element={<PageNotFound />} />

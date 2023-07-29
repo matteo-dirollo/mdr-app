@@ -89,8 +89,8 @@ const Post = () => {
 
   if (article) {
     return (
-      <Container my={10} align="stretch" maxW={800}>
-        <Box as="article" key={article.id}>
+      <Container my={10} align="stretch" maxW={[600,800]}>
+        <Box as="article" key={article.id} maxW={['60%','100%']}>
           <Heading my={2} color={textColor} as="h1" size="2xl">
             {article.title}
           </Heading>
@@ -101,7 +101,7 @@ const Post = () => {
             ).toLocaleDateString()}
           </Text>
           <Box
-            w="100%"
+            w='100%'
             minH={400}
             sx={{
               backgroundImage: `url(${article.imageUrl})`,
@@ -111,9 +111,10 @@ const Post = () => {
             mt={5}
             mb={5}
           />
-
-          <PlainEditor stateInstance={article.body} />
+        <PlainEditor stateInstance={article.body} />
+         
         </Box>
+        
         <Divider my={10} />
         <HStack mb={50}>
           <IconButton
