@@ -1,8 +1,8 @@
 export const navItems = [
-  {
-    label: 'Work',
-    href: '/work',
-  },
+  // {
+  //   label: 'Work',
+  //   href: '/work',
+  // },
   // {
   //   label: 'About',
   //   href: '/about',
