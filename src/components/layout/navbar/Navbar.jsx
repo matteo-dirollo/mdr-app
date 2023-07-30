@@ -54,7 +54,7 @@ const Navbar = () => {
             aria-label={'Toggle Navigation'}
           />
         </Flex>
-        <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
+        <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }} minW="fit-content">
           <Text
             textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
             fontFamily={'heading'}
@@ -73,7 +73,7 @@ const Navbar = () => {
           flex={{ base: 1, md: 0 }}
           justify={'flex-end'}
           direction={'row'}
-          spacing={6}
+          spacing={[2,6,6]}
         >
           <ColorModeSwitcher justifySelf="flex-end" />
           {authenticated ? (
@@ -81,6 +81,7 @@ const Navbar = () => {
           ) : (
             <Button
               as={'a'}
+              size={['sm','md']}
               fontSize={'sm'}
               fontWeight={400}
               variant={'link'}
@@ -93,11 +94,11 @@ const Navbar = () => {
           )}
           {authenticated ? null : (
             <Button
-              display={{ base: 'none', md: 'inline-flex' }}
               fontSize={'sm'}
               fontWeight={600}
               color={'white'}
               bg={'pink.400'}
+              size={['sm','md']}
               onClick={() => {
                 dispatch(openModal({ modalType: 'SignUp' }));
               }}

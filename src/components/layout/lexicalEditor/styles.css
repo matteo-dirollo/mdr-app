@@ -540,7 +540,7 @@ i.youtube {
 }
 
 iframe {
-  /* max-width: 400px; */
+  max-width: 600px;
   margin: 0 auto; 
   display: block; 
 }
@@ -785,5 +785,11 @@ i.image {
 @media screen and (max-width: 600px) {
   iframe {
     max-width: 400px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  iframe {
+    max-width: 300px;
   }
 }

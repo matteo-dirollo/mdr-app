@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Container,
@@ -25,6 +25,7 @@ import { Link, useParams } from 'react-router-dom';
 import _ from 'lodash';
 import Comments from './Comments';
 import { openModal } from '../../modal/modalSlice';
+import { Helmet } from 'react-helmet';
 
 const Post = () => {
   const dispatch = useDispatch();
@@ -35,6 +36,11 @@ const Post = () => {
   const { articleId } = useParams();
   const article = _.find(posts, { id: articleId });
   const comments = article?.comments ? Object.values(article.comments) : [];
+  const [articleDescription, setArticleDescription] = useState('');
+  const truncatedArticleDescription = _.truncate(articleDescription, {
+    length: 150,
+    omission: '...',
+  });
 
   const tags = _.filter(posts, function (post) {
     return post === article;
@@ -43,15 +49,32 @@ const Post = () => {
     return post !== article;
   });
 
+  const extractPlainText = node => {
+    if (node && node.children) {
+      return node.children.reduce((text, child) => {
+        if (child.type === 'text') {
+          return text + child.text;
+        } else if (child.children) {
+          return text + extractPlainText(child);
+        } else {
+          return text;
+        }
+      }, '');
+    }
+    return '';
+  };
+
   useEffect(() => {
     if (postsStatus === 'idle') {
       dispatch(fetchPosts());
     }
     if (article) {
       dispatch(fetchComments(article.id));
+      const parsedBody = JSON.parse(article.body);
+      setArticleDescription(extractPlainText(parsedBody.root));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [postsStatus, dispatch, article]);
-
   const renderPosts = _.slice(cards, 0, 3).map(card => (
     <React.Fragment key={card.id}>
       <VStack justify="start">
@@ -89,9 +112,52 @@ const Post = () => {
 
   if (article) {
     return (
-      <Container my={10} align="stretch" maxW={[600,800]}>
-        <Box as="article" key={article.id} maxW={['60%','100%']}>
-          <Heading my={2} color={textColor} as="h1" size="2xl">
+      <Container
+        my={10}
+        align="stretch"
+        maxW={['fit-content', '80%']}
+        style={{ overflowX: 'hidden' }}
+      >
+        <Helmet>
+          <title>{article.title}</title>
+          <meta name="description" content={truncatedArticleDescription} />
+          <meta property="og:title" content={article.title} />
+          <meta
+            property="og:description"
+            content={truncatedArticleDescription}
+          />
+          <meta property="og:image" content={article.imageUrl} />
+          <meta
+            name="robots"
+            content="index, follow, max-image-preview:large"
+          />
+          <meta name="content-type" content="article" />
+          <meta
+            property="og:url"
+            content={`https://matteo-dirollo.com/blog/${article.id}`}
+          />
+          <meta property="og:site_name" content="MDR" />
+          <meta
+            name="keywords"
+            content="graphic design, illustrations, animations, freelancer, article, 3d, blender, seamless loop, design, web design, advertising, wired"
+          />
+
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:title" content={article.title} />
+          <meta
+            name="twitter:description"
+            content={truncatedArticleDescription}
+          />
+          <meta name="twitter:image" content={article.imageUrl} />
+        </Helmet>
+        <Box as="article" key={article.id}>
+          <Heading
+            my={2}
+            color={textColor}
+            as="h1"
+            size="2xl"
+            lineHeight="120%"
+          >
             {article.title}
           </Heading>
           <Text color={textColor} fontSize="xs">
@@ -101,8 +167,8 @@ const Post = () => {
             ).toLocaleDateString()}
           </Text>
           <Box
-            w='100%'
-            minH={400}
+            w="100%"
+            minH={'500'}
             sx={{
               backgroundImage: `url(${article.imageUrl})`,
               backgroundPosition: 'center',
@@ -111,19 +177,18 @@ const Post = () => {
             mt={5}
             mb={5}
           />
-        <PlainEditor stateInstance={article.body} />
-         
+          <PlainEditor stateInstance={article.body} />
         </Box>
-        
+
         <Divider my={10} />
         <HStack mb={50}>
           <IconButton
-            aria-label=''
+            aria-label=""
             borderRadius={'50%'}
             fontSize={'1.3em'}
             color={'white'}
             bg={'teal.400'}
-            size='lg'
+            size="lg"
             icon={<GoShare />}
             onClick={() => {
               dispatch(openModal({ modalType: 'ShareOnSocials' }));

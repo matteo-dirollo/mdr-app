@@ -18,7 +18,11 @@ const SignOut = ({ setAuthenticated }) => {
   }
 
   return (
-    <Button colorScheme="teal" onClick={handleSignOut}>
+    <Button size={['sm','md']}
+      fontWeight={400}
+      colorScheme="teal"
+      onClick={handleSignOut}
+    >
       Sign Out
     </Button>
   );
