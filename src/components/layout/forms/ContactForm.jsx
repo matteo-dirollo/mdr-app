@@ -1,18 +1,13 @@
 import React from 'react';
 import {
-  Container,
   Flex,
   Box,
   Heading,
   Text,
   IconButton,
   Button,
-  VStack,
   HStack,
-  Wrap,
-  WrapItem,
   useColorModeValue,
-  Stack,
   useToast,
 } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
@@ -28,6 +23,7 @@ import { addDoc, collection, Timestamp } from 'firebase/firestore';
 const ContactForm = () => {
   const toast = useToast();
   const textColor = useColorModeValue('gray.700', 'gray.100');
+  const emailToColor = useColorModeValue('teal.100', 'teal.500');
   const buttonColor = useColorModeValue('teal.500', 'teal.300');
   const buttonHoverColor = useColorModeValue('teal.600', 'teal.400');
   const tastSuccess = () => {
@@ -44,6 +40,10 @@ const ContactForm = () => {
     surname: '',
     email: '',
     message: '',
+  };
+
+  const handleClick = () => {
+    window.location.href = 'mailto:matteo.dirollo@icloud.com';
   };
 
   const collectData = async values => {
@@ -85,117 +85,107 @@ const ContactForm = () => {
     }
   };
   return (
-    <Container maxW="full" mt={0} centerContent overflow="hidden">
-      <Flex>
-        <Box
-          bg={useColorModeValue('gray.100', 'gray.700')}
-          color="white"
-          borderRadius="lg"
-          m={{ sm: 4, md: 16, lg: 10 }}
-          p={{ sm: 5, md: 5, lg: 16 }}
+    <Flex
+      my={20}
+      justifyContent="center"
+      flexDirection={['column', 'column', 'row']}
+    >
+      <Box mx={10} minW={[250, 300, 500]} maxW={700}>
+        <Heading color={textColor}>Let's work together !</Heading>
+        <Text mt={{ sm: 3, md: 3, lg: 5 }} maxW={700} color={textColor}>
+          Have a project in mind? Let's collaborate and bring it to life! From
+          logos and websites to infographics and animations, I can create
+          captivating designs tailored to your needs. Get in touch today and
+          let's make something amazing together!
+        </Text>
+
+        <Button
+          my={{ base: 5, sm: 5, md: 8, lg: 10 }}
+          size="md"
+          height="48px"
+          width="auto"
+          variant="ghost"
+          color={textColor}
+          _hover={{ backgroundColor: emailToColor }}
+          border={'2px solid teal'}
+          leftIcon={<MdEmail color="teal" size="20px" />}
+          onClick={handleClick}
         >
-          <Box p={4}>
-            <Wrap spacing={{ base: 20, sm: 3, md: 5, lg: 20 }}>
-              <WrapItem>
-                <Box>
-                  <Heading color={textColor}>Contact</Heading>
-                  <Text mt={{ sm: 3, md: 3, lg: 5 }} color={textColor}>
-                    Send a message here or email me
-                    <br />
-                    if you have a request for a new project.
-                  </Text>
-                  <Box py={{ base: 5, sm: 5, md: 8, lg: 10 }}>
-                    <VStack pl={0} spacing={3} alignItems="flex-start">
-                      <Button
-                        size="md"
-                        height="48px"
-                        width="full"
-                        variant="ghost"
-                        color={textColor}
-                        _hover={{ border: '2px solid teal' }}
-                        leftIcon={<MdEmail color="teal" size="20px" />}
-                      >
-                        matteo.dirollo@icloud.com
-                      </Button>
-                    </VStack>
-                  </Box>
-                  <HStack
-                    mt={{ lg: 10, md: 10 }}
-                    spacing={5}
-                    px={5}
-                    alignItems="flex-start"
-                  >
-           
-                    <IconButton
-                      aria-label="github"
-                      variant="ghost"
-                      size="sm"
-                      isRound={true}
-                      color={buttonColor}
-                      _hover={{ color: `${buttonHoverColor}` }}
-                      icon={<BsGithub size="28px" />}
-                    />
-                    <IconButton
-                      aria-label="Mastodon"
-                      variant="ghost"
-                      size="sm"
-                      isRound={true}
-                      color={buttonColor}
-                      _hover={{ color: `${buttonHoverColor}` }}
-                      icon={<FaMastodon size="28px" />}
-                    />
-                  </HStack>
-                </Box>
-              </WrapItem>
-              <WrapItem>
-                <Box bg={useColorModeValue('gray.100', 'gray.700')} borderRadius="lg">
-                  <Box m={8} color="#0B0E3F">
-                    <VStack spacing={5}>
-                      <Formik
-                        initialValues={initialValues}
-                        validationSchema={validationSchema}
-                        onSubmit={handleSubmit}
-                      >
-                        {({ isSubmitting, isValid, dirty, errors }) => (
-                          <Form>
-                            <MyTextInput label="Name" name="name" />
-                            <MyTextInput label="Last Name" name="surname" />
-                            <MyTextInput
-                              label="Email"
-                              name="email"
-                              placeholder="example@xzy.com"
-                            />
-                            <TextareaInput label="Message" name="message" />
+          matteo.dirollo@icloud.com
+        </Button>
+        <HStack
+          mt={{ lg: 10, md: 10 }}
+          spacing={5}
+          px={5}
+          alignItems="flex-start"
+        >
+          <IconButton
+            aria-label="github"
+            variant="ghost"
+            size="sm"
+            isRound={true}
+            color={buttonColor}
+            _hover={{ color: `${buttonHoverColor}` }}
+            icon={<BsGithub size="28px" />}
+          />
+          <IconButton
+            aria-label="Mastodon"
+            variant="ghost"
+            size="sm"
+            isRound={true}
+            color={buttonColor}
+            _hover={{ color: `${buttonHoverColor}` }}
+            icon={<FaMastodon size="28px" />}
+          />
+        </HStack>
+      </Box>
 
-                            {errors.auth && (
-                              <Text color="red.300" fontSize="sm">
-                                {errors.auth}
-                              </Text>
-                            )}
-                            <br />
+      <Flex
+        flexDirection="column"
+        justifySelf={'center'}
+        spacing={5}
+        minW={[180, 250, 500]}
+        m={[10, 10, 0]}
+      >
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
+        >
+          {({ isSubmitting, isValid, dirty, errors }) => (
+            <Form>
+              <MyTextInput label="Name" name="name" />
+              <MyTextInput label="Last Name" name="surname" />
+              <MyTextInput
+                label="Email"
+                name="email"
+                placeholder="youremail@xzy.com"
+              />
+              <TextareaInput label="Message" name="message" />
 
-                            <Stack>
-                              <Button
-                                isLoading={isSubmitting}
-                                disable={!isValid || !dirty || isSubmitting}
-                                type="submit"
-                                colorScheme="teal"
-                              >
-                                Send
-                              </Button>
-                            </Stack>
-                          </Form>
-                        )}
-                      </Formik>
-                    </VStack>
-                  </Box>
-                </Box>
-              </WrapItem>
-            </Wrap>
-          </Box>
-        </Box>
+              {errors.auth && (
+                <Text color="red.300" fontSize="sm">
+                  {errors.auth}
+                </Text>
+              )}
+
+              <Button
+                isLoading={isSubmitting}
+                disable={!isValid || !dirty || isSubmitting}
+                type="submit"
+                colorScheme="teal"
+                minW={200}
+                p={5}
+                py={7}
+                my={6}
+              >
+                Send
+              </Button>
+            </Form>
+          )}
+        </Formik>
       </Flex>
-    </Container>
+    </Flex>
   );
 };
 

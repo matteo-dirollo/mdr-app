@@ -25,7 +25,7 @@ export default function SignUp({ onClose, onOpen }) {
 
   const initialValues = {
     name: '',
-    last:'',
+    last: '',
     email: '',
     password: '',
   };
@@ -39,9 +39,12 @@ export default function SignUp({ onClose, onOpen }) {
         'Start with a capital letter and numbers are not allawed'
       ),
     last: Yup.string()
-    .min(3, 'Too short')
-    .required('Required')
-    .matches('^([A-Za-z\\u00C0-\\u00D6\\u00D8-\\u00DE\\u00DF-\\u00F6\\u00F8-\\u00FF \'&-]+)$', ' Start with a capital letter and numbers are not allawed'),
+      .min(3, 'Too short')
+      .required('Required')
+      .matches(
+        "^([A-Za-z\\u00C0-\\u00D6\\u00D8-\\u00DE\\u00DF-\\u00F6\\u00F8-\\u00FF '&-]+)$",
+        ' Start with a capital letter and numbers are not allawed'
+      ),
     email: Yup.string()
       .min(3, 'Too short!')
       .required('Required')
@@ -59,24 +62,19 @@ export default function SignUp({ onClose, onOpen }) {
 
   const handleRegister = async (values, { setSubmitting, setErrors }) => {
     try {
-      const result = await createUserWithEmailAndPassword(auth, values.email, values.password);
-      const user = result.user; 
+      const result = await createUserWithEmailAndPassword(
+        auth,
+        values.email,
+        values.password
+      );
+      const user = result.user;
       setSubmitting(false);
       onClose();
       dispatch(closeModal());
       firebaseUsersCollection(values, user);
     } catch (error) {
-      // if (error.code === "auth/") {
-      //   setErrors(error.code, "You already have an account with these credentials");
-      // }
-      // else {
-      //   setErrors(error.message);
-      // }
       setSubmitting(false);
-      // const errorCode = error.code;
-      // const errorMessage = error.message;
       setErrors({ auth: 'You already have an account with these credentials' });
-      //Firebase: Error (auth/email-already-in-use).
     }
   };
 
@@ -97,11 +95,7 @@ export default function SignUp({ onClose, onOpen }) {
               account ✌️
             </Text>
           </Stack> */}
-          <Box
-            rounded={'lg'}
-            p={10}
-            pb={5}
-          >
+          <Box rounded={'lg'} p={10} pb={5}>
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
@@ -112,7 +106,11 @@ export default function SignUp({ onClose, onOpen }) {
                   <Flex gap={3}>
                     {' '}
                     <MyTextInput label="Name" name="name" errors={errors} />
-                    <MyTextInput label="Last Name" name="last" errors={errors} />
+                    <MyTextInput
+                      label="Last Name"
+                      name="last"
+                      errors={errors}
+                    />
                   </Flex>
 
                   <MyTextInput
@@ -156,8 +154,8 @@ export default function SignUp({ onClose, onOpen }) {
                 Already a user?{' '}
                 <Link
                   onClick={() => {
-                    dispatch(closeModal())
-                    dispatch(openModal({modalType: 'SignIn'}))
+                    dispatch(closeModal());
+                    dispatch(openModal({ modalType: 'SignIn' }));
                   }}
                   color={'blue.400'}
                 >

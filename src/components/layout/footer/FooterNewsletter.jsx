@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import * as Yup from 'yup';
 import { db } from '../../../apis/firestore/firebase-config';
-import { setDoc, doc, Timestamp } from '@firebase/firestore';
+import { setDoc, doc } from '@firebase/firestore';
 import Logo from '../logo/Logo';
 import { BiMailSend } from 'react-icons/bi';
 import MyTextInput from '../../auth/MyTextInput';
@@ -23,6 +23,7 @@ import Expire from '../animations/Expire';
 import { Link as ReactRouterLink } from 'react-router-dom';
 import { FaMastodon } from 'react-icons/fa';
 import { BsGithub } from 'react-icons/bs';
+import { Timestamp } from 'firebase/firestore';
 
 const FooterNewsletter = () => {
   const toast = useToast();
@@ -89,6 +90,19 @@ const FooterNewsletter = () => {
               <Logo width={30} color={useColorModeValue('gray.700', 'white')} />
             </Box>
 
+            {/* <Box>
+              <Text fontSize="lg" fontWeight="bold">
+                Let's work together
+              </Text>
+              <Text fontSize={'xs'}>
+                Are you looking for a graphic designer and creative for your
+                project? Whether it's designing a logo, creating stunning
+                visuals, or developing a website, I'm here to help. Let's
+                discuss your requirements and bring your ideas to life. I'm also
+                open to collaborations and new opportunities. Contact me today!
+              </Text>
+            </Box> */}
+
             <Text fontSize={'sm'}>© 2022 All rights reserved</Text>
             <Stack direction={'row'} spacing={6}>
               <IconButton
@@ -100,7 +114,11 @@ const FooterNewsletter = () => {
                 _hover={{ color: `${buttonHoverColor}` }}
                 icon={<BsGithub size="28px" />}
               />
-              <a rel="me" href="https://masto.ai/@matteodirollo" target='_blank'>
+              <a
+                rel="me"
+                href="https://masto.ai/@matteodirollo"
+                target="_blank"
+              >
                 <IconButton
                   aria-label="Mastodon"
                   variant="ghost"

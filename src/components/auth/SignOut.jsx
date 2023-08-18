@@ -1,13 +1,15 @@
 import React from 'react';
 import { Button } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import { signOutFirebase } from '../../apis/firestore/firebaseService';
+import { signOutFirebase } from './authSlice';
+import { useDispatch } from 'react-redux';
 
 const SignOut = ({ setAuthenticated }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   async function handleSignOut() {
     try {
-      await signOutFirebase();
+      await dispatch(signOutFirebase());
       navigate('/');
       window.location.reload();
     } catch (error) {
@@ -16,7 +18,11 @@ const SignOut = ({ setAuthenticated }) => {
   }
 
   return (
-    <Button colorScheme="teal" onClick={handleSignOut}>
+    <Button size={['sm','md']}
+      fontWeight={400}
+      colorScheme="teal"
+      onClick={handleSignOut}
+    >
       Sign Out
     </Button>
   );

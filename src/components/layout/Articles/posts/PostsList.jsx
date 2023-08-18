@@ -78,7 +78,7 @@ const PostsList = () => {
   return (
     <Box w="80%" marginX="auto" my={10} as="section">
       <Heading my={10} color={textColor}>
-        More than meets the eye
+        Latest Projects
       </Heading>
       <Box w="100%" mx="0 auto" display="flex" justifyContent="center">
         <Flex

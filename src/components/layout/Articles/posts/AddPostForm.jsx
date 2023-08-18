@@ -89,12 +89,17 @@ const AddPostForm = () => {
     }
   };
 
-  const handleSubmit = async (values, { setSubmitting }) => {
-    await new Promise(resolve => setTimeout(resolve, 500));
-    onSavePost(values);
-    toastSuccess();
-    setSubmitting(false);
-    console.log(values.editor)
+  const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+    try {
+      await new Promise(resolve => setTimeout(resolve, 500));
+      onSavePost(values);
+      toastSuccess();
+      setSubmitting(false);
+      resetForm();
+    } catch (error) {
+      throw error;
+    }
+    // console.log(values.editor)
   };
 
   return (
@@ -231,6 +236,7 @@ const AddPostForm = () => {
                   handleReset();
                 }}
                 colorScheme="gray"
+                maxW={300}
               >
                 Reset
               </Button>
@@ -239,6 +245,7 @@ const AddPostForm = () => {
                 disable={!isValid || !dirty || isSubmitting}
                 type="submit"
                 colorScheme="teal"
+                maxW={300}
               >
                 Add
               </Button>

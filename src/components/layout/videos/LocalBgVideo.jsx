@@ -1,9 +1,47 @@
 import { Box, Center, Heading, Text } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchObject, clearStorage, selectLoading } from '../../../apis/storageSlice';
+import {
+  appLoaded,
+  asyncActionFinish,
+  asyncActionStart,
+} from '../../../store/asyncSlice';
+import LoadingSpinner from '../loader/LoadingSpinner';
 
 const LocalBgVideo = () => {
-  const videoUrl = 'https://firebasestorage.googleapis.com/v0/b/matteo-dirollo-com.appspot.com/o/Videos%2Floange_newone.mp4?alt=media&token=9f801a48-4a55-4558-8500-ded209d54108'
+  const dispatch = useDispatch();
+  const desiredObjectName = 'Videos/losange-derniere.mp4';
+  const loading = useSelector(selectLoading);
+  const videoUrl = useSelector(state => {
+    const desiredObject = state.storage.objectData[desiredObjectName];
+    return desiredObject ? desiredObject : null;
+  });
+
+  useEffect(() => {
+    
+    // Fetch objects using the fetchObjects action from the storageSlice
+    const fetchObjectsFromStorage = async () => {
+      try {
+        dispatch(asyncActionStart());
+        dispatch(clearStorage());
+        await dispatch(fetchObject(desiredObjectName));
+
+        dispatch(asyncActionFinish());
+        dispatch(appLoaded());
+
+      } catch (error) {
+        console.log(error);
+      } 
+    };
+
+    fetchObjectsFromStorage();
+  }, [dispatch]);
+
+
+
+  
 
   return (
     <Box
@@ -23,23 +61,27 @@ const LocalBgVideo = () => {
         height="100%"
         zIndex={-1}
       >
-        <motion.video
-          autoPlay
-          loop
-          muted
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1 }}
-          width="100%"
-          height="100%"
-          objectFit="cover"
-        >
-          <source src={videoUrl} type="video/mp4" />
-        </motion.video>
+                {!loading ? (
+          <motion.video
+            autoPlay
+            loop
+            muted
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1 }}
+            width="100%"
+            height="100%"
+            objectFit="cover"
+          >
+            <source src={videoUrl} type="video/mp4" />
+          </motion.video>
+        ) : (
+          <LoadingSpinner />
+        )}
       </Box>
       <Center zIndex={1}>
-        <Box maxW={['300','450','600px']}>
+        <Box maxW={['300', '450', '600px']}>
           <Heading
             lineHeight={1.1}
             fontWeight={600}

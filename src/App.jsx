@@ -7,7 +7,7 @@ import PageNotFound from './components/pages/PageNotFound';
 import CookieConsent from 'react-cookie-consent';
 import Navbar from './components/layout/navbar/Navbar';
 import Home from './components/pages/Home';
-import Works from './components/pages/Works';
+// import Works from './components/pages/Works';
 import Contact from './components/pages/Contact';
 import Blog from './components/layout/articles/Blog';
 import Sandbox from './components/pages/Sandbox';
@@ -34,17 +34,16 @@ import ScrollToTop from './components/utils/ScrollToTop';
 import "@fontsource/epilogue"; // Defaults to weight 400
 import "@fontsource/epilogue/400.css"; // Specify weight
 import "@fontsource/epilogue/400-italic.css";
-import { setLocation } from './store/locationSlice';
 
 function App() {
-  const initialized = useSelector(state => state.async);
-  // const navigate = useNavigate();
+  const initialized = useSelector(state => state.async.initialized);
+
   const location = useLocation();
   const dispatch = useDispatch();
   const { pathname } = useLocation();
 
   useEffect(() => {
-    dispatch(setLocation(location.pathname)); // Dispatch the setLocation action when the location changes
+    dispatch(setLocation(location.pathname));
   }, [location, dispatch]);
 
   useEffect(() => {
@@ -64,14 +63,14 @@ function App() {
   if (!initialized)
     return (
       <ChakraProvider theme={theme}>
-        <CSSReset/>
+        <CSSReset />
         <LoadingSpinner />
       </ChakraProvider>
     );
 
   return (
     <ChakraProvider theme={theme}>
-      <CSSReset/>
+      <CSSReset />
       <ModalManager />
       <ScrollToTop />
       <CookieConsent
@@ -89,7 +88,7 @@ function App() {
             <Routes>
               {/* PUBLIC ROUTES */}
               <Route path="/" exact element={<Home />} />
-              <Route path="/work" exact element={<Works />} />
+              {/* <Route path="/work" exact element={<Works />} /> */}
               <Route path="/contact" exact element={<Contact />} />
               <Route path="/privacy-policy" exact element={<PrivacyPolicy />} />
               <Route path="/terms-and-conditions" exact element={<Terms />} />

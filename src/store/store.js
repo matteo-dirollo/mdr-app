@@ -7,12 +7,13 @@ import modalReducer from '../components/layout/modal/modalSlice';
 import postsReducer from '../components/layout/articles/posts/postsSlice';
 import authReducer, { verifyAuth } from '../components/auth/authSlice';
 import locationReducer from './locationSlice'; // Import the location reducer
+import storageReducer from '../apis/storageSlice';
 
 const persistConfig = {
   key: 'root',
   storage: storage,
   stateReconciler: autoMergeLevel1,
-  blacklist: ['posts'],
+  blacklist: ['posts', 'async', 'storage'],
 };
 
 const appReducers = combineReducers({
@@ -21,6 +22,7 @@ const appReducers = combineReducers({
   posts: postsReducer,
   auth: authReducer,
   location: locationReducer,
+  storage: storageReducer,
 });
 
 const _persistedReducer = persistReducer(persistConfig, appReducers);
@@ -31,10 +33,9 @@ export const store = configureStore({
     getDefaultMiddleware({
       serializableCheck: false,
     }),
-  devTools: true,
+  devTools: false,
 });
 
 store.dispatch(verifyAuth());
-
 
 export const persistor = persistStore(store);
